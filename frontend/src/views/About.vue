@@ -1,5 +1,15 @@
 <template>
   <div class="page-container">
-    <h1>About</h1>
+    <h1>{{ uiText.pages.about.title }}</h1>
   </div>
 </template>
+
+<script setup>
+import { uiText } from '@/config/uiText.js'
+</script>
+
+<style scoped>
+.page-container {
+  padding: var(--space-lg);
+}
+</style>
