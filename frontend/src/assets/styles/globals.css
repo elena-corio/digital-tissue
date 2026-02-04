@@ -24,7 +24,7 @@ body {
   font-size: var(--font-size-body);
   line-height: var(--line-height-normal);
   background: white;
-  color: black;
+  color: var(--navy-blue-100);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
