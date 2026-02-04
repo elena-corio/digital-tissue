@@ -25,7 +25,7 @@ body {
   font-family: var(--font-family-base);
   font-size: var(--font-size-body);
   line-height: var(--line-height-normal);
-  color: var(--color-text-primary);
+  color: var(--navy-blue-100);
 }
 
 /* Headings */
@@ -55,12 +55,12 @@ h3 {
 
 .text-small {
   font-size: var(--font-size-small);
-  color: var(--color-text-secondary);
+  color: var(--navy-blue-100);
 }
 
 .text-caption {
   font-size: var(--font-size-caption);
-  color: var(--color-text-muted);
+  color: var(--navy-blue-100);
 }
 
 .text-bold {
