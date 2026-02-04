@@ -14,6 +14,14 @@
   --radius-large: 12px;
 }
 
+:root {
+  /* Spacing scale - minimal set */
+  --space-sm: 0.5rem;    /* 8px - tight spacing */
+  --space-md: 1rem;      /* 16px - standard */
+  --space-lg: 2rem;      /* 32px - sections */
+  --space-xl: 3rem;      /* 48px - large sections */
+}
+
 /* -------------------------------------------------------
    CSS RESET (minimal, modern)
 ------------------------------------------------------- */
