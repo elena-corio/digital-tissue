@@ -1,0 +1,129 @@
+/* -------------------------------------------------------
+   GLOBAL IMPORTS
+------------------------------------------------------- */
+@import './colors.css';
+@import './typography.css';
+
+/* -------------------------------------------------------
+   DESIGN TOKENS
+------------------------------------------------------- */
+:root {
+  /* Border radius tokens */
+  --radius-small: 4px;
+  --radius-medium: 8px;
+  --radius-large: 12px;
+}
+
+:root {
+  /* Spacing scale - minimal set */
+  --space-sm: 0.5rem;    /* 8px - tight spacing */
+  --space-md: 1rem;      /* 16px - standard */
+  --space-lg: 2rem;      /* 32px - sections */
+  --space-xl: 3rem;      /* 48px - large sections */
+}
+
+/* -------------------------------------------------------
+   CSS RESET (minimal, modern)
+------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-normal);
+  background: white;
+  color: var(--navy-blue-100);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+input, textarea, select {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* -------------------------------------------------------
+   APP ROOT
+------------------------------------------------------- */
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* -------------------------------------------------------
+   LAYOUT HELPERS
+------------------------------------------------------- */
+.page-container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.full-height {
+  min-height: 100vh;
+}
+
+.centered-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.grid-auto {
+  display: grid;
+  gap: 1rem;
+}
+
+/* -------------------------------------------------------
+   UTILITY CLASSES
+------------------------------------------------------- */
+.text-muted {
+  color: var(--light-grey-50);
+}
+
+.text-success {
+  color: var(--color-success);
+}
+
+.text-warning {
+  color: var(--color-warning);
+}
+
+.text-error {
+  color: var(--color-error);
+}
