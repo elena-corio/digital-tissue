@@ -6,28 +6,38 @@ export const uiText = {
   navigation: {
     home: 'Home',
     projects: 'Projects',
-    workspace: 'Workspace'
+    workspace: 'Workspace',
+    about: 'About',
+    login: 'Login'
   },
-  homepage: {
-    title: 'Welcome to Digital Tissue',
-    subtitle: 'Your collaborative computational design workspace',
-    getStarted: 'Get Started',
-    learnMore: 'Learn More'
-  },
-  projects: {
-    title: 'Projects',
-    subtitle: 'Manage your computational design projects',
-    createNew: 'Create New Project',
-    noProjects: 'No projects yet',
-    viewAll: 'View All Projects'
-  },
-  workspace: {
-    title: 'Workspace',
-    subtitle: 'Active workspace environment',
-    tabs: {
-      overview: 'Overview',
-      files: 'Files',
-      settings: 'Settings'
+  pages: {
+    homepage: {
+      title: 'Welcome to Digital Tissue',
+      subtitle: 'Your collaborative computational design workspace',
+      getStarted: 'Get Started',
+      learnMore: 'Learn More'
+    },
+    projects: {
+      title: 'Projects',
+      subtitle: 'Manage your computational design projects',
+      createNew: 'Create New Project',
+      noProjects: 'No projects yet',
+      viewAll: 'View All Projects'
+    },
+    workspace: {
+      title: 'Workspace',
+      subtitle: 'Active workspace environment',
+      tabs: {
+        overview: 'Overview',
+        files: 'Files',
+        settings: 'Settings'
+      }
+    },
+    about: {
+      title: 'About Digital Tissue'
+    },
+    login: {
+      title: 'Login'
     }
   },
   common: {
