@@ -7,27 +7,27 @@
 
   /* Custom palette */
 
-  --navy-blue-100:#303179ff;
-  --navy-blue-50: #7d81acff;
+  --navy-blue-100:#303179;
+  --navy-blue-50: #7d81ac;
   
-  --blue-100: #3b479fff;
-  --blue-50: #b3bad8ff;
+  --blue-100: #3b479f;
+  --blue-50: #b3bad8;
 
-  --light-blue-100: #4697e3ff;
-  --light-blue-50: #a7cafcff;
+  --light-blue-100: #4697e3;
+  --light-blue-50: #a7cafc;
 
-  --fucsia-100: #e9268cff;
-  --fucsia-50: #f19fcbff;
+  --fucsia-100: #e9268c;
+  --fucsia-50: #f19fcb;
   
-  --orange-100: #e7882fff;
-  --orange-50: #f9ca9cff;
+  --orange-100: #e7882f;
+  --orange-50: #f9ca9c;
 
-  --yellow-100: #f0b43aff;
-  --yellow-50: #ffdb93ff;
+  --yellow-100: #f0b43a;
+  --yellow-50: #ffdb93;
 
-  --light-lila-100: #d8d9edff;
-  --light-lila-50: #f0f2f9ff;
+  --light-lila-100: #d8d9ed;
+  --light-lila-50: #f0f2f9;
 
-  --light-grey-100: #dadad9ff;
-  --light-grey-50: #ecececff;
+  --light-grey-100: #dadad9;
+  --light-grey-50: #ececec;
 }
