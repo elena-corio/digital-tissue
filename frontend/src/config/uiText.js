@@ -27,7 +27,7 @@ export const uiText = {
         subtitle: 'View and interact with your project models'
       },
       metrics: {
-        title: 'Performance Metrics',
+        title: 'Key Performance Indicators',
         subtitle: 'Track key performance indicators and analytics'
       }
     },
@@ -87,7 +87,7 @@ export const uiText = {
       icon: 'livable.svg',
       metrics: [
       {name: 'Service Density Index', formula: 'service_area / users_count', benchmark: '0.05', value: '0.04'},
-      {name: 'Urban Green Space Indicator', formula: 'residents_close_to_green_count / residents_count', benchmark: '1.0', value: '0.8'},
+      {name: 'Urban Green Space Indicator', formula: 'residents_close_to_green_count / residents_count', benchmark: '1.00', value: '0.80'},
       ]
     },
     kpi2: {
@@ -95,8 +95,8 @@ export const uiText = {
       description: 'Connections between people and programs',
       icon: 'synapses.svg',
       metrics: [
-      {name: 'Program Diversity Index', formula: '1 - program_frequencies / (program_units_count)²', benchmark: '0.7', value: '0.75'},
-      {name: 'Circulation-to-Program Ratio', formula: 'circulation_area / program_area', benchmark: '0.3', value: '0.35'},
+      {name: 'Program Diversity Index', formula: '1 - (program_frequencies / program_units_count ²)', benchmark: '0.70', value: '0.75'},
+      {name: 'Circulation Efficiency Index', formula: '1 - (circulation_area / program_area)', benchmark: '0.70', value: '0.65'},
       ]
     },
     kpi3: {
@@ -104,8 +104,8 @@ export const uiText = {
       description: 'Capacity of spaces and systems to transform over time',
       icon: 'adaptable.png',
       metrics: [
-        {name: 'Mixed-Use Area Ratio', formula: 'hybrid_program_area / program_area', benchmark: '0.4', value: '0.3'},
-        {name: 'Column-free Area Ratio', formula: 'net_floor_area / gross_floor_area', benchmark: '0.7', value: '0.8'},
+        {name: 'Mixed-Use Area Ratio', formula: 'hybrid_program_area / program_area', benchmark: '0.40', value: '0.30'},
+        {name: 'Column-free Area Ratio', formula: 'net_floor_area / gross_floor_area', benchmark: '0.70', value: '0.80'},
       ]
     },
     kpi4: {
@@ -113,8 +113,8 @@ export const uiText = {
       description: 'Environmental performance and long-term resilience',
       icon: 'sustainable.svg',
       metrics: [
-        {name: 'Daylight and Ventilation Potential', formula: 'window_area / net_floor_area', benchmark: '0.2', value: '0.3'},
-        {name: 'Data Embodied Carbon Intensity', formula: 'embodied_carbon / gross_floor_area', benchmark: '500', value: '650'},
+        {name: 'Daylight and Ventilation Potential', formula: 'window_area / net_floor_area', benchmark: '0.20', value: '0.30'},
+        {name: 'Carbon Efficiency Ratio', formula: '500 / (embodied_carbon / gross_floor_area)', benchmark: '1.00', value: '0.75'},
       ]
     }
   },
