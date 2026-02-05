@@ -19,7 +19,20 @@ const routes = [
   {
     path: '/workspace',
     name: 'workspace',
-    component: Workspace
+    component: Workspace,
+    redirect: '/workspace/viewer',
+    children: [
+      {
+        path: 'viewer',
+        name: 'workspace-viewer',
+        component: () => import('@/views/workspace/Viewer.vue')
+      },
+      {
+        path: 'metrics',
+        name: 'workspace-metrics',
+        component: () => import('@/views/workspace/Metrics.vue')
+      }
+    ]
   },
   {
     path: '/login',
@@ -27,6 +40,7 @@ const routes = [
     component: Login
   }
 ]
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
