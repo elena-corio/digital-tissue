@@ -1,6 +1,16 @@
 # Digital Tissue
 
-Computational design dashboard built with Vue 3 + Vite.
+A living data system for design intelligence. Computational design dashboard built with Vue 3 + Vite.
+
+## Features
+
+- **Global Header**: Logo and navigation with Login button
+- **Homepage**: Centered hero section with CTA buttons
+- **About Page**: 4x2 grid of feature cards (Framework, Automation, Monitoring, Coordination)
+- **Workspace**: Tabbed interface with Viewer and Metrics views
+- **Metrics Dashboard**: 4-column KPI grid with interactive metric cards showing values, benchmarks, and formulas
+- **Card Components**: Reusable TitleCard, TextCard, and MetricCard components with shared base styling
+- **Design System**: Global CSS tokens for colors, spacing, shadows, typography, buttons, and cards
 
 ## Monorepo Structure
 
@@ -10,11 +20,19 @@ digital-tissue/
 │   ├── src/
 │   │   ├── config/    UI text configuration
 │   │   ├── components/
-│   │   │   ├── layout/
-│   │   │   └── navigation/
-│   │   ├── views/     Page components
-│   │   ├── router/    Vue Router setup
-│   │   └── assets/    Styles and static files
+│   │   │   ├── layout/      Header component
+│   │   │   ├── navigation/
+│   │   │   └── cards/       TitleCard, TextCard, MetricCard
+│   │   ├── views/           Page components
+│   │   │   ├── workspace/   Viewer, Metrics
+│   │   │   ├── Homepage.vue
+│   │   │   ├── About.vue
+│   │   │   ├── Workspace.vue
+│   │   │   └── Login.vue
+│   │   ├── router/          Vue Router with nested routes
+│   │   └── assets/          Styles, images, icons
+│   │       ├── styles/      colors, typography, globals (with .card base class)
+│   │       └── images/
 │   ├── package.json
 │   ├── vite.config.js
 │   └── index.html
@@ -57,8 +75,11 @@ npm run preview
 
 - **No hard-coded UI text**: All strings externalized in `/src/config/uiText.js`
 - **Composable components**: Reusable, single-responsibility Vue components
-- **Clean routing**: Vue Router with dynamic base path for deployment flexibility
-- **Design tokens**: CSS variables for consistent theming
+- **Nested routing**: Vue Router 4 with child routes for workspace tabs
+- **Design tokens**: CSS variables for colors, spacing, shadows, typography
+- **Global styling system**: Shared `.card` base class and `.btn` variants for consistency
+- **Dynamic asset imports**: GitHub Pages compatible using `new URL()` pattern
+- **DRY code**: For loops in views to iterate over data structures
 - **Monorepo ready**: Prepared for future backend integration
 
 ## Technology Stack
@@ -71,16 +92,32 @@ npm run preview
 
 ## Deployment
 
-This project is configured for GitHub Pages deployment with environment-aware base paths:
+Automatic deployment to GitHub Pages via GitHub Actions:
+- **Trigger**: Push to `main` branch
+- **Workflow**: `.github/workflows/deploy.yml`
+- **Build**: Runs `npm ci` and `npm run build` in frontend directory
+- **Deploy**: Uploads `frontend/dist` to GitHub Pages
+
+Base path configuration in `vite.config.js`:
 - Development: `base: '/'`
 - Production: `base: '/digital-tissue/'`
 
-To deploy:
+**Manual deployment:**
 1. Run `npm run build` from the frontend directory
 2. Deploy the `frontend/dist` folder to GitHub Pages
 
+**Setup requirements:**
+- Enable GitHub Pages in repository settings
+- Set source to "GitHub Actions"
+
 ## Development
 
-Current branch: `frontend-framework`
+**Current branch**: `metrics-cards`
+
+**Branch structure:**
+- `main`: Production-ready code
+- `feature/first-components`: Initial components (Header, cards, About page)
+- `workspace-framework`: Workspace with tabbed navigation
+- `metrics-cards`: Metrics dashboard with KPI cards (active)
 
 For detailed documentation, see `/docs`
