@@ -39,6 +39,48 @@ export const uiText = {
       title: 'Login'
     }
   },
+  cards: {
+    card1: {
+      name: 'Design Framework',
+      description: 'Genetic code - How the system grows and evolves',
+      icon: 'dna.svg',
+      bullets: [
+        'Design rulebook',
+        'Modular data structure',
+        'Templates & standards'
+      ]
+    },
+    card2: {
+      name: 'Automation & Integration',
+      description: 'Synapses - How models and tools exchange meaningful data',
+      icon: 'synapses.png',
+      bullets: [
+        'Automated data exchange',
+        'Seamless tool integration',
+        'Version control & history'
+      ]
+    },
+    card3: {
+      name: 'Monitoring & Feedback',
+      description: 'Metabolism - How the system stays healthy and responsive',
+      icon: 'metabolism.png',
+      bullets: [
+        'KPIs & metrics',
+        'Real-time monitoring',
+        'Feedback loops'
+      ]
+    },
+    card4: {
+      name: 'Coordination',
+      description: 'Network - How different parts of the system work together',
+      icon: 'network.svg',
+      bullets: [
+        'Decision tracking',
+        'Project timeline',
+        'Workflow management'
+      ]
+    }
+  },
   common: {
     loading: 'Loading...',
     error: 'An error occurred',
