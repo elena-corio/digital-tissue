@@ -1,5 +1,5 @@
 <template>
-  <div class="text-card">
+  <div class="card text-card">
     <ul class="card-list">
       <li v-for="(item, index) in items" :key="index" class="card-list-item">
         {{ item }}
@@ -19,20 +19,11 @@ defineProps({
 
 <style scoped>
 .text-card {
-  background-color: white;
-  border-radius: var(--radius-medium);
   padding: var(--space-lg);
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: var(--shadow-around-md);
-}
-
-.text-card:hover {
-  background-color: var(--light-grey-50);
-  box-shadow: var(--shadow-around-lg);
 }
 
 .card-list {
@@ -47,6 +38,13 @@ defineProps({
   font-size: var(--font-size-body);
   line-height: var(--line-height-relaxed);
   margin-bottom: var(--space-sm);
+}
+
+.card-list-item::before {
+  content: '•';
+  color: var(--fucsia-100);
+  font-weight: bold;
+  margin-right: var(--space-sm);
 }
 
 .card-list-item:last-child {

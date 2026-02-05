@@ -184,3 +184,17 @@ a {
 .btn-tertiary:hover {
   background-color: var(--navy-blue-50);
 }
+
+/* -------------------------------------------------------
+   CARD STYLES
+------------------------------------------------------- */
+.card {
+  background: white;
+  border-radius: var(--radius-medium);
+  box-shadow: var(--shadow-md);
+  transition: box-shadow 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-lg);
+}

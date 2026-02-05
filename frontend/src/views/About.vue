@@ -6,31 +6,19 @@
       <div class="cards-grid">
         <!-- First row: Title cards -->
         <TitleCard 
-          :name="uiText.cards.card1.name"
-          :description="uiText.cards.card1.description"
-          :icon="uiText.cards.card1.icon"
-        />
-        <TitleCard 
-          :name="uiText.cards.card2.name"
-          :description="uiText.cards.card2.description"
-          :icon="uiText.cards.card2.icon"
-        />
-        <TitleCard 
-          :name="uiText.cards.card3.name"
-          :description="uiText.cards.card3.description"
-          :icon="uiText.cards.card3.icon"
-        />
-        <TitleCard 
-          :name="uiText.cards.card4.name"
-          :description="uiText.cards.card4.description"
-          :icon="uiText.cards.card4.icon"
+          v-for="(card, key) in uiText.cards"
+          :key="`title-${key}`"
+          :name="card.name"
+          :description="card.description"
+          :icon="card.icon"
         />
         
         <!-- Second row: Text cards -->
-        <TextCard :items="uiText.cards.card1.bullets" />
-        <TextCard :items="uiText.cards.card2.bullets" />
-        <TextCard :items="uiText.cards.card3.bullets" />
-        <TextCard :items="uiText.cards.card4.bullets" />
+        <TextCard 
+          v-for="(card, key) in uiText.cards"
+          :key="`text-${key}`"
+          :items="card.bullets" 
+        />
       </div>
     </div>
   </div>

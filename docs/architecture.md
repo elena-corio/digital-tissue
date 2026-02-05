@@ -17,22 +17,33 @@ frontend/
     ├── main.js
     ├── App.vue
     ├── config/
-    │   └── uiText.js           # All UI text centralized
+    │   └── uiText.js           # All UI text + KPI data
     ├── router/
-    │   └── index.js            # 5 routes
+    │   └── index.js            # Nested routes for workspace
     ├── views/                  # Page components
     │   ├── Homepage.vue
-    │   ├── Workspace.vue
-    │   ├── About.vue
-    │   └── Login.vue
+    │   ├── Workspace.vue       # Parent with tab navigation
+    │   ├── About.vue           # 4x2 card grid
+    │   ├── Login.vue
+    │   └── workspace/
+    │       ├── Viewer.vue
+    │       └── Metrics.vue     # 4-column KPI grid
     ├── components/
     │   ├── layout/
-    │   └── navigation/
+    │   │   └── Header.vue
+    │   ├── navigation/
+    │   └── cards/
+    │       ├── TitleCard.vue   # Icon + name + description
+    │       ├── TextCard.vue    # Bullet list with fuchsia dots
+    │       └── MetricCard.vue  # Value/benchmark + formula tooltip
     └── assets/
+        ├── images/
+        │   ├── logo.svg
+        │   └── icons/
         └── styles/
             ├── colors.css
             ├── typography.css
-            └── globals.css
+            └── globals.css     # .card base, .btn variants
 ```
 
 ## Data Flow
@@ -60,15 +71,37 @@ import { uiText } from '@/config/uiText.js'
 
 **Why:** Single source of truth, no hard-coded text, easy to translate later.
 
+**KPI Data Structure:**
+
+KPIs stored in `uiText.kpis` with nested metrics:
+
+```javascript
+kpis: {
+  kpi1: {
+    name: 'Liveability',
+    description: 'Capacity to support everyday wellbeing',
+    icon: 'livable.svg',
+    metrics: [
+      {name: 'Service Density Index', formula: '...', benchmark: '0.05', value: '0.04'},
+      {name: 'Urban Green Space', formula: '...', benchmark: '1.00', value: '0.80'}
+    ]
+  }
+}
+```
+
+Components iterate with `v-for` over kpis and nested metrics for DRY code.
+
 ## Navigation
 
-**Router (4 routes):**
-- `/` → Homepage
-- `/workspace` → Workspace
-- `/about` → About
+**Router (nested routes):**
+- `/` → Homepage (hero with CTA buttons)
+- `/about` → About (4x2 card grid with for loops)
+- `/workspace` → Workspace (redirects to `/workspace/viewer`)
+  - `/workspace/viewer` → Viewer tab (placeholder)
+  - `/workspace/metrics` → Metrics tab (4-column KPI grid)
 - `/login` → Login
 
-**Tab Navigation:** Workspace view uses internal tabs (no route changes).
+**Tab Navigation:** Workspace uses Vue Router nested routes with `<router-link>` tabs and `<router-view>` outlet. Active tab styled with fuchsia underline.
 
 ## Deployment
 
@@ -89,9 +122,17 @@ npm run build  # Outputs to frontend/dist/
 ## Design System
 
 CSS custom properties in `/assets/styles/`:
-- `colors.css` - Custom palette + semantic colors
-- `typography.css` - Inter font, type scale
-- `globals.css` - Resets and global styles
+- `colors.css` - Custom palette (navy-blue, fuchsia, light-lila, etc.)
+- `typography.css` - Inter font, type scale, weights, line heights
+- `globals.css` - Resets, `.card` base class, `.btn` system, shadows, spacing
+
+**Shared Base Classes:**
+- `.card` - Base for all card components (background, radius, shadow, hover)
+- `.btn` + `.btn-primary/secondary/tertiary` - Global button system
+
+**Asset Handling:** Dynamic imports using `new URL('../../assets/path', import.meta.url).href` for GitHub Pages compatibility.
+
+**Component Patterns:** For loops (`v-for`) to iterate over `uiText.cards` and `uiText.kpis` for DRY code.
 
 ## Key Decisions
 
@@ -100,5 +141,9 @@ CSS custom properties in `/assets/styles/`:
 | Vue 3 Composition API | Better code organization, reusability |
 | Vite | Faster dev server, simpler config |
 | CSS variables | No build step, runtime theming |
-| Config-based UI text | Centralized, i18n-ready |
+| Config-based UI text + data | Centralized, i18n-ready, mock data in uiText.js |
+| Vue Router nested routes | Professional workspace tabs with shareable URLs |
+| Shared base classes (.card, .btn) | Consistent styling, single source of truth |
+| For loops in views | DRY code, easier to maintain |
+| Dynamic asset imports | GitHub Pages base path compatibility |
 | Monorepo | Future backend integration |
