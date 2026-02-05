@@ -22,17 +22,16 @@ defineProps({
   background-color: white;
   border-radius: var(--radius-medium);
   padding: var(--space-lg);
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  transition: box-shadow 0.3s ease;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: var(--shadow-around-md);
+  box-shadow: var(--shadow-md);
 }
 
 .text-card:hover {
-  background-color: var(--light-grey-50);
-  box-shadow: var(--shadow-around-lg);
+  box-shadow: var(--shadow-lg);
 }
 
 .card-list {
