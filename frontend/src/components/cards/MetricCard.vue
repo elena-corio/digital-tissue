@@ -1,5 +1,5 @@
 <template>
-  <div class="metric-card">
+  <div class="card metric-card">
     <div class="metric-header">
       <span class="metric-name">{{ name }}</span>
       <div class="info-icon" @mouseenter="showTooltip = true" @mouseleave="showTooltip = false">
@@ -31,15 +31,7 @@ const showTooltip = ref(false);
 
 <style scoped>
 .metric-card {
-  background: white;
   padding: var(--space-md);
-  border-radius: var(--radius-medium);
-  box-shadow: var(--shadow-md);
-  transition: box-shadow 0.2s ease;
-}
-
-.metric-card:hover {
-  box-shadow: var(--shadow-lg);
 }
 
 .metric-header {

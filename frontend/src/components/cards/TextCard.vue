@@ -1,5 +1,5 @@
 <template>
-  <div class="text-card">
+  <div class="card text-card">
     <ul class="card-list">
       <li v-for="(item, index) in items" :key="index" class="card-list-item">
         {{ item }}
@@ -19,19 +19,11 @@ defineProps({
 
 <style scoped>
 .text-card {
-  background-color: white;
-  border-radius: var(--radius-medium);
   padding: var(--space-lg);
-  transition: box-shadow 0.3s ease;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: var(--shadow-md);
-}
-
-.text-card:hover {
-  box-shadow: var(--shadow-lg);
 }
 
 .card-list {
