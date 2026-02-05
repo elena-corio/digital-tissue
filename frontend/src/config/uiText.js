@@ -4,7 +4,6 @@ export const uiText = {
   },
   navigation: {
     home: 'Home',
-    projects: 'Projects',
     workspace: 'Workspace',
     about: 'About',
     login: 'Login'
@@ -15,13 +14,6 @@ export const uiText = {
       subtitle: 'Explore your models | Track key metrics | Collaborate seamlessly',
       getStarted: 'Get Started',
       learnMore: 'Learn More'
-    },
-    projects: {
-      title: 'Projects',
-      subtitle: 'Manage your computational design projects',
-      createNew: 'Create New Project',
-      noProjects: 'No projects yet',
-      viewAll: 'View All Projects'
     },
     workspace: {
       title: 'Workspace',

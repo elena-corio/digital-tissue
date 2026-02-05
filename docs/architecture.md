@@ -22,7 +22,6 @@ frontend/
     │   └── index.js            # 5 routes
     ├── views/                  # Page components
     │   ├── Homepage.vue
-    │   ├── Projects.vue
     │   ├── Workspace.vue
     │   ├── About.vue
     │   └── Login.vue
@@ -44,7 +43,7 @@ All UI text comes from `uiText.js`:
 // config/uiText.js
 export const uiText = {
   app: { title: 'Digital Tissue' },
-  navigation: { home: 'Home', projects: 'Projects' }
+  navigation: { home: 'Home'}
 }
 ```
 
@@ -63,9 +62,8 @@ import { uiText } from '@/config/uiText.js'
 
 ## Navigation
 
-**Router (5 routes):**
+**Router (4 routes):**
 - `/` → Homepage
-- `/projects` → Projects
 - `/workspace` → Workspace
 - `/about` → About
 - `/login` → Login
