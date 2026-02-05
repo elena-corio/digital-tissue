@@ -10,16 +10,16 @@
       </div>
     </div>
     <div class="metric-value">
-      <span class="value">{{ value }}</span>
+      <span class="value" :class="isAboveBenchmark ? 'value-above' : 'value-below'">{{ value }}</span>
       <span class="benchmark">/ {{ benchmark }}</span>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
-defineProps({
+const props = defineProps({
   name: String,
   value: String,
   benchmark: String,
@@ -27,6 +27,12 @@ defineProps({
 });
 
 const showTooltip = ref(false);
+
+const isAboveBenchmark = computed(() => {
+  const numValue = parseFloat(props.value);
+  const numBenchmark = parseFloat(props.benchmark);
+  return numValue >= numBenchmark;
+});
 </script>
 
 <style scoped>
@@ -87,6 +93,14 @@ const showTooltip = ref(false);
 .value {
   font-size: var(--font-size-h2);
   font-weight: var(--font-weight-bold);
+  color: var(--fucsia-100); /* Default: below benchmark */
+}
+
+.value.value-above {
+  color: var(--light-blue-100);
+}
+
+.value.value-below {
   color: var(--fucsia-100);
 }
 
