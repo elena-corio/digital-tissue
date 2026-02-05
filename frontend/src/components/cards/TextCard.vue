@@ -40,6 +40,13 @@ defineProps({
   margin-bottom: var(--space-sm);
 }
 
+.card-list-item::before {
+  content: '•';
+  color: var(--fucsia-100);
+  font-weight: bold;
+  margin-right: var(--space-sm);
+}
+
 .card-list-item:last-child {
   margin-bottom: 0;
 }
