@@ -80,6 +80,48 @@ export const uiText = {
       ]
     }
   },
+   kpis: {
+    kpi1: {
+      name: 'Liveability',
+      description: 'Capacity to support everyday wellbeing',
+      icon: 'dna.svg',
+      bullets: [
+        'Design rulebook',
+        'Data structure',
+        'Standard protocols'
+      ]
+    },
+    kpi2: {
+      name: 'Automation',
+      description: 'Synapses - How models and tools exchange meaning',
+      icon: 'synapses.svg',
+      bullets: [
+        'Automated workflows',
+        'Tools integration',
+        'Version control'
+      ]
+    },
+    kpi3: {
+      name: 'Monitoring',
+      description: 'Metabolism - How the system stays healthy and responsive',
+      icon: 'metabolism.png',
+      bullets: [
+        'KPIs & metrics',
+        'Data validation',
+        'Feedback loops'
+      ]
+    },
+    kpi4: {
+      name: 'Coordination',
+      description: 'Network - How different parts of the system work together',
+      icon: 'network.svg',
+      bullets: [
+        'Decision tracking',
+        'Project timeline',
+        'Collaboration tools'
+      ]
+    }
+  },
   common: {
     loading: 'Loading...',
     error: 'An error occurred',
