@@ -1,7 +1,6 @@
 export const uiText = {
   app: {
-    title: 'Digital Tissue',
-    tagline: 'Computational Design Dashboard'
+    title: 'digital.tissue',
   },
   navigation: {
     home: 'Home',
@@ -12,8 +11,8 @@ export const uiText = {
   },
   pages: {
     homepage: {
-      title: 'Welcome to Digital Tissue',
-      subtitle: 'Your collaborative computational design workspace',
+      title: 'A living data system for design intelligence',
+      subtitle: 'Explore your models | Track key metrics | Collaborate seamlessly',
       getStarted: 'Get Started',
       learnMore: 'Learn More'
     },
