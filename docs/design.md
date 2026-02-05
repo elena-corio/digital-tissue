@@ -74,20 +74,53 @@
 --radius-large: 12px;  /* Modals, panels */
 ```
 
+## Shadows
+
+```css
+--shadow-md: 0 2px 4px rgba(0, 0, 0, 0.1);
+--shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.15);
+--shadow-around-md: 0 0 8px rgba(0, 0, 0, 0.1);
+--shadow-around-lg: 0 0 16px rgba(0, 0, 0, 0.15);
+```
+
 ## Design Principles
 
 1. **Use design tokens** - Always reference CSS variables, never hard-code values
 2. **Single responsibility** - Components do one thing well
 3. **Composition over complexity** - Combine simple components
 4. **No hard-coded text** - All strings from `uiText.js`
-5. **Mobile-first** - Responsive by default
+5. **Shared base styles** - Use `.card` and `.btn` base classes for consistency
+6. **Mobile-first** - Responsive by default
 
-## Component Library (In Progress)
+## Component Library
 
 | Component | Purpose | Status |
 |-----------|---------|--------|
-| Header | Global header with branding | Planned |
-| NavBar | Primary navigation | Planned |
-| TabNav | Tab navigation | Planned |
-| Button | Action trigger | Planned |
-| Card | Content container | Planned |
+| Header | Global header with logo, title, Login button | ✅ Built |
+| Button | Action trigger (.btn base with primary/secondary/tertiary) | ✅ Built |
+| TitleCard | Feature card with icon, name, description | ✅ Built |
+| TextCard | Content card with bullet list (fuchsia dots) | ✅ Built |
+| MetricCard | KPI metric with value/benchmark, formula tooltip | ✅ Built |
+| TabNav | Workspace tab navigation | ✅ Built |
+
+## Card System
+
+All cards inherit from `.card` base class in `globals.css`:
+
+```css
+.card {
+  background: white;
+  border-radius: var(--radius-medium);
+  box-shadow: var(--shadow-md);
+  transition: box-shadow 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-lg);
+}
+```
+
+**Card Types:**
+- **TitleCard**: Light lila background, centered icon/text, hover darkens background
+- **TextCard**: White background, fuchsia bullet points, centered list
+- **MetricCard**: White background, centered metric name/value, info icon with formula tooltip
