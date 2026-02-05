@@ -84,41 +84,37 @@ export const uiText = {
     kpi1: {
       name: 'Liveability',
       description: 'Capacity to support everyday wellbeing',
-      icon: 'dna.svg',
-      bullets: [
-        'Design rulebook',
-        'Data structure',
-        'Standard protocols'
+      icon: 'livable.svg',
+      metrics: [
+      {name: 'Service Density Index', formula: 'service_area / users_count', benchmark: '0.05', value: '0.04'},
+      {name: 'Urban Green Space Indicator', formula: 'residents_close_to_green_count / residents_count', benchmark: '1.0', value: '0.8'},
       ]
     },
     kpi2: {
-      name: 'Automation',
-      description: 'Synapses - How models and tools exchange meaning',
+      name: 'Interconnection',
+      description: 'Connections between people and programs',
       icon: 'synapses.svg',
-      bullets: [
-        'Automated workflows',
-        'Tools integration',
-        'Version control'
+      metrics: [
+      {name: 'Program Diversity Index', formula: '1 - program_frequencies / (program_units_count)²', benchmark: '0.7', value: '0.75'},
+      {name: 'Circulation-to-Program Ratio', formula: 'circulation_area / program_area', benchmark: '0.3', value: '0.35'},
       ]
     },
     kpi3: {
       name: 'Monitoring',
-      description: 'Metabolism - How the system stays healthy and responsive',
-      icon: 'metabolism.png',
-      bullets: [
-        'KPIs & metrics',
-        'Data validation',
-        'Feedback loops'
+      description: 'Capacity of spaces and systems to transform over time',
+      icon: 'adaptable.png',
+      metrics: [
+        {name: 'Mixed-Use Area Ratio', formula: 'hybrid_program_area / program_area', benchmark: '0.4', value: '0.3'},
+        {name: 'Column-free Area Ratio', formula: 'net_floor_area / gross_floor_area', benchmark: '0.7', value: '0.8'},
       ]
     },
     kpi4: {
-      name: 'Coordination',
-      description: 'Network - How different parts of the system work together',
-      icon: 'network.svg',
-      bullets: [
-        'Decision tracking',
-        'Project timeline',
-        'Collaboration tools'
+      name: 'Sustainability',
+      description: 'Environmental performance and long-term resilience',
+      icon: 'sustainable.svg',
+      metrics: [
+        {name: 'Daylight and Ventilation Potential', formula: 'window_area / net_floor_area', benchmark: '0.2', value: '0.3'},
+        {name: 'Data Embodied Carbon Intensity', formula: 'embodied_carbon / gross_floor_area', benchmark: '500', value: '650'},
       ]
     }
   },
