@@ -1,7 +1,6 @@
 export const uiText = {
   app: {
-    title: 'Digital Tissue',
-    tagline: 'Computational Design Dashboard'
+    title: 'digital.tissue',
   },
   navigation: {
     home: 'Home',
@@ -12,8 +11,8 @@ export const uiText = {
   },
   pages: {
     homepage: {
-      title: 'Welcome to Digital Tissue',
-      subtitle: 'Your collaborative computational design workspace',
+      title: 'A living data system for design intelligence',
+      subtitle: 'Explore your models | Track key metrics | Collaborate seamlessly',
       getStarted: 'Get Started',
       learnMore: 'Learn More'
     },
@@ -34,10 +33,52 @@ export const uiText = {
       }
     },
     about: {
-      title: 'About Digital Tissue'
+      title: 'Living data system',
     },
     login: {
       title: 'Login'
+    }
+  },
+  cards: {
+    card1: {
+      name: 'Framework',
+      description: 'Genetic code - How the system grows and evolves',
+      icon: 'dna.svg',
+      bullets: [
+        'Design rulebook',
+        'Data structure',
+        'Standard protocols'
+      ]
+    },
+    card2: {
+      name: 'Automation',
+      description: 'Synapses - How models and tools exchange meaning',
+      icon: 'synapses.svg',
+      bullets: [
+        'Automated workflows',
+        'Tools integration',
+        'Version control'
+      ]
+    },
+    card3: {
+      name: 'Monitoring',
+      description: 'Metabolism - How the system stays healthy and responsive',
+      icon: 'metabolism.png',
+      bullets: [
+        'KPIs & metrics',
+        'Data validation',
+        'Feedback loops'
+      ]
+    },
+    card4: {
+      name: 'Coordination',
+      description: 'Network - How different parts of the system work together',
+      icon: 'network.svg',
+      bullets: [
+        'Decision tracking',
+        'Project timeline',
+        'Collaboration tools'
+      ]
     }
   },
   common: {
