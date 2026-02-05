@@ -87,7 +87,7 @@ export const uiText = {
       icon: 'livable.svg',
       metrics: [
       {name: 'Service Density Index', formula: 'service_area / users_count', benchmark: '0.05', value: '0.04'},
-      {name: 'Urban Green Space Indicator', formula: 'residents_close_to_green_count / residents_count', benchmark: '1.00', value: '0.80'},
+      {name: 'Urban Green Space Index', formula: 'residents_close_to_green_count / residents_count', benchmark: '1.00', value: '0.80'},
       ]
     },
     kpi2: {
@@ -114,7 +114,7 @@ export const uiText = {
       icon: 'sustainable.svg',
       metrics: [
         {name: 'Daylight and Ventilation Potential', formula: 'window_area / net_floor_area', benchmark: '0.20', value: '0.30'},
-        {name: 'Carbon Efficiency Ratio', formula: '500 / (embodied_carbon / gross_floor_area)', benchmark: '1.00', value: '0.75'},
+        {name: 'Carbon Efficiency Index', formula: '500 / (embodied_carbon / gross_floor_area)', benchmark: '1.00', value: '0.75'},
       ]
     }
   },
