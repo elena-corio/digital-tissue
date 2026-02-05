@@ -4,12 +4,12 @@
       <h1>{{ uiText.pages.homepage.title }}</h1>
       <h2>{{ uiText.pages.homepage.subtitle }}</h2>
       <div class="button-group">
-        <button class="btn btn-primary">
+        <router-link to="/workspace" class="btn btn-primary">
           {{ uiText.pages.homepage.getStarted }}
-        </button>
-        <button class="btn btn-secondary">
+        </router-link>
+        <router-link to="/about" class="btn btn-secondary">
           {{ uiText.pages.homepage.learnMore }}
-        </button>
+        </router-link>
       </div>
     </div>
   </div>

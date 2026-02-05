@@ -1,13 +1,13 @@
 <template>
   <header class="header">
     <div class="header-container">
-      <div class="header-logo-wrapper">
+      <router-link to="/" class="header-logo-wrapper">
         <img src="@/assets/images/logo.svg" alt="Digital Tissue Logo" class="header-logo" />
         <h1 class="header-title">{{ uiText.app.title }}</h1>
-      </div>
-      <button class="btn btn-tertiary">
+      </router-link>
+      <router-link to="/login" class="btn btn-tertiary">
         {{ uiText.navigation.login }}
-      </button>
+      </router-link>
     </div>
   </header>
 </template>
@@ -35,6 +35,13 @@ import { uiText } from '@/config/uiText.js';
   display: flex;
   align-items: center;
   gap: var(--space-md);
+  text-decoration: none;
+  color: inherit;
+  transition: opacity 0.3s ease;
+}
+
+.header-logo-wrapper:hover {
+  opacity: 0.75;
 }
 
 .header-logo {
