@@ -19,9 +19,16 @@ export const uiText = {
       title: 'Workspace',
       subtitle: 'Active workspace environment',
       tabs: {
-        overview: 'Overview',
-        files: 'Files',
-        settings: 'Settings'
+        viewer: 'Viewer',
+        metrics: 'Metrics'
+      },
+      viewer: {
+        title: 'Model Viewer',
+        subtitle: 'View and interact with your project models'
+      },
+      metrics: {
+        title: 'Performance Metrics',
+        subtitle: 'Track key performance indicators and analytics'
       }
     },
     about: {
