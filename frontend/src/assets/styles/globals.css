@@ -135,3 +135,48 @@ a {
 .text-error {
   color: var(--color-error);
 }
+
+/* -------------------------------------------------------
+   BUTTON STYLES
+------------------------------------------------------- */
+.btn {
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--radius-medium);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-medium);
+  line-height: 1;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-primary {
+  background-color: var(--fucsia-100);
+  color: white;
+  padding: var(--space-md) var(--space-xl);
+  font-size: var(--font-size-h3);
+}
+
+.btn-primary:hover {
+  background-color: var(--fucsia-50);
+}
+
+.btn-secondary {
+  background-color: var(--navy-blue-100);
+  color: white;
+  padding: var(--space-md) var(--space-xl);
+  font-size: var(--font-size-h3);
+}
+
+.btn-secondary:hover {
+  background-color: var(--navy-blue-50);
+}
+
+.btn-tertiary {
+  background-color: var(--navy-blue-100);
+  color: white;
+}
+
+.btn-tertiary:hover {
+  background-color: var(--navy-blue-50);
+}

@@ -5,7 +5,7 @@
         <img src="@/assets/images/logo.svg" alt="Digital Tissue Logo" class="header-logo" />
         <h1 class="header-title">{{ uiText.app.title }}</h1>
       </div>
-            <button class="login-button">
+      <button class="btn btn-tertiary">
         {{ uiText.navigation.login }}
       </button>
     </div>
@@ -46,19 +46,5 @@ import { uiText } from '@/config/uiText.js';
   margin: 0;
   font-size: var(--font-size-h2);
   font-weight: var(--font-weight-bold);
-}
-
-.login-button {
-  background-color: var(--light-blue-100);
-  color: white;
-  padding: var(--space-sm) var(--space-lg);
-  border-radius: var(--radius-medium);
-  font-size: var(--font-size-body);
-  font-weight: var(--font-weight-medium);
-  transition: background-color 0.3s ease;
-}
-
-.login-button:hover {
-  background-color: var(--light-blue-50);
 }
 </style>
