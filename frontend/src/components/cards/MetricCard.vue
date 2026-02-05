@@ -45,8 +45,9 @@ const showTooltip = ref(false);
 .metric-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   margin-bottom: var(--space-sm);
+  position: relative;
 }
 
 .metric-name {
@@ -56,7 +57,8 @@ const showTooltip = ref(false);
 }
 
 .info-icon {
-  position: relative;
+  position: absolute;
+  right: 0;
   cursor: help;
   color: var(--navy-blue-50);
   font-size: var(--font-size-body);
@@ -86,6 +88,7 @@ const showTooltip = ref(false);
 .metric-value {
   display: flex;
   align-items: baseline;
+  justify-content: center;
   gap: var(--space-sm);
 }
 
