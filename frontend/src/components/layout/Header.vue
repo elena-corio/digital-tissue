@@ -2,7 +2,7 @@
   <header class="header">
     <div class="header-container">
       <router-link to="/" class="header-logo-wrapper">
-        <img src="@/assets/images/logo.svg" alt="Digital Tissue Logo" class="header-logo" />
+        <img :src="logoSrc" alt="Digital Tissue Logo" class="header-logo" />
         <h1 class="header-title">{{ uiText.app.title }}</h1>
       </router-link>
       <router-link to="/login" class="btn btn-tertiary">
@@ -13,7 +13,13 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
 import { uiText } from '@/config/uiText.js';
+
+// Dynamic import for GitHub Pages compatibility
+const logoSrc = computed(() => {
+  return new URL('../../assets/images/logo.svg', import.meta.url).href;
+});
 </script>
 
 <style scoped>
