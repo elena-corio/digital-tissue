@@ -19,27 +19,28 @@ defineProps({
 
 <style scoped>
 .text-card {
-  background-color: var(--light-grey-50);
+  background-color: white;
   border-radius: var(--radius-medium);
   padding: var(--space-lg);
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
   width: 100%;
-  min-height: 200px;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: var(--shadow-around-md);
 }
 
 .text-card:hover {
-  background-color: var(--light-grey-100);
+  background-color: var(--light-grey-50);
+  box-shadow: var(--shadow-around-lg);
 }
 
 .card-list {
-  list-style-type: disc;
-  padding-left: var(--space-lg);
+  list-style-type: none;
+  padding-left: 0;
   margin: 0;
   color: var(--navy-blue-100);
-  text-align: left;
+  text-align: center;
 }
 
 .card-list-item {

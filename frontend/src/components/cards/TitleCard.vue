@@ -1,7 +1,7 @@
 <template>
   <div class="title-card">
-    <img :src="iconSrc" :alt="name" class="card-icon" />
     <h3 class="card-name">{{ name }}</h3>
+    <img :src="iconSrc" :alt="name" class="card-icon" />
     <p class="card-description">{{ description }}</p>
   </div>
 </template>
@@ -39,6 +39,7 @@ const iconSrc = computed(() => {
   width: 100%;
   min-height: 200px;
   display: flex;
+  align-items: center;
   flex-direction: column;
   gap: var(--space-sm);
 }
@@ -48,8 +49,8 @@ const iconSrc = computed(() => {
 }
 
 .card-icon {
-  width: 3rem;
-  height: 3rem;
+  width: 5rem;
+  height: 5rem;
   object-fit: contain;
   margin-bottom: var(--space-sm);
 }
@@ -57,6 +58,7 @@ const iconSrc = computed(() => {
 .card-name {
   color: var(--navy-blue-100);
   margin: 0;
+  text-align: center;
 }
 
 .card-description {
@@ -64,5 +66,6 @@ const iconSrc = computed(() => {
   margin: 0;
   font-size: var(--font-size-body);
   line-height: var(--line-height-relaxed);
+  text-align: center;
 }
 </style>
