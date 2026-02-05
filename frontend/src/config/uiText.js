@@ -33,7 +33,7 @@ export const uiText = {
       }
     },
     about: {
-      title: 'About Digital Tissue'
+      title: 'Living data system',
     },
     login: {
       title: 'Login'
@@ -41,32 +41,32 @@ export const uiText = {
   },
   cards: {
     card1: {
-      name: 'Design Framework',
+      name: 'Framework',
       description: 'Genetic code - How the system grows and evolves',
       icon: 'dna.svg',
       bullets: [
         'Design rulebook',
-        'Modular data structure',
-        'Templates & standards'
+        'Data structure',
+        'Standard protocols'
       ]
     },
     card2: {
-      name: 'Automation & Integration',
-      description: 'Synapses - How models and tools exchange meaningful data',
-      icon: 'synapses.png',
+      name: 'Automation',
+      description: 'Synapses - How models and tools exchange meaning',
+      icon: 'synapses.svg',
       bullets: [
-        'Automated data exchange',
-        'Seamless tool integration',
-        'Version control & history'
+        'Automated workflows',
+        'Tools integration',
+        'Version control'
       ]
     },
     card3: {
-      name: 'Monitoring & Feedback',
+      name: 'Monitoring',
       description: 'Metabolism - How the system stays healthy and responsive',
       icon: 'metabolism.png',
       bullets: [
         'KPIs & metrics',
-        'Real-time monitoring',
+        'Data validation',
         'Feedback loops'
       ]
     },
@@ -77,7 +77,7 @@ export const uiText = {
       bullets: [
         'Decision tracking',
         'Project timeline',
-        'Workflow management'
+        'Collaboration tools'
       ]
     }
   },
