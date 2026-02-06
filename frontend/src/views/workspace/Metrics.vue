@@ -41,6 +41,7 @@ import MetricCard from '@/components/cards/MetricCard.vue';
 .metrics-content {
   width: 100%;
   max-width: 1400px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
