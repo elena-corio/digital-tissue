@@ -33,7 +33,7 @@ const headColor = ref(colors[Math.floor(Math.random() * colors.length)])
   width: 24px;
   height: 12px;
   border-radius: 50%;
-  background: var(--light-grey-100);
+  background: var(--light-lila-100);
   position: absolute;
   bottom: 3px;
   left: 50%;

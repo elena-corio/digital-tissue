@@ -1,12 +1,16 @@
 <template>
-  <div class="page-container">
+  <div class="page-container homepage-center">
     <div class="homepage-content">
       <h1>{{ uiText.pages.homepage.title }}</h1>
       <h2>{{ uiText.pages.homepage.subtitle }}</h2>
       <div class="button-group">
-        <router-link to="/workspace" class="btn btn-primary">
+        <button
+          class="btn btn-primary get-started-btn"
+          :class="{ 'btn-disabled': !isLoggedIn }"
+          @click="handleGetStarted"
+        >
           {{ uiText.pages.homepage.getStarted }}
-        </router-link>
+        </button>
         <router-link to="/about" class="btn btn-secondary">
           {{ uiText.pages.homepage.learnMore }}
         </router-link>
@@ -17,10 +21,22 @@
 
 <script setup>
 import { uiText } from '@/config/uiText.js'
+import { useRouter } from 'vue-router'
+import { isLoggedIn } from '@/store/auth.js'
+
+const router = useRouter()
+
+function handleGetStarted() {
+  if (isLoggedIn.value) {
+    router.push('/workspace')
+  } else {
+    router.push('/login')
+  }
+}
 </script>
 
 <style scoped>
-.page-container {
+.page-container.homepage-center {
   padding: var(--space-lg);
   display: flex;
   justify-content: center;
@@ -40,5 +56,11 @@ import { uiText } from '@/config/uiText.js'
   display: flex;
   gap: var(--space-lg);
   margin-top: var(--space-md);
+}
+
+.get-started-btn.btn-disabled {
+  background: var(--fucsia-50);
+  color: white;
+  cursor: pointer;
 }
 </style>
