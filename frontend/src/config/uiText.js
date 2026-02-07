@@ -6,7 +6,8 @@ export const uiText = {
     home: 'Home',
     workspace: 'Workspace',
     about: 'About',
-    login: 'Login'
+    login: "Login",
+    logout: "Logout",
   },
   pages: {
     homepage: {
@@ -35,7 +36,13 @@ export const uiText = {
       title: 'Living data system',
     },
     login: {
-      title: 'Login'
+      title: 'Login',
+      authTab: 'Authentication',
+      usernameLabel: 'Username:',
+      usernamePlaceholder: 'Your name (optional)',
+      tokenLabel: 'Speckle Token:',
+      tokenPlaceholder: 'Paste your Speckle token',
+      loginBtn: 'Login'
     }
   },
   cards: {
