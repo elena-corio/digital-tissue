@@ -6,7 +6,8 @@ export const uiText = {
     home: 'Home',
     workspace: 'Workspace',
     about: 'About',
-    login: 'Login'
+    login: "Login",
+    logout: "Logout",
   },
   pages: {
     homepage: {

@@ -16,13 +16,17 @@
 <script setup>
 import { ref } from 'vue'
 import { uiText } from '@/config/uiText.js'
+import { useRouter } from 'vue-router'
+import { login } from '@/store/auth.js'
 
 const username = ref('')
 const token = ref('')
 
+const router = useRouter()
+
 const handleLogin = () => {
-  localStorage.setItem('speckle_token', token.value)
-  if (username.value) localStorage.setItem('speckle_username', username.value)
+  login(token.value, username.value)
+  router.push({ name: 'homepage' })
 }
 </script>
 

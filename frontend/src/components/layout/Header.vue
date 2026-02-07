@@ -5,21 +5,28 @@
         <img :src="logoSrc" alt="Digital Tissue Logo" class="header-logo" />
         <h1 class="header-title">{{ uiText.app.title }}</h1>
       </router-link>
-      <router-link to="/login" class="btn btn-tertiary">
+      <router-link v-if="!isLoggedIn" to="/login" class="btn btn-tertiary">
         {{ uiText.navigation.login }}
       </router-link>
+      <button v-else @click="handleLogout" class="btn btn-tertiary">
+        {{ uiText.navigation.logout }}
+      </button>
     </div>
   </header>
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { useRouter } from 'vue-router';
 import { uiText } from '@/config/uiText.js';
+import logoSrc from '@/assets/images/logo.svg';
+import { isLoggedIn, logout } from '@/store/auth.js';
 
-// Dynamic import for GitHub Pages compatibility
-const logoSrc = computed(() => {
-  return new URL('../../assets/images/logo.svg', import.meta.url).href;
-});
+const router = useRouter();
+
+const handleLogout = () => {
+  logout();
+  router.push('/');
+};
 </script>
 
 <style scoped>
