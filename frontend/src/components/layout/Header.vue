@@ -5,12 +5,17 @@
         <img :src="logoSrc" alt="Digital Tissue Logo" class="header-logo" />
         <h1 class="header-title">{{ uiText.app.title }}</h1>
       </router-link>
-      <router-link v-if="!isLoggedIn" to="/login" class="btn btn-tertiary">
+      <template v-if="isLoggedIn">
+        <div class="header-avatar-logout">
+          <Avatar class="header-avatar" />
+          <button @click="handleLogout" class="btn btn-tertiary">
+            {{ uiText.navigation.logout }}
+          </button>
+        </div>
+      </template>
+      <router-link v-else to="/login" class="btn btn-tertiary">
         {{ uiText.navigation.login }}
       </router-link>
-      <button v-else @click="handleLogout" class="btn btn-tertiary">
-        {{ uiText.navigation.logout }}
-      </button>
     </div>
   </header>
 </template>
@@ -20,6 +25,7 @@ import { useRouter } from 'vue-router';
 import { uiText } from '@/config/uiText.js';
 import logoSrc from '@/assets/images/logo.svg';
 import { isLoggedIn, logout } from '@/store/auth.js';
+import Avatar from '@/components/layout/Avatar.vue';
 
 const router = useRouter();
 
@@ -66,5 +72,15 @@ const handleLogout = () => {
   margin: 0;
   font-size: var(--font-size-h2);
   font-weight: var(--font-weight-bold);
+}
+
+.header-avatar-logout {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.header-avatar {
+  margin-right: var(--space-sm);
 }
 </style>

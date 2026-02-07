@@ -19,10 +19,10 @@ const headColor = ref(colors[Math.floor(Math.random() * colors.length)])
 
 <style scoped>
 .avatar-circle {
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
-  background: var(--light-grey-100);
+  background:  white;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -30,18 +30,18 @@ const headColor = ref(colors[Math.floor(Math.random() * colors.length)])
   box-shadow: var(--shadow-sm);
 }
 .avatar-body {
-  width: 18px;
-  height: 10px;
-  border-radius: 10px 10px 10px 10px / 10px 10px 4px 4px;
+  width: 24px;
+  height: 12px;
+  border-radius: 50%;
   background: var(--light-grey-100);
   position: absolute;
-  bottom: 6px;
+  bottom: 3px;
   left: 50%;
   transform: translateX(-50%);
 }
 .avatar-head {
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   position: absolute;
   top: 6px;
