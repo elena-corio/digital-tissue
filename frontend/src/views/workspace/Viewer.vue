@@ -9,6 +9,7 @@
         <SpeckleViewer 
           ref="viewerRef1"
           :model-url="modelLinks[0]"
+          :key="modelLinks[0]"
           :show-stats="true"
           :verbose="true"
           height="auto"
@@ -25,6 +26,7 @@
         <SpeckleViewer 
           ref="viewerRef2"
           :model-url="modelLinks[1]"
+          :key="modelLinks[1]"
           :show-stats="true"
           :verbose="true"
           height="auto"
@@ -42,16 +44,18 @@ import { ref } from 'vue';
 import SpeckleViewer from '@/components/viewer/SpeckleViewer.vue';
 import ViewerContent from '@/components/viewer/ViewerContent.vue';
 import PromptBar from '@/components/viewer/PromptBar.vue';
-import { viewerModels } from '@/config/modelConfig.js';
 
 const viewerRef1 = ref(null);
 const viewerRef2 = ref(null);
+
+import { viewerModels } from '@/config/modelConfig.js';
+import { computed } from 'vue';
 
 const projectId = viewerModels[0].projectId;
 const inputModelId1 = ref(viewerModels[0].modelId);
 const inputModelId2 = ref(viewerModels[1].modelId);
 
-const modelLinks = ref([
+const modelLinks = computed(() => [
   `https://app.speckle.systems/projects/${projectId}/models/${inputModelId1.value}`,
   `https://app.speckle.systems/projects/${projectId}/models/${inputModelId2.value}`
 ]);
@@ -59,10 +63,6 @@ const modelLinks = ref([
 function updateModelId(index, modelId) {
   if (index === 0) inputModelId1.value = modelId;
   if (index === 1) inputModelId2.value = modelId;
-  modelLinks.value = [
-    `https://app.speckle.systems/projects/${projectId}/models/${inputModelId1.value}`,
-    `https://app.speckle.systems/projects/${projectId}/models/${inputModelId2.value}`
-  ];
 }
 
 const onViewerReady = (viewer) => {
