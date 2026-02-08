@@ -15,7 +15,7 @@
   gap: 12px;
   align-items: center;
   justify-content: center;
-  background: rgba(255,255,255,0.95);
+  background: white;
   border-radius: 12px;
   box-shadow: var(--shadow-lg);
   padding: 12px 8px;

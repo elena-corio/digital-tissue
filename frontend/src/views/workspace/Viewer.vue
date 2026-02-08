@@ -1,12 +1,11 @@
 <template>
   <div class="viewer-page">
-    <PromptBar
-      :modelId1="inputModelId1"
-      :modelId2="inputModelId2"
-      @update="onPromptUpdate"
-    />
     <div class="viewer-grid">
       <ViewerContent>
+        <PromptBar
+          :modelId1="inputModelId1"
+          @update="({ modelId1 }) => updateModelId(0, modelId1)"
+        />
         <SpeckleViewer 
           ref="viewerRef1"
           :model-url="modelLinks[0]"
@@ -19,6 +18,10 @@
         />
       </ViewerContent>
       <ViewerContent>
+        <PromptBar
+          :modelId1="inputModelId2"
+          @update="({ modelId1 }) => updateModelId(1, modelId1)"
+        />
         <SpeckleViewer 
           ref="viewerRef2"
           :model-url="modelLinks[1]"
@@ -53,12 +56,12 @@ const modelLinks = ref([
   `https://app.speckle.systems/projects/${projectId}/models/${inputModelId2.value}`
 ]);
 
-function onPromptUpdate({ modelId1, modelId2 }) {
-  inputModelId1.value = modelId1;
-  inputModelId2.value = modelId2;
+function updateModelId(index, modelId) {
+  if (index === 0) inputModelId1.value = modelId;
+  if (index === 1) inputModelId2.value = modelId;
   modelLinks.value = [
-    `https://app.speckle.systems/projects/${projectId}/models/${modelId1}`,
-    `https://app.speckle.systems/projects/${projectId}/models/${modelId2}`
+    `https://app.speckle.systems/projects/${projectId}/models/${inputModelId1.value}`,
+    `https://app.speckle.systems/projects/${projectId}/models/${inputModelId2.value}`
   ];
 }
 
@@ -91,9 +94,6 @@ const onError = (error) => {
   align-items: center;
   justify-content: flex-start;
 }
-.prompt-bar {
-  width: 100vw;
-}
 .viewer-grid {
   display: flex;
   flex-direction: row;
@@ -112,5 +112,6 @@ const onError = (error) => {
   max-width: 600px;
   height: auto;
   display: flex;
+  flex-direction: column;
 }
 </style>

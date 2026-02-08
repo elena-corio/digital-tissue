@@ -126,12 +126,8 @@ export const uiText = {
     }
   },
   promptBar: {
-    projectIdLabel: 'Project ID:',
-    projectIdPlaceholder: 'Project ID',
-    modelId1Label: 'Model ID 1:',
-    modelId1Placeholder: 'Model ID 1',
-    modelId2Label: 'Model ID 2:',
-    modelId2Placeholder: 'Model ID 2',
+    modelIdLabel: 'Model ID:',
+    modelIdPlaceholder: 'Model ID',
     updateBtn: 'Update'
   },
   common: {

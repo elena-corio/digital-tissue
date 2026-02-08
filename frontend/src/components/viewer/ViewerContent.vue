@@ -33,7 +33,7 @@ import IconButton from './IconButton.vue';
 }
 .button-bar-fixed {
   position: absolute;
-  top: 32px;
+  top: 110px;
   left: 32px;
   z-index: 10;
 }
