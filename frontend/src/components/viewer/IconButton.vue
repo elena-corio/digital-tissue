@@ -23,6 +23,7 @@ defineProps({
   cursor: pointer;
   transition: background 0.2s;
   padding: 0;
+  box-shadow: var(--shadow-md);
 }
 .icon-btn:hover {
   background: #f0f0f0;

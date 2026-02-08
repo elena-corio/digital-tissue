@@ -17,7 +17,7 @@
   justify-content: center;
   background: rgba(255,255,255,0.95);
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: var(--shadow-lg);
   padding: 12px 8px;
   width: 56px;
 }

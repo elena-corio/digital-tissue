@@ -1,5 +1,5 @@
 <template>
-  <div class="viewer-container">
+  <div class="viewer-container aspect">
     <ButtonBar class="button-bar-fixed">
       <IconButton icon="/src/assets/images/icons/dna.svg" @click="$emit('measure')" />
       <IconButton icon="/src/assets/images/icons/network.svg" @click="$emit('section')" />
@@ -15,11 +15,11 @@ import IconButton from './IconButton.vue';
 </script>
 
 <style scoped>
-.viewer-container {
+.viewer-container.aspect {
+  aspect-ratio: 16 / 9;
   width: 100%;
-  height: 100%;
-  min-height: 0;
   min-width: 0;
+  min-height: 0;
   max-width: 100vw;
   max-height: 100vh;
   position: relative;
@@ -29,6 +29,7 @@ import IconButton from './IconButton.vue';
   display: flex;
   align-items: stretch;
   justify-content: stretch;
+  box-shadow: var(--shadow-lg);
 }
 .button-bar-fixed {
   position: absolute;
