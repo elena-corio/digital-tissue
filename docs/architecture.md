@@ -147,3 +147,34 @@ CSS custom properties in `/assets/styles/`:
 | For loops in views | DRY code, easier to maintain |
 | Dynamic asset imports | GitHub Pages base path compatibility |
 | Monorepo | Future backend integration |
+
+## Speckle Viewer Architecture
+
+### Workspace Viewer
+- The Workspace view integrates Speckle model visualization for BIM/geometry data.
+- Two viewer panels, each with a PromptBar for model ID input and a SpeckleViewer component.
+- Project ID is sourced from `/src/config/modelConfig.js` and remains fixed.
+- Model ID defaults from config but can be updated live via the prompt input.
+- When a new model ID is entered and updated, the viewer reloads the model using Vue's reactivity and a key binding.
+
+### Data & Config
+- Speckle authentication token and server URL are set in `.env` as `VITE_SPECKLE_TOKEN` and `VITE_SPECKLE_SERVER`.
+- `modelConfig.js` stores project and model IDs for each viewer panel.
+
+### Component Communication
+- PromptBar emits update events to parent (Viewer.vue) to trigger model reload.
+- Viewer.vue manages model ID state and passes updated URLs to SpeckleViewer.
+- SpeckleViewer re-mounts on URL change, ensuring model reload.
+
+### User Flow
+1. User sees default model loaded from config.
+2. User enters a new model ID in PromptBar and clicks update.
+3. Viewer reloads with new model, keeping project ID fixed.
+
+### Security & Environment
+- Sensitive tokens are never hard-coded; always stored in `.env`.
+- Model/project IDs are mock data in config for easy testing and future backend integration.
+
+### Extensibility
+- Ready for backend integration (monorepo structure).
+- UI text and KPI data are centralized for easy translation and mock data swapping.
