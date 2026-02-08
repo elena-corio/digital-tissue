@@ -3,6 +3,9 @@
     <div class="button-bar-fixed">
       <slot name="toolbar" />
     </div>
+    <div class="prompt-bar-fixed">
+      <slot name="prompt" />
+    </div>
     <slot />
   </div>
 </template>
@@ -30,7 +33,7 @@
 }
 .button-bar-fixed {
   position: absolute;
-  top: 110px;
+  top: 120px;
   left: 32px;
   z-index: 10;
   width: auto;
@@ -39,6 +42,18 @@
 }
 .button-bar-fixed > * {
   pointer-events: auto; /* Buttons are clickable */
+}
+
+.prompt-bar-fixed {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  z-index: 11;
+  width: 340px;
+  pointer-events: none;
+}
+.prompt-bar-fixed > * {
+  pointer-events: auto;
 }
 html, body, #app {
   width: 100vw;

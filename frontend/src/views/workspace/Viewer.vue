@@ -3,16 +3,18 @@
     <div class="viewer-grid">
       <ViewerContent>
         <template #toolbar>
-          <ButtonBar class="button-bar-fixed">
+          <ButtonBar>
             <IconButton icon="ruler.svg" title="Measure" @click="$emit('measure')" />
             <IconButton icon="scissors.svg" title="Section" @click="$emit('section')" />
             <IconButton icon="filter.svg" title="Filter" @click="$emit('filter')" />
           </ButtonBar>
         </template>
-        <PromptBar
-          :modelId1="inputModelId1"
-          @update="({ modelId1 }) => updateModelId(0, modelId1)"
-        />
+        <template #prompt>
+          <PromptBar
+            :modelId1="inputModelId1"
+            @update="({ modelId1 }) => updateModelId(0, modelId1)"
+          />
+        </template>
         <SpeckleViewer 
           ref="viewerRef1"
           :model-url="modelLinks[0]"
@@ -27,16 +29,18 @@
       </ViewerContent>
       <ViewerContent>
         <template #toolbar>
-          <ButtonBar class="button-bar-fixed">
+          <ButtonBar>
             <IconButton icon="ruler.svg" title="Measure" @click="$emit('measure')" />
             <IconButton icon="scissors.svg" title="Section" @click="$emit('section')" />
             <IconButton icon="filter.svg" title="Filter" @click="$emit('filter')" />
           </ButtonBar>
         </template>
-        <PromptBar
-          :modelId1="inputModelId2"
-          @update="({ modelId1 }) => updateModelId(1, modelId1)"
-        />
+        <template #prompt>
+          <PromptBar
+            :modelId1="inputModelId2"
+            @update="({ modelId1 }) => updateModelId(1, modelId1)"
+          />
+        </template>
         <SpeckleViewer 
           ref="viewerRef2"
           :model-url="modelLinks[1]"
