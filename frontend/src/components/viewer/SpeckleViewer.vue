@@ -17,9 +17,13 @@ import {
   Viewer, 
   DefaultViewerParams, 
   SpeckleLoader, 
-  UrlHelper 
+  UrlHelper, 
+  CameraController, 
+  SelectionExtension, 
+  MeasurementsExtension, 
+  SectionTool, 
+  FilteringExtension
 } from '@speckle/viewer';
-import { CameraController, SelectionExtension } from '@speckle/viewer';
 
 const authToken = import.meta.env.VITE_SPECKLE_TOKEN // Get auth token from environment variable
 console.log('Auth token:', authToken)
@@ -52,13 +56,24 @@ const initViewer = async () => {
 
     // Create Viewer instance
     viewer = new Viewer(viewerContainer.value, params);
-    
     // Initialize the viewer
     await viewer.init();
 
-    // Add extensions
-    viewer.createExtension(CameraController); // Mouse/keyboard controls
-    viewer.createExtension(SelectionExtension); // Click to select objects
+    // Add extensions (advanced setup)
+
+    // Create and enable core extensions
+    const cameraController = viewer.createExtension(CameraController);
+    cameraController.enabled = true;
+    const selection = viewer.createExtension(SelectionExtension);
+    selection.enabled = true;
+
+    // Create (but do not enable) advanced extensions for later UI control
+    const measurements = viewer.createExtension(MeasurementsExtension);
+    measurements.enabled = false;
+    const sectionTool = viewer.createExtension(SectionTool);
+    sectionTool.enabled = false;
+    const filtering = viewer.createExtension(FilteringExtension);
+    filtering.enabled = false;
 
     emit('viewer-ready', viewer); // Tell parent viewer is ready
 
@@ -80,15 +95,15 @@ const loadModel = async (url) => {
     if (!viewer) return;
 
     loading.value = true;
-    
+
     // Get resource URLs from the project/model URL
     const urls = await UrlHelper.getResourceUrls(url);
-    
+
     // Load each resource (a model might have multiple files)
     for (const resourceUrl of urls) {
-        // Create a loader for this specific resource
+      // Create a loader for this specific resource
       const loader = new SpeckleLoader(viewer.getWorldTree(), resourceUrl, authToken);
-       // Load and display the geometry
+      // Load and display the geometry
       await viewer.loadObject(loader, true);
     }
 
@@ -131,12 +146,16 @@ defineExpose({
 
 <style scoped>
 .speckle-viewer-container {
+  aspect-ratio: 16 / 9;
   width: 100%;
-  height: v-bind(height);
+  height: 100%;
+  max-width: 100vw;
+  max-height: 100vh;
   position: relative;
   background-color: var(--color-background-alt);
   border-radius: var(--radius-md);
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .loading-overlay,

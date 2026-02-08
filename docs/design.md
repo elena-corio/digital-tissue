@@ -124,3 +124,41 @@ All cards inherit from `.card` base class in `globals.css`:
 - **TitleCard**: Light lila background, centered icon/text, hover darkens background
 - **TextCard**: White background, fuchsia bullet points, centered list
 - **MetricCard**: White background, centered metric name/value, info icon with formula tooltip
+
+## Speckle Viewer Design
+
+### Workspace Viewer
+- The Workspace view features a Speckle model viewer for real-time BIM/geometry visualization.
+- Viewer layout uses two side-by-side panels, each with a PromptBar for model ID input and a SpeckleViewer component.
+- Project ID is fixed from config; model ID defaults from config but can be updated live via the prompt input.
+- When a new model ID is entered and updated, the viewer reloads the model using Vue's reactivity and a key binding.
+
+### PromptBar Component
+- Provides a text input for model ID and an update button.
+- Uses design tokens for spacing, color, and typography.
+- Emits update events to parent to trigger viewer reload.
+
+### SpeckleViewer Component
+- Receives model URL, authentication token, and server URL as props/environment variables.
+- Handles loading, error, and viewer-ready states.
+- Uses a key binding to force re-mount on model URL change.
+
+### .env and Config
+- `.env` stores Speckle token and server URL for secure access.
+- `modelConfig.js` stores project and model IDs for each viewer panel.
+
+### User Flow
+1. User sees default model loaded from config.
+2. User enters a new model ID in PromptBar and clicks update.
+3. Viewer reloads with new model, keeping project ID fixed.
+
+### Design Tokens Used
+- Colors: `--navy-blue-100`, `--light-lila-100`, `--fucsia-100`, etc.
+- Spacing: `--space-md`, `--space-lg`
+- Border radius: `--radius-medium`
+- Shadows: `--shadow-md`, `--shadow-lg`
+- Typography: Inter font, type scale
+
+### Accessibility & Responsiveness
+- PromptBar and ViewerContent are keyboard accessible.
+- Layout adapts for mobile and desktop screens.

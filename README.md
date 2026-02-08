@@ -2,6 +2,11 @@
 
 A living data system for design intelligence. Computational design dashboard built with Vue 3 + Vite.
 
+## TODO
+* The architecture and the styling coherence could be improved. 
+* Found a bug for login input which has grey text but should be blue
+* buttons icons to be improved
+
 ## Features
 
 - **Global Header**: Logo and navigation with Login button
@@ -121,3 +126,38 @@ Base path configuration in `vite.config.js`:
 - `metrics-cards`: Metrics dashboard with KPI cards (active)
 
 For detailed documentation, see `/docs`
+
+## Speckle Viewer Integration
+
+- The Workspace Viewer allows users to view Speckle models by project and model ID.
+- Project ID is set from `/src/config/modelConfig.js`.
+- Model ID defaults from config, but can be updated live via the prompt input in the Viewer.
+- When a new model ID is entered and updated, the viewer reloads the model.
+- Speckle authentication token and server URL are set in `.env` as `VITE_SPECKLE_TOKEN` and `VITE_SPECKLE_SERVER`.
+
+### Example `.env` file
+
+```
+VITE_SPECKLE_TOKEN=<your-token>
+VITE_SPECKLE_SERVER=https://app.speckle.systems
+```
+
+### Example `modelConfig.js`
+
+```
+export const viewerModels = [
+  {
+    projectId: 'dcca94731b',
+    modelId: '12eeb8c918',
+  },
+  {
+    projectId: 'dcca94731b',
+    modelId: '854375e166', 
+  }
+];
+```
+
+### Usage
+- Start the frontend as usual.
+- In Workspace Viewer, enter a new model ID in the prompt and click update to reload the viewer with the new model.
+- Project ID remains fixed from config.

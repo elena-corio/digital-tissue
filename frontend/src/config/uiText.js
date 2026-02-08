@@ -125,6 +125,11 @@ export const uiText = {
       ]
     }
   },
+  promptBar: {
+    modelIdLabel: 'Model ID:',
+    modelIdPlaceholder: 'Model ID',
+    updateBtn: 'Update'
+  },
   common: {
     loading: 'Loading...',
     error: 'An error occurred',
