@@ -80,6 +80,26 @@ a {
 }
 
 /* -------------------------------------------------------
+   FORM INPUT STYLES
+------------------------------------------------------- */
+.form-input {
+  padding: var(--space-sm);
+  border-radius: var(--radius-small);
+  border: 1px solid var(--light-grey-100);
+  font-size: var(--font-size-body);
+  background: var(--light-lila-50);
+  color: var(--navy-blue-50);
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+  height: 2.0rem;
+  min-width: 0;
+}
+.form-input:focus {
+  outline: none;
+  border-color: var(--navy-blue-100);
+}
+
+/* -------------------------------------------------------
    APP ROOT
 ------------------------------------------------------- */
 #app {

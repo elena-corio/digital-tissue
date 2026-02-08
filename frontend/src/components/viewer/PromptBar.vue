@@ -2,7 +2,7 @@
 <div class="prompt-bar">
   <div class="prompt-row">
     <label class="prompt-label">{{ uiText.promptBar.modelIdLabel }}</label>
-    <input class="prompt-input" v-model="modelId" :placeholder="uiText.promptBar.modelIdPlaceholder" />
+    <input class="form-input" v-model="modelId" :placeholder="uiText.promptBar.modelIdPlaceholder" />
   </div>
   <button class="btn btn-tertiary prompt-btn" @click="emitUpdate">{{ uiText.promptBar.updateBtn }}</button>
 </div>
@@ -31,7 +31,6 @@ function emitUpdate() {
   flex-direction: column;
   align-items: flex-start;
   padding: 24px 32px 0 32px;
-  width: 100vw;
 }
 .prompt-row {
   display: flex;
@@ -43,6 +42,11 @@ function emitUpdate() {
 .prompt-btn {
   margin-top: 12px;
   background-color: white;
-  color: var(--navy-blue-100)
+  color: var(--navy-blue-100);
+  box-shadow: var(--shadow-md);
+  transition: background 0.2s;
+}
+.prompt-btn:hover {
+  background:var(--light-grey-50);
 }
 </style>

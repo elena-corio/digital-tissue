@@ -4,9 +4,9 @@
       <h2 class="login-tab-title">{{ uiText.pages.login.authTab }}</h2>
       <form class="login-tab-form" @submit.prevent="handleLogin">
         <label class="login-tab-label">{{ uiText.pages.login.usernameLabel }}</label>
-        <input v-model="username" type="text" class="login-tab-input" :placeholder="uiText.pages.login.usernamePlaceholder" />
+        <input v-model="username" type="text" class="form-input" :placeholder="uiText.pages.login.usernamePlaceholder" />
         <label class="login-tab-label">{{ uiText.pages.login.tokenLabel }}</label>
-        <input v-model="token" type="password" class="login-tab-input" :placeholder="uiText.pages.login.tokenPlaceholder" required />
+        <input v-model="token" type="password" class="form-input" :placeholder="uiText.pages.login.tokenPlaceholder" required />
         <button type="submit" class="login-tab-btn">{{ uiText.pages.login.loginBtn }}</button>
       </form>
     </div>
@@ -36,7 +36,6 @@ const handleLogin = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--light-lila-50);
   margin: 0;
   padding: 0;
   overflow: hidden;
@@ -75,15 +74,6 @@ const handleLogin = () => {
   margin-bottom: 0.25rem;
 }
 
-.login-tab-input {
-  padding: var(--space-sm);
-  border-radius: var(--radius-small);
-  border: 1px solid var(--light-grey-100);
-  font-size: var(--font-size-body);
-  background: var(--light-lila-50);
-  margin-bottom: 0.5rem;
-}
-
 .login-tab-btn {
   margin-top: var(--space-md);
   padding: var(--space-sm) var(--space-lg);
@@ -92,17 +82,12 @@ const handleLogin = () => {
   background: var(--navy-blue-100);
   color: white;
   font-size: var(--font-size-body);
+  width: 100%;
   font-weight: var(--font-weight-semibold);
   cursor: pointer;
   box-shadow: var(--shadow-sm);
 }
 .login-tab-btn:hover {
   background: var(--navy-blue-50);
-}
-
-.login-tab-note {
-  font-size: var(--font-size-small);
-  color: var(--color-info);
-  margin-bottom: 0.5rem;
 }
 </style>
