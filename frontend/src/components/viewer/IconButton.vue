@@ -1,14 +1,19 @@
+
 <template>
   <button class="icon-btn" @click="$emit('click')" :title="title">
-    <img :src="icon" alt="icon" class="icon" />
+    <img :src="iconUrl" alt="icon" class="icon" />
   </button>
 </template>
 
 <script setup>
+import { computed } from 'vue'
 const props = defineProps({
   icon: { type: String, required: true },
   title: { type: String, default: '' }
 })
+const iconUrl = computed(() =>
+  new URL(`../../assets/images/icons/${props.icon}`, import.meta.url).href
+)
 </script>
 
 <style scoped>

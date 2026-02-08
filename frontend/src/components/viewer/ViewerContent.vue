@@ -1,9 +1,9 @@
 <template>
   <div class="viewer-container aspect">
     <ButtonBar class="button-bar-fixed">
-      <IconButton icon="/src/assets/images/icons/ruler.svg" title="Measure" @click="$emit('measure')" />
-      <IconButton icon="/src/assets/images/icons/scissors.svg" title="Section" @click="$emit('section')" />
-      <IconButton icon="/src/assets/images/icons/filter.svg" title="Filter" @click="$emit('filter')" />
+      <IconButton icon="ruler.svg" title="Measure" @click="$emit('measure')" />
+      <IconButton icon="scissors.svg" title="Section" @click="$emit('section')" />
+      <IconButton icon="filter.svg" title="Filter" @click="$emit('filter')" />
     </ButtonBar>
     <slot />
   </div>
