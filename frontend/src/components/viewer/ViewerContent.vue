@@ -1,11 +1,17 @@
 <template>
   <div class="viewer-container">
+    <ButtonBar class="button-bar-fixed">
+      <IconButton icon="/src/assets/images/icons/dna.svg" @click="$emit('measure')" />
+      <IconButton icon="/src/assets/images/icons/network.svg" @click="$emit('section')" />
+      <IconButton icon="/src/assets/images/icons/synapses.svg" @click="$emit('filter')" />
+    </ButtonBar>
     <slot />
   </div>
 </template>
 
 <script setup>
-// No sidebar or buttons for now
+import ButtonBar from './ButtonBar.vue';
+import IconButton from './IconButton.vue';
 </script>
 
 <style scoped>
@@ -23,6 +29,12 @@
   display: flex;
   align-items: stretch;
   justify-content: stretch;
+}
+.button-bar-fixed {
+  position: absolute;
+  top: 32px;
+  left: 32px;
+  z-index: 10;
 }
 html, body, #app {
   width: 100vw;
