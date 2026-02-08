@@ -1,10 +1,6 @@
 <template>
   <div class="prompt-bar">
     <label>
-      {{ uiText.promptBar.projectIdLabel }}
-      <input v-model="projectId" :placeholder="uiText.promptBar.projectIdPlaceholder" />
-    </label>
-    <label>
       {{ uiText.promptBar.modelId1Label }}
       <input v-model="modelId1" :placeholder="uiText.promptBar.modelId1Placeholder" />
     </label>
@@ -21,21 +17,18 @@ import { defineEmits, defineProps, ref, watch } from 'vue';
 import { uiText } from '@/config/uiText.js';
 const emit = defineEmits(['update']);
 const props = defineProps({
-  projectId: String,
   modelId1: String,
   modelId2: String
 });
 
-const projectId = ref(props.projectId);
 const modelId1 = ref(props.modelId1);
 const modelId2 = ref(props.modelId2);
 
-watch(() => props.projectId, val => projectId.value = val);
 watch(() => props.modelId1, val => modelId1.value = val);
 watch(() => props.modelId2, val => modelId2.value = val);
 
 function emitUpdate() {
-  emit('update', { projectId: projectId.value, modelId1: modelId1.value, modelId2: modelId2.value });
+  emit('update', { modelId1: modelId1.value, modelId2: modelId2.value });
 }
 </script>
 

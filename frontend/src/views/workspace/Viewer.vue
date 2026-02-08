@@ -1,7 +1,6 @@
 <template>
   <div class="viewer-page">
     <PromptBar
-      :projectId="inputProjectId"
       :modelId1="inputModelId1"
       :modelId2="inputModelId2"
       @update="onPromptUpdate"
@@ -45,17 +44,16 @@ import { viewerModels } from '@/config/modelConfig.js';
 const viewerRef1 = ref(null);
 const viewerRef2 = ref(null);
 
-const inputProjectId = ref(viewerModels[0].projectId);
+const projectId = viewerModels[0].projectId;
 const inputModelId1 = ref(viewerModels[0].modelId);
 const inputModelId2 = ref(viewerModels[1].modelId);
 
 const modelLinks = ref([
-  `https://app.speckle.systems/projects/${inputProjectId.value}/models/${inputModelId1.value}`,
-  `https://app.speckle.systems/projects/${inputProjectId.value}/models/${inputModelId2.value}`
+  `https://app.speckle.systems/projects/${projectId}/models/${inputModelId1.value}`,
+  `https://app.speckle.systems/projects/${projectId}/models/${inputModelId2.value}`
 ]);
 
-function onPromptUpdate({ projectId, modelId1, modelId2 }) {
-  inputProjectId.value = projectId;
+function onPromptUpdate({ modelId1, modelId2 }) {
   inputModelId1.value = modelId1;
   inputModelId2.value = modelId2;
   modelLinks.value = [
