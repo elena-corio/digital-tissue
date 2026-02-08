@@ -2,6 +2,13 @@
   <div class="viewer-page">
     <div class="viewer-grid">
       <ViewerContent>
+        <template #toolbar>
+          <ButtonBar class="button-bar-fixed">
+            <IconButton icon="ruler.svg" title="Measure" @click="$emit('measure')" />
+            <IconButton icon="scissors.svg" title="Section" @click="$emit('section')" />
+            <IconButton icon="filter.svg" title="Filter" @click="$emit('filter')" />
+          </ButtonBar>
+        </template>
         <PromptBar
           :modelId1="inputModelId1"
           @update="({ modelId1 }) => updateModelId(0, modelId1)"
@@ -19,6 +26,13 @@
         />
       </ViewerContent>
       <ViewerContent>
+        <template #toolbar>
+          <ButtonBar class="button-bar-fixed">
+            <IconButton icon="ruler.svg" title="Measure" @click="$emit('measure')" />
+            <IconButton icon="scissors.svg" title="Section" @click="$emit('section')" />
+            <IconButton icon="filter.svg" title="Filter" @click="$emit('filter')" />
+          </ButtonBar>
+        </template>
         <PromptBar
           :modelId1="inputModelId2"
           @update="({ modelId1 }) => updateModelId(1, modelId1)"
@@ -41,9 +55,12 @@
 
 <script setup>
 import { ref } from 'vue';
+
 import SpeckleViewer from '@/components/viewer/SpeckleViewer.vue';
 import ViewerContent from '@/components/viewer/ViewerContent.vue';
 import PromptBar from '@/components/viewer/PromptBar.vue';
+import ButtonBar from '@/components/viewer/ButtonBar.vue';
+import IconButton from '@/components/viewer/IconButton.vue';
 
 const viewerRef1 = ref(null);
 const viewerRef2 = ref(null);

@@ -1,17 +1,14 @@
 <template>
   <div class="viewer-container aspect">
-    <ButtonBar class="button-bar-fixed">
-      <IconButton icon="ruler.svg" title="Measure" @click="$emit('measure')" />
-      <IconButton icon="scissors.svg" title="Section" @click="$emit('section')" />
-      <IconButton icon="filter.svg" title="Filter" @click="$emit('filter')" />
-    </ButtonBar>
+    <div class="button-bar-fixed">
+      <slot name="toolbar" />
+    </div>
     <slot />
   </div>
 </template>
 
 <script setup>
-import ButtonBar from './ButtonBar.vue';
-import IconButton from './IconButton.vue';
+// Pure layout component: toolbar and content slots
 </script>
 
 <style scoped>
@@ -36,6 +33,12 @@ import IconButton from './IconButton.vue';
   top: 110px;
   left: 32px;
   z-index: 10;
+  width: auto;
+  height: auto;
+  pointer-events: none; /* Do not block viewer below */
+}
+.button-bar-fixed > * {
+  pointer-events: auto; /* Buttons are clickable */
 }
 html, body, #app {
   width: 100vw;
