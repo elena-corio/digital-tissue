@@ -1,12 +1,13 @@
 <template>
-  <button class="icon-btn" @click="$emit('click')">
+  <button class="icon-btn" @click="$emit('click')" :title="title">
     <img :src="icon" alt="icon" class="icon" />
   </button>
 </template>
 
 <script setup>
-defineProps({
-  icon: { type: String, required: true }
+const props = defineProps({
+  icon: { type: String, required: true },
+  title: { type: String, default: '' }
 })
 </script>
 
@@ -22,9 +23,10 @@ defineProps({
   cursor: pointer;
   transition: background 0.2s;
   padding: 0;
+  box-shadow: var(--shadow-md);
 }
 .icon-btn:hover {
-  background:var(--light-grey-100);
+  background:var(--light-grey-50);
 }
 .icon {
   width: 24px;
