@@ -1,6 +1,5 @@
 <template>
   <div class="viewer-page">
-    <h1>Speckle 3D Viewer Test</h1>
     
     <SpeckleViewer 
       ref="viewerRef"
