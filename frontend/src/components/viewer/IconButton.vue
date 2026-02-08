@@ -17,16 +17,14 @@ defineProps({
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #fff;
-  border: 1px solid #eee;
+  background:white;
   border-radius: 8px;
   cursor: pointer;
   transition: background 0.2s;
   padding: 0;
-  box-shadow: var(--shadow-md);
 }
 .icon-btn:hover {
-  background: #f0f0f0;
+  background:var(--light-grey-100);
 }
 .icon {
   width: 24px;
