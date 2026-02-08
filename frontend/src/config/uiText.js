@@ -125,6 +125,15 @@ export const uiText = {
       ]
     }
   },
+  promptBar: {
+    projectIdLabel: 'Project ID:',
+    projectIdPlaceholder: 'Project ID',
+    modelId1Label: 'Model ID 1:',
+    modelId1Placeholder: 'Model ID 1',
+    modelId2Label: 'Model ID 2:',
+    modelId2Placeholder: 'Model ID 2',
+    updateBtn: 'Update'
+  },
   common: {
     loading: 'Loading...',
     error: 'An error occurred',

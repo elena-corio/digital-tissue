@@ -1,5 +1,11 @@
 <template>
   <div class="viewer-page">
+    <PromptBar
+      :projectId="inputProjectId"
+      :modelId1="inputModelId1"
+      :modelId2="inputModelId2"
+      @update="onPromptUpdate"
+    />
     <div class="viewer-grid">
       <ViewerContent>
         <SpeckleViewer 
@@ -30,15 +36,33 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import SpeckleViewer from '@/components/viewer/SpeckleViewer.vue';
 import ViewerContent from '@/components/viewer/ViewerContent.vue';
+import PromptBar from '@/components/viewer/PromptBar.vue';
 import { viewerModels } from '@/config/modelConfig.js';
 
 const viewerRef1 = ref(null);
 const viewerRef2 = ref(null);
 
-const modelLinks = computed(() => viewerModels.map(m => `https://app.speckle.systems/projects/${m.projectId}/models/${m.modelId}`));
+const inputProjectId = ref(viewerModels[0].projectId);
+const inputModelId1 = ref(viewerModels[0].modelId);
+const inputModelId2 = ref(viewerModels[1].modelId);
+
+const modelLinks = ref([
+  `https://app.speckle.systems/projects/${inputProjectId.value}/models/${inputModelId1.value}`,
+  `https://app.speckle.systems/projects/${inputProjectId.value}/models/${inputModelId2.value}`
+]);
+
+function onPromptUpdate({ projectId, modelId1, modelId2 }) {
+  inputProjectId.value = projectId;
+  inputModelId1.value = modelId1;
+  inputModelId2.value = modelId2;
+  modelLinks.value = [
+    `https://app.speckle.systems/projects/${projectId}/models/${modelId1}`,
+    `https://app.speckle.systems/projects/${projectId}/models/${modelId2}`
+  ];
+}
 
 const onViewerReady = (viewer) => {
   console.log('✅ Viewer initialized:', viewer);
@@ -65,8 +89,12 @@ const onError = (error) => {
   overflow-x: hidden;
   overflow-y: hidden;
   display: flex;
-  align-items: flex-start;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+.prompt-bar {
+  width: 100vw;
 }
 .viewer-grid {
   display: flex;
