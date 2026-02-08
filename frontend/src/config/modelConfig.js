@@ -4,10 +4,10 @@
 export const viewerModels = [
   {
     projectId: 'dcca94731b',
-    modelId: '827526cd48',
+    modelId: '12eeb8c918',
   },
   {
     projectId: 'dcca94731b',
-    modelId: '827526cd48', // Replace with second modelId if needed
+    modelId: '854375e166', 
   }
 ];
