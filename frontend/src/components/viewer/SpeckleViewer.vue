@@ -147,11 +147,14 @@ defineExpose({
 <style scoped>
 .speckle-viewer-container {
   width: 100%;
-  height: v-bind(height);
+  height: 100%;
+  max-width: 100vw;
+  max-height: 100vh;
   position: relative;
   background-color: var(--color-background-alt);
   border-radius: var(--radius-md);
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .loading-overlay,

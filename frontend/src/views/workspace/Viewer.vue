@@ -1,22 +1,24 @@
 <template>
   <div class="viewer-page">
-    
-    <SpeckleViewer 
-      ref="viewerRef"
-      model-url="https://app.speckle.systems/projects/dcca94731b/models/827526cd48"
-      :show-stats="true"
-      :verbose="true"
-      height="700px"
-      @viewer-ready="onViewerReady"
-      @model-loaded="onModelLoaded"
-      @error="onError"
-    />
+    <ViewerContent>
+      <SpeckleViewer 
+        ref="viewerRef"
+        model-url="https://app.speckle.systems/projects/dcca94731b/models/827526cd48"
+        :show-stats="true"
+        :verbose="true"
+        height="700px"
+        @viewer-ready="onViewerReady"
+        @model-loaded="onModelLoaded"
+        @error="onError"
+      />
+    </ViewerContent>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
 import SpeckleViewer from '@/components/viewer/SpeckleViewer.vue';
+import ViewerContent from '@/components/viewer/ViewerContent.vue';
 
 const viewerRef = ref(null);
 
@@ -35,11 +37,14 @@ const onError = (error) => {
 
 <style scoped>
 .viewer-page {
-  padding: var(--space-lg, 24px);
+  padding: 0;
+  margin: 0;
+  width: 100vw;
   height: 100vh;
-}
-
-h1 {
-  margin-bottom: var(--space-md, 16px);
+  min-height: 0;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 </style>
