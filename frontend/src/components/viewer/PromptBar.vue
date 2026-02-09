@@ -38,6 +38,16 @@ function emitUpdate() {
   align-items: center;
   gap: 12px;
   width: 100%;
+  white-space: nowrap;
+  overflow-x: auto;
+}
+
+.form-input {
+  min-width: 0;
+  flex: 1 1 0;
+  white-space: nowrap;
+  overflow-x: auto;
+  text-overflow: ellipsis;
 }
 .prompt-btn {
   margin-top: 12px;
