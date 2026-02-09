@@ -2,10 +2,14 @@
 
 A living data system for design intelligence. Computational design dashboard built with Vue 3 + Vite.
 
-## TODO
-* The architecture and the styling coherence could be improved. 
-* Found a bug for login input which has grey text but should be blue
-* buttons icons to be improved
+## BUGS
+- Authentication input text is grey but should be blue
+- Metrics and Baout cards have different sizes
+## NEXT STEPS
+- Update viewer buttons to right color (blue)
+- Add functionalities to viewer buttons
+- Calculate the metrics
+- Add data in the viewer
 
 ## Features
 
