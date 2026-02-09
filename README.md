@@ -6,6 +6,7 @@ A living data system for design intelligence. Computational design dashboard bui
 - Authentication input text is grey but should be blue
 - Metrics and Baout cards have different sizes
 ## NEXT STEPS
+- Update viewer buttons to right color (blue)
 - Add functionalities to viewer buttons
 - Calculate the metrics
 - Add data in the viewer
