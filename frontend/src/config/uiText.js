@@ -107,7 +107,7 @@ export const uiText = {
       ]
     },
     kpi3: {
-      name: 'Monitoring',
+      name: 'Adaptability',
       description: 'Capacity of spaces and systems to transform over time',
       icon: 'adaptable.png',
       metrics: [
