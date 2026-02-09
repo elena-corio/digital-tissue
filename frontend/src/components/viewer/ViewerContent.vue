@@ -1,17 +1,17 @@
 <template>
   <div class="viewer-container aspect">
-    <ButtonBar class="button-bar-fixed">
-      <IconButton icon="ruler.svg" title="Measure" @click="$emit('measure')" />
-      <IconButton icon="scissors.svg" title="Section" @click="$emit('section')" />
-      <IconButton icon="filter.svg" title="Filter" @click="$emit('filter')" />
-    </ButtonBar>
+    <div class="button-bar-fixed">
+      <slot name="toolbar" />
+    </div>
+    <div class="prompt-bar-fixed">
+      <slot name="prompt" />
+    </div>
     <slot />
   </div>
 </template>
 
 <script setup>
-import ButtonBar from './ButtonBar.vue';
-import IconButton from './IconButton.vue';
+// Pure layout component: toolbar and content slots
 </script>
 
 <style scoped>
@@ -33,9 +33,27 @@ import IconButton from './IconButton.vue';
 }
 .button-bar-fixed {
   position: absolute;
-  top: 110px;
+  top: 120px;
   left: 32px;
   z-index: 10;
+  width: auto;
+  height: auto;
+  pointer-events: none; /* Do not block viewer below */
+}
+.button-bar-fixed > * {
+  pointer-events: auto; /* Buttons are clickable */
+}
+
+.prompt-bar-fixed {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  z-index: 11;
+  width: 340px;
+  pointer-events: none;
+}
+.prompt-bar-fixed > * {
+  pointer-events: auto;
 }
 html, body, #app {
   width: 100vw;

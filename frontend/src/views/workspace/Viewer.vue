@@ -2,10 +2,19 @@
   <div class="viewer-page">
     <div class="viewer-grid">
       <ViewerContent>
-        <PromptBar
-          :modelId1="inputModelId1"
-          @update="({ modelId1 }) => updateModelId(0, modelId1)"
-        />
+        <template #toolbar>
+          <ButtonBar>
+            <IconButton icon="ruler.svg" title="Measure" @click="$emit('measure')" />
+            <IconButton icon="scissors.svg" title="Section" @click="$emit('section')" />
+            <IconButton icon="filter.svg" title="Filter" @click="$emit('filter')" />
+          </ButtonBar>
+        </template>
+        <template #prompt>
+          <PromptBar
+            :modelId1="inputModelId1"
+            @update="({ modelId1 }) => updateModelId(0, modelId1)"
+          />
+        </template>
         <SpeckleViewer 
           ref="viewerRef1"
           :model-url="modelLinks[0]"
@@ -19,10 +28,19 @@
         />
       </ViewerContent>
       <ViewerContent>
-        <PromptBar
-          :modelId1="inputModelId2"
-          @update="({ modelId1 }) => updateModelId(1, modelId1)"
-        />
+        <template #toolbar>
+          <ButtonBar>
+            <IconButton icon="ruler.svg" title="Measure" @click="$emit('measure')" />
+            <IconButton icon="scissors.svg" title="Section" @click="$emit('section')" />
+            <IconButton icon="filter.svg" title="Filter" @click="$emit('filter')" />
+          </ButtonBar>
+        </template>
+        <template #prompt>
+          <PromptBar
+            :modelId1="inputModelId2"
+            @update="({ modelId1 }) => updateModelId(1, modelId1)"
+          />
+        </template>
         <SpeckleViewer 
           ref="viewerRef2"
           :model-url="modelLinks[1]"
@@ -41,9 +59,12 @@
 
 <script setup>
 import { ref } from 'vue';
+
 import SpeckleViewer from '@/components/viewer/SpeckleViewer.vue';
 import ViewerContent from '@/components/viewer/ViewerContent.vue';
 import PromptBar from '@/components/viewer/PromptBar.vue';
+import ButtonBar from '@/components/viewer/ButtonBar.vue';
+import IconButton from '@/components/viewer/IconButton.vue';
 
 const viewerRef1 = ref(null);
 const viewerRef2 = ref(null);

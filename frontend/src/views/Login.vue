@@ -18,15 +18,18 @@ import { ref } from 'vue'
 import { uiText } from '@/config/uiText.js'
 import { useRouter } from 'vue-router'
 import { login } from '@/store/auth.js'
+import { useRoute } from 'vue-router'
 
 const username = ref('')
 const token = ref('')
 
 const router = useRouter()
+const route = useRoute()
 
 const handleLogin = () => {
   login(token.value, username.value)
-  router.push({ name: 'homepage' })
+  const redirect = route.query.redirect || '/'
+  router.push(redirect)
 }
 </script>
 
