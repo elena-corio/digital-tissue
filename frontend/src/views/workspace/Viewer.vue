@@ -122,7 +122,7 @@ const onError = (error) => {
   align-items: flex-start;
   justify-content: center;
   margin-top: 48px;
-  margin-right: 56px;
+  margin-right: 72px;
   margin-left: 12px;
   width: 96vw;
 }
