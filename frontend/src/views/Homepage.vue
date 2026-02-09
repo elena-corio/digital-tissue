@@ -30,7 +30,7 @@ function handleGetStarted() {
   if (isLoggedIn.value) {
     router.push('/workspace')
   } else {
-    router.push('/login')
+    router.push({ path: '/login', query: { redirect: '/workspace' } })
   }
 }
 </script>
