@@ -31,14 +31,6 @@ import TextCard from '@/components/cards/TextCard.vue';
 </script>
 
 <style scoped>
-.page-container {
-  padding: var(--space-lg);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: calc(100vh - 80px);
-}
-
 .about-content {
   width: 100%;
   max-width: 1400px;
