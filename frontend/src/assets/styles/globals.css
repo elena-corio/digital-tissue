@@ -16,18 +16,13 @@
   padding: 0;
 }
 
-html, body {
-  height: 100%;
-}
-
-body {
-  font-family: var(--font-family-base);
-  font-size: var(--font-size-body);
-  line-height: var(--line-height-normal);
-  background: white;
-  color: var(--navy-blue-100);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+html, body, #app {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden !important;
+  box-sizing: border-box;
 }
 
 img, picture, video, canvas, svg {
@@ -41,11 +36,25 @@ button {
   line-height: var(--line-height-tight);
 }
 
+body {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-normal);
+  color: var(--navy-blue-100);
+}
+
+h1 {
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  color: var(--navy-blue-100);
+}
+
 h2 {
   font-size: var(--font-size-h2);
   font-weight: var(--font-weight-medium);
   line-height: var(--line-height-normal);
-   color: var(--navy-blue-50);
+  color: var(--navy-blue-50);
 }
 
 h3 {
@@ -53,30 +62,7 @@ h3 {
   /* Base element styles */
   font-weight: var(--font-weight-semibold);
   line-height: var(--line-height-normal);
-}
-
-/* Utility classes */
-.text-body {
-  font-size: var(--font-size-body);
-  font-weight: var(--font-weight-regular);
-}
-
-.text-small {
-  font-size: var(--font-size-small);
-  color: var(--navy-blue-100);
-}
-
-.text-caption {
-  font-size: var(--font-size-caption);
-  color: var(--navy-blue-100);
-}
-
-.text-bold {
-  font-weight: var(--font-weight-bold);
-}
-
-.text-medium {
-  font-weight: var(--font-weight-medium);
+  color: var(--navy-blue-50);
 }
 
 /* -------------------------------------------------------
@@ -88,7 +74,7 @@ h3 {
   border: 1px solid var(--light-grey-100);
   font-size: var(--font-size-body);
   background: var(--light-lila-50);
-  color: var(--navy-blue-50);
+  color: var(--navy-blue-100);
   box-sizing: border-box;
   transition: border-color 0.2s;
   height: 2.0rem;
@@ -96,9 +82,14 @@ h3 {
 }
 .form-input:focus {
   outline: none;
-  border-color: var(--navy-blue-100);
+  border-color: var(--navy-blue-50);
 }
 
+input::placeholder {
+  color: var(--navy-blue-50);
+  font-size: var(--font-size-small);
+  opacity: 1; /* Ensures full color */
+}
 /* -------------------------------------------------------
    APP ROOT
 ------------------------------------------------------- */
