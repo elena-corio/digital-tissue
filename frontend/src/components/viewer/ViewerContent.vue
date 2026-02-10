@@ -55,12 +55,5 @@
 .prompt-bar-fixed > * {
   pointer-events: auto;
 }
-html, body, #app {
-  width: 100vw;
-  height: 100vh;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  box-sizing: border-box;
-}
+
 </style>
