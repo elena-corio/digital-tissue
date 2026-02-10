@@ -3,34 +3,7 @@
 ------------------------------------------------------- */
 @import './colors.css';
 @import './typography.css';
-
-/* -------------------------------------------------------
-   DESIGN TOKENS
-------------------------------------------------------- */
-:root {
-  /* Border radius tokens */
-  --radius-small: 4px;
-  --radius-medium: 8px;
-  --radius-large: 12px;
-}
-
-:root {
-  /* Spacing scale - minimal set */
-  --space-sm: 0.5rem;    /* 8px - tight spacing */
-  --space-md: 1rem;      /* 16px - standard */
-  --space-lg: 2rem;      /* 32px - sections */
-  --space-xl: 3rem;      /* 48px - large sections */
-}
-
-:root {
-  /* Shadow tokens */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.15);
-  --shadow-xl: 0 8px 16px rgba(0, 0, 0, 0.2);
-  --shadow-around-md: 0 0 8px rgba(0, 0, 0, 0.1);
-  --shadow-around-lg: 0 0 16px rgba(0, 0, 0, 0.15);
-}
+@import './variables.css';
 
 /* -------------------------------------------------------
    CSS RESET (minimal, modern)
@@ -59,24 +32,51 @@ body {
 
 img, picture, video, canvas, svg {
   display: block;
-  max-width: 100%;
 }
 
 button {
   font-family: inherit;
   cursor: pointer;
-  border: none;
-  background: none;
+  /* Headings */
+  line-height: var(--line-height-tight);
 }
 
-input, textarea, select {
-  font-family: inherit;
-  font-size: inherit;
+h2 {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-normal);
+   color: var(--navy-blue-50);
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+h3 {
+  font-size: var(--font-size-h3);
+  /* Base element styles */
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-normal);
+}
+
+/* Utility classes */
+.text-body {
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-regular);
+}
+
+.text-small {
+  font-size: var(--font-size-small);
+  color: var(--navy-blue-100);
+}
+
+.text-caption {
+  font-size: var(--font-size-caption);
+  color: var(--navy-blue-100);
+}
+
+.text-bold {
+  font-weight: var(--font-weight-bold);
+}
+
+.text-medium {
+  font-weight: var(--font-weight-medium);
 }
 
 /* -------------------------------------------------------
