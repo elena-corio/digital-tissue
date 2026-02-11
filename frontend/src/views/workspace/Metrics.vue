@@ -1,27 +1,35 @@
 <template>
   <div class="metrics-container">
-    <div class="metrics-content">
-    <h1 class="metrics-title">{{ uiText.pages.workspace.metrics.title }}</h1>
-    <div class="kpis-grid">
-      <div 
-        v-for="(kpi, key) in uiText.kpis" 
-        :key="key"
-        class="kpi-column"
-      >
+    <div class="grid-content">
+      <h1 class="grid-title">{{ uiText.pages.workspace.metrics.title }}</h1>
+      
+      <div class="cards-grid">
+        <!-- First row: Title cards -->
         <TitleCard 
+          v-for="(kpi, key) in uiText.kpis"
+          :key="`title-${key}`"
           :name="kpi.name"
           :description="kpi.description"
           :icon="kpi.icon"
         />
-        <MetricCard
-          v-for="(metric, index) in kpi.metrics"
-          :key="index"
-          :name="metric.name"
-          :value="metric.value"
-          :benchmark="metric.benchmark"
-          :formula="metric.formula"
+        <!-- Second row: Metric cards (metrics[0]) -->
+        <MetricCard 
+          v-for="(kpi, key) in uiText.kpis"
+          :key="`metric0-${key}`"
+          :name="kpi.metrics[0].name"
+          :value="kpi.metrics[0].value"
+          :benchmark="kpi.metrics[0].benchmark"
+          :formula="kpi.metrics[0].formula"
         />
-      </div>
+        <!-- Third row: Metric cards (metrics[1]) -->
+        <MetricCard 
+          v-for="(kpi, key) in uiText.kpis"
+          :key="`metric1-${key}`"
+          :name="kpi.metrics[1].name"
+          :value="kpi.metrics[1].value"
+          :benchmark="kpi.metrics[1].benchmark"
+          :formula="kpi.metrics[1].formula"
+        />
       </div>
     </div>
   </div>
@@ -35,30 +43,12 @@ import MetricCard from '@/components/cards/MetricCard.vue';
 
 <style scoped>
 .metrics-container {
-  padding: var(--space-lg);
-}
-
-.metrics-content {
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: var(--space-xl);
-}
-
-.kpis-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-lg);
-  max-width: 1400px;
+  min-height: calc(100vh - 280px);
+  width: 100%;
+  max-width: 1280px;
   margin: 0 auto;
-}
-
-.kpi-column {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
 }
 </style>

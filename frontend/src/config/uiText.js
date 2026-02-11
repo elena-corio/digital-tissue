@@ -120,7 +120,7 @@ export const uiText = {
       description: 'Environmental performance and long-term resilience',
       icon: 'sustainable.svg',
       metrics: [
-        {name: 'Daylight and Ventilation Potential', formula: 'window_area / net_floor_area', benchmark: '0.20', value: '0.30'},
+        {name: 'Daylight Potential', formula: 'window_area / net_floor_area', benchmark: '0.20', value: '0.30'},
         {name: 'Carbon Efficiency Index', formula: '500 / (embodied_carbon / gross_floor_area)', benchmark: '1.00', value: '0.75'},
       ]
     }

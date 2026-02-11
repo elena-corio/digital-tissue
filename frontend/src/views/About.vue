@@ -1,7 +1,7 @@
 <template>
   <div class="page-container">
-    <div class="about-content">
-      <h1 class="about-title">{{ uiText.pages.about.title }}</h1>
+    <div class="grid-content">
+      <h1 class="grid-title">{{ uiText.pages.about.title }}</h1>
       
       <div class="cards-grid">
         <!-- First row: Title cards -->
@@ -30,25 +30,4 @@ import TitleCard from '@/components/cards/TitleCard.vue';
 import TextCard from '@/components/cards/TextCard.vue';
 </script>
 
-<style scoped>
-.about-content {
-  width: 100%;
-  max-width: 1400px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-xl);
-}
 
-.about-title {
-  text-align: center;
-  margin: 0;
-}
-
-.cards-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-lg);
-  width: 100%;
-}
-</style>

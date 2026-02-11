@@ -1,13 +1,13 @@
 <template>
   <div class="card metric-card">
+    <div class="info-icon" @mouseenter="showTooltip = true" @mouseleave="showTooltip = false">
+      <span>ⓘ</span>
+      <div v-if="showTooltip" class="tooltip">
+        <strong>Formula:</strong><br>{{ formula }}
+      </div>
+    </div>
     <div class="metric-header">
       <span class="metric-name">{{ name }}</span>
-      <div class="info-icon" @mouseenter="showTooltip = true" @mouseleave="showTooltip = false">
-        <span>ⓘ</span>
-        <div v-if="showTooltip" class="tooltip">
-          <strong>Formula:</strong><br>{{ formula }}
-        </div>
-      </div>
     </div>
     <div class="metric-value">
       <span class="value" :class="isAboveBenchmark ? 'value-above' : 'value-below'">{{ value }}</span>
@@ -37,7 +37,9 @@ const isAboveBenchmark = computed(() => {
 
 <style scoped>
 .metric-card {
-  padding: var(--space-md);
+  padding: var(--space-lg);
+  width: 100%;
+  position: relative;
 }
 
 .metric-header {
@@ -56,11 +58,16 @@ const isAboveBenchmark = computed(() => {
 
 .info-icon {
   position: absolute;
-  right: 0;
+  top: 5px;
+  right: 5px;
   cursor: help;
   color: var(--navy-blue-50);
   font-size: var(--font-size-body);
   user-select: none;
+  padding: var(--space-xs);
+  z-index: 20;
+  background: white;
+  border-radius: 50%;
 }
 
 .info-icon:hover {
@@ -107,6 +114,5 @@ const isAboveBenchmark = computed(() => {
 .benchmark {
   font-size: var(--font-size-h3);
   font-weight: var(--font-weight-medium);
-  color: var(--navy-blue-50);
 }
 </style>
