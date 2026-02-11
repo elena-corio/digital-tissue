@@ -29,6 +29,7 @@ const iconUrl = computed(() =>
   transition: background 0.2s;
   padding: 0;
   box-shadow: var(--shadow-md);
+  border: none;
 }
 .icon-btn:hover {
   background:var(--light-grey-50);
