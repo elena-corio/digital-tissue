@@ -3,7 +3,7 @@
     <div class="header-container">
       <router-link to="/" class="header-logo-wrapper">
         <img :src="logoSrc" alt="Digital Tissue Logo" class="header-logo" />
-        <h1 class="header-title">{{ uiText.app.title }}</h1>
+        <h2 class="header-title">{{ uiText.app.title }}</h2>
       </router-link>
       <template v-if="isLoggedIn">
         <div class="header-avatar-logout">
@@ -72,6 +72,7 @@ const handleLogout = () => {
   margin: 0;
   font-size: var(--font-size-h2);
   font-weight: var(--font-weight-bold);
+  color: white
 }
 
 .header-avatar-logout {
