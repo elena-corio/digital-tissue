@@ -16,7 +16,7 @@ async function fetchMetricValues() {
     if (!response.ok) throw new Error('Failed to fetch metrics')
     const values = await response.json()
     // Merge values into metrics by name
-    Object.values(kpis.value).forEach(kpi => {
+    kpis.value.forEach(kpi => {
       kpi.metrics.forEach(metric => {
         if (values.hasOwnProperty(metric.name)) {
           metric.value = values[metric.name]
@@ -28,6 +28,10 @@ async function fetchMetricValues() {
   } finally {
     loading.value = false
   }
+}
+
+function formatValue(val) {
+  return val !== undefined ? Number(val).toFixed(2) : 'N/A'
 }
 
 onMounted(fetchMetricValues)
@@ -51,7 +55,7 @@ onMounted(fetchMetricValues)
           v-for="(kpi, idx) in kpis" 
           :key="`metric0-${idx}`"
           :name="kpi.metrics[0].name"
-          :value="kpi.metrics[0].value"
+          :value="formatValue(kpi.metrics[0].value)"
           :benchmark="kpi.metrics[0].benchmark"
           :formula="kpi.metrics[0].formula"
         />
@@ -60,7 +64,7 @@ onMounted(fetchMetricValues)
           v-for="(kpi, idx) in kpis" 
           :key="`metric1-${idx}`"
           :name="kpi.metrics[1].name"
-          :value="kpi.metrics[1].value"
+          :value="formatValue(kpi.metrics[1].value)"
           :benchmark="kpi.metrics[1].benchmark"
           :formula="kpi.metrics[1].formula"
         />
@@ -68,12 +72,6 @@ onMounted(fetchMetricValues)
     </div>
   </div>
 </template>
-
-<script setup>
-import { uiText } from '@/config/uiText.js';
-import TitleCard from '@/components/cards/TitleCard.vue';
-import MetricCard from '@/components/cards/MetricCard.vue';
-</script>
 
 <style scoped>
 .metrics-container {
@@ -83,5 +81,6 @@ import MetricCard from '@/components/cards/MetricCard.vue';
   min-height: calc(100vh - 280px);
   width: 100%;
   max-width: 1280px;
+  margin: 0 auto;
 }
 </style>
