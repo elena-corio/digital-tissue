@@ -1,3 +1,28 @@
+# Local Development
+
+
+## How to Start the Backend
+
+1. Open a terminal and navigate to the backend folder:
+	```sh
+	cd backend
+	```
+2. Install dependencies (if not already done):
+	```sh
+	pip install -r requirements.txt
+	```
+3. Start the backend server by running:
+	```sh
+	python main.py
+	```
+
+This will launch the backend at http://127.0.0.1:8000 (or http://localhost:8000).
+
+Alternatively, you can still use uvicorn directly if you prefer:
+	```sh
+	uvicorn main:app --reload
+	```
+
 # Backend Structure (Hexagonal Architecture)
 
 - `domain/` – Core business logic, entities, value objects

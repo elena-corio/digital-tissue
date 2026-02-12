@@ -8,7 +8,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",                # Local development
-        "https://elena-corio.github.io/digital-tissue"       # Production frontend URL
+        "https://elena-corio.github.io"       # Production frontend URL
     ],
     allow_credentials=True,
     allow_methods=["*"],
