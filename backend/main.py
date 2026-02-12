@@ -1,13 +1,15 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from adapters.api.metrics import router as metrics_router
 
 app = FastAPI(title="Digital Tissue Backend")
 
-from fastapi.middleware.cors import CORSMiddleware
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # or ["*"] for all origins (not recommended for production)
+    allow_origins=[
+        "http://localhost:5173",                # Local development
+        "https://your-frontend.github.io"       # Production frontend URL
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

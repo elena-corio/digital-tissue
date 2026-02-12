@@ -12,7 +12,7 @@ async function fetchMetricValues() {
   loading.value = true
   error.value = null
   try {
-    const response = await fetch('http://localhost:8000/metrics')
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/metrics`)
     if (!response.ok) throw new Error('Failed to fetch metrics')
     const values = await response.json()
     // Merge values into metrics by name
