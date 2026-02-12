@@ -19,16 +19,10 @@ See the individual README files in the frontend and backend folders for setup an
 - [frontend/README.md](frontend/README.md)
 - [backend/README.md](backend/README.md)
 
-## Backend Setup (FastAPI)
+## Data flow
 
-Step-by-step plan:
-
-1. Create a backend folder with a hexagonal architecture structure.
-2. Set up a Python virtual environment and install FastAPI and Uvicorn.
-3. Create a basic FastAPI app with a /metrics endpoint.
-4. (Optional) Connect the backend to your OpenAPI contract in api/openapi.yaml.
-5. Show how to run the backend locally.
-6. (Optional) Add integration with Specklepy and webhooks.
+The backend (FastAPI) exposes the /metrics API endpoint, which returns mock metric results (Python).
+The frontend (Vue.js) fetches data from /metrics and displays the results.
 
 ## Documentation
 

@@ -45,8 +45,8 @@ export const uiText = {
       loginBtn: 'Login'
     }
   },
-  cards: {
-    card1: {
+  cards: [
+    {
       name: 'Framework',
       description: 'Genetic code - How the system grows and evolves',
       icon: 'dna.svg',
@@ -56,7 +56,7 @@ export const uiText = {
         'Standard protocols'
       ]
     },
-    card2: {
+    {
       name: 'Automation',
       description: 'Synapses - How models and tools exchange meaning',
       icon: 'synapses.svg',
@@ -66,7 +66,7 @@ export const uiText = {
         'Version control'
       ]
     },
-    card3: {
+    {
       name: 'Monitoring',
       description: 'Metabolism - How the system stays healthy and responsive',
       icon: 'metabolism.png',
@@ -76,7 +76,7 @@ export const uiText = {
         'Feedback loops'
       ]
     },
-    card4: {
+    {
       name: 'Coordination',
       description: 'Network - How different parts of the system work together',
       icon: 'network.svg',
@@ -86,45 +86,45 @@ export const uiText = {
         'Collaboration tools'
       ]
     }
-  },
-   kpis: {
-    kpi1: {
+  ],
+   kpis: [
+    {
       name: 'Liveability',
       description: 'Capacity to support everyday wellbeing',
       icon: 'livable.svg',
       metrics: [
-      {name: 'Service Density Index', formula: 'service_area / users_count', benchmark: '0.05', value: '0.04'},
-      {name: 'Urban Green Space Index', formula: 'residents_close_to_green_count / residents_count', benchmark: '1.00', value: '0.80'},
+      {name: 'Service Density Index', formula: 'service_area / users_count', benchmark: '0.05'},
+      {name: 'Urban Green Space Index', formula: 'residents_close_to_green_count / residents_count', benchmark: '1.00'},
       ]
     },
-    kpi2: {
+    {
       name: 'Interconnection',
       description: 'Connections between people and programs',
       icon: 'synapses.svg',
       metrics: [
-      {name: 'Program Diversity Index', formula: '1 - (program_frequencies / program_units_count ²)', benchmark: '0.70', value: '0.75'},
-      {name: 'Circulation Efficiency Index', formula: '1 - (circulation_area / program_area)', benchmark: '0.70', value: '0.65'},
+      {name: 'Program Diversity Index', formula: '1 - (program_frequencies / program_units_count ²)', benchmark: '0.70'},
+      {name: 'Circulation Efficiency Index', formula: '1 - (circulation_area / program_area)', benchmark: '0.70'},
       ]
     },
-    kpi3: {
+    {
       name: 'Adaptability',
       description: 'Capacity of spaces and systems to transform over time',
       icon: 'adaptable.png',
       metrics: [
-        {name: 'Mixed-Use Area Ratio', formula: 'hybrid_program_area / program_area', benchmark: '0.40', value: '0.30'},
-        {name: 'Column-free Area Ratio', formula: 'net_floor_area / gross_floor_area', benchmark: '0.70', value: '0.80'},
+        {name: 'Mixed-Use Area Ratio', formula: 'hybrid_program_area / program_area', benchmark: '0.40'},
+        {name: 'Column-free Area Ratio', formula: 'net_floor_area / gross_floor_area', benchmark: '0.70'},
       ]
     },
-    kpi4: {
+    {
       name: 'Sustainability',
       description: 'Environmental performance and long-term resilience',
       icon: 'sustainable.svg',
       metrics: [
-        {name: 'Daylight Potential', formula: 'window_area / net_floor_area', benchmark: '0.20', value: '0.30'},
-        {name: 'Carbon Efficiency Index', formula: '500 / (embodied_carbon / gross_floor_area)', benchmark: '1.00', value: '0.75'},
+        {name: 'Daylight Potential', formula: 'window_area / net_floor_area', benchmark: '0.20'},
+        {name: 'Carbon Efficiency Index', formula: '500 / (embodied_carbon / gross_floor_area)', benchmark: '1.00'},
       ]
     }
-  },
+  ],
   promptBar: {
     modelIdLabel: 'Model ID:',
     modelIdPlaceholder: 'Model ID',
