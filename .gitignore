@@ -30,4 +30,4 @@ dist-ssr
 .env.*.local
 
 # Python CPython cache
-.cpython
+*.cpython-*.pyc
