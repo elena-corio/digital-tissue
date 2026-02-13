@@ -9,7 +9,7 @@
 	```
 2. Install dependencies (if not already done):
 	```sh
-	pip install -r requirements.txt
+	uv sync --active
 	```
 3. Start the backend server by running:
 	```sh
