@@ -94,7 +94,7 @@ export const uiText = {
       icon: 'livable.svg',
       metrics: [
       {name: 'Daylight Potential', formula: 'window_area / net_floor_area'},
-      {name: 'Urban Green Space Index', formula: 'residents_close_to_green_count / residents_count'},
+      {name: 'Green Space Index', formula: 'residents_close_to_green_count / residents_count'},
       ]
     },
     {
