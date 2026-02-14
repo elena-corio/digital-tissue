@@ -9,11 +9,16 @@
 	```
 2. Install dependencies (if not already done):
 	```sh
-	pip install -r requirements.txt
+	uv sync --active
 	```
 3. Start the backend server by running:
 	```sh
 	python main.py
+	```
+4. Run tests
+	```sh
+	cd backend
+	..\.venv\Scripts\pytest
 	```
 
 This will launch the backend at http://127.0.0.1:8000 (or http://localhost:8000).
