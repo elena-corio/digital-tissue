@@ -18,3 +18,7 @@ class MaterialType(str, Enum):
     GLASS = "Glass"
     PLASTIC = "Plastic"
     COMPOSITE = "Composite"
+    
+class SectionType(str, Enum):
+    BOX = "Box"
+    CIRCLE = "Circle"

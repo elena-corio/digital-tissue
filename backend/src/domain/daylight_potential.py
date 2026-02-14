@@ -24,20 +24,24 @@ def calculate_daylight_potential_per_level(facades: list[Facade], units: list[Un
     for level in levels:
         level_units = list(filter(lambda unit: unit.level == level, units))
         level_facades = list(filter(lambda facade: facade.level == level, facades))
+        if not level_units:  # Skip levels with no units
+            continue
         value_per_level[level] = calculate_daylight_potential(level_facades, level_units)
     return value_per_level
 
 
-def calculate_daylight_potential_per_cluster(facades: list[Facade], units: list[Unit], clusters: list[int]) -> dict[int, float]:
+def calculate_daylight_potential_per_cluster(facades: list[Facade], units: list[Unit], clusters: list[str]) -> dict[str, float]:
     value_per_cluster = {}
     for cluster in clusters:
         cluster_units = list(filter(lambda unit: unit.cluster_id == cluster, units))
         cluster_facades = list(filter(lambda facade: facade.cluster_id == cluster, facades))
+        if not cluster_units:  # Skip clusters with no units
+            continue
         value_per_cluster[cluster] = calculate_daylight_potential(cluster_facades, cluster_units)
     return value_per_cluster
 
 
-def get_daylight_potential_metric(facades: list[Facade], units: list[Unit], levels: list[int], clusters: list[int]) -> MetricResult:
+def get_daylight_potential_metric(facades: list[Facade], units: list[Unit], levels: list[int], clusters: list[str]) -> MetricResult:
     """
     Calculate the overall daylight potential metric for a list of facades and units.
     """

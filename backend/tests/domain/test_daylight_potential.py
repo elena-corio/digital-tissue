@@ -152,10 +152,10 @@ def test_calculate_daylight_potential_per_level_empty_level(mock_facades, mock_u
     levels = [1, 2, 3]  # Level 3 doesn't exist
     result = calculate_daylight_potential_per_level(mock_facades, mock_units, levels)
     
-    assert len(result) == 3
+    assert len(result) == 2  # Only levels 1 and 2, level 3 is skipped
     assert result[1] == pytest.approx(20.0 / 100.0, rel=1e-6)
     assert result[2] == pytest.approx(15.0 / 80.0, rel=1e-6)
-    assert result[3] == 0.0  # No unit area on level 3
+    assert 3 not in result  # Level 3 is not in the result
 
 
 def test_calculate_daylight_potential_only_glass_facades(mock_units):
@@ -193,7 +193,7 @@ def test_calculate_daylight_potential_per_cluster_empty_cluster(mock_facades, mo
     clusters = ["1", "2", "3"]  # Cluster 3 doesn't exist
     result = calculate_daylight_potential_per_cluster(mock_facades, mock_units, clusters)
     
-    assert len(result) == 3
+    assert len(result) == 2  # Only clusters 1 and 2, cluster 3 is skipped
     assert result["1"] == pytest.approx(20.0 / 100.0, rel=1e-6)
     assert result["2"] == pytest.approx(15.0 / 80.0, rel=1e-6)
-    assert result["3"] == 0.0  # No unit area in cluster 3
+    assert "3" not in result  # Cluster 3 is not in the result
