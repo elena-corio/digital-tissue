@@ -1,26 +1,17 @@
 from dataclasses import dataclass
-import string
-
 
 @dataclass
-class TabledataPoint:
-    label: string
-    item: enumerate
-    count: float
-    quantity: float
-    unit: string
-    
-@dataclass
-class ChartDataPoint:
-    label: string
-    values: dict[enumerate, float]
+class ChartData:
+    label: str
+    values: dict[str, float]
     
 @dataclass
 class MetricResult:
-    name: string
-    final_value: float
+    name: str
     benchmark: float
-    chart: ChartDataPoint
-    table: TabledataPoint
-    viewer_filter: enumerate
-    action: string
+    total_value: float
+    value_per_level: dict[int, float]
+    value_per_cluster: dict[int, float]
+    chart_data: ChartData
+    viewer_filter: str
+    action: str
