@@ -22,16 +22,28 @@ app.include_router(metrics_router)
 
 
 @app.on_event("startup")
-async def startup_event():
-    """Run on app startup - calculate metrics if cache is empty"""
+def startup_event():
+    """Run on app startup - calculate metrics if cache is empty (local only)"""
+    import os
     from infrastructure.metrics_storage import list_all_metrics
     
-    # Option C: Calculate metrics only if cache is empty
-    if not list_all_metrics():
-        print("No cached metrics found. Calculating metrics...")
-        run_application()
+    # Only attempt calculation in local development, not on Render
+    if os.getenv("RENDER") is None:  # Not running on Render
+        if not list_all_metrics():
+            print("No cached metrics found. Calculating metrics...")
+            try:
+                run_application()
+                print("Metrics calculated successfully on startup")
+            except Exception as e:
+                print(f"Warning: Failed to calculate metrics on startup: {e}")
+        else:
+            print("Metrics cache found. Skipping calculation.")
     else:
-        print("Metrics cache found. Skipping calculation.")
+        # On Render, just load from existing metrics_cache
+        if list_all_metrics():
+            print("Metrics cache found on Render.")
+        else:
+            print("WARNING: No metrics cache found on Render. Deploy metrics first.")
 
 
 if __name__ == "__main__":
