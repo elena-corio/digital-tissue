@@ -1,7 +1,6 @@
 from unittest.mock import patch
 import pytest
 from domain.metrics.green_space_index import (
-    is_green_program,
     get_level_gap_to_nearest_green,
     get_distance_range_entry,
     calculate_green_space_index,
@@ -19,12 +18,6 @@ from domain.model.elements import OpenSpace, Unit
 def mock_rulebook():
     """Create mock rulebook data."""
     return {
-        "program_types": {
-            "Living": {"is_green": False},
-            "Working": {"is_green": False},
-            "Community": {"is_green": True},
-            "Circulation": {"is_green": False}
-        },
         "green_index_score": [
             {"max_gap": 5, "score": 1.0},
             {"max_gap": 10, "score": 0.8},
@@ -52,13 +45,6 @@ def mock_green_units():
         Unit(cluster_id="1", speckle_type="unit", geometry=None, name=ProgramType.COMMUNITY, area=50.0, level=0),
         Unit(cluster_id="2", speckle_type="unit", geometry=None, name=ProgramType.COMMUNITY, area=60.0, level=4),
     ]
-
-
-def test_is_green_program(mock_rulebook):
-    """Test checking if a program type is green."""
-    assert is_green_program(ProgramType.COMMUNITY, mock_rulebook) is True
-    assert is_green_program(ProgramType.LIVING, mock_rulebook) is False
-    assert is_green_program(ProgramType.WORKING, mock_rulebook) is False
 
 
 def test_get_level_gap_to_nearest_green(mock_residential_units, mock_green_units):
@@ -195,15 +181,16 @@ def test_calculate_distance_range_percentages_single_range():
     assert percentages["<5"] == 100.0
 
 
-@patch("domain.green_space_index.METRICS", {
-    "Green Space Index": {"benchmark": 0.8, "action": "Increase proximity to green spaces"}
+@patch("domain.metrics.green_space_index.METRICS", {
+    "green_space_index": {
+      "name": "Green Space Index",
+      "benchmark": 0.80,
+      "label": "Distance to green space",
+      "formula": "residents_close_to_green_count / residents_count",
+      "action": "The distance to green space needs to be decreased to meet the benchmark."
+    }
 })
-@patch("domain.green_space_index.RULEBOOK", {
-    "program_types": {
-        "Living": {"is_green": False},
-        "Working": {"is_green": False},
-        "Community": {"is_green": True},
-    },
+@patch("domain.metrics.green_space_index.RULEBOOK", {
     "green_index_score": [
         {"max_gap": 5, "score": 1.0},
         {"max_gap": 10, "score": 0.8},
@@ -230,16 +217,22 @@ def test_get_green_space_index_metric():
     assert result.total_value == 1.0  # Only LIVING has gap 1
     assert len(result.value_per_level) == 1  # Only level 1 has residential
     assert len(result.value_per_cluster) == 1  # Only cluster 1 has residential
-    assert result.action == "Increase proximity to green spaces"
+    assert result.action == "The distance to green space needs to be decreased to meet the benchmark."
     assert result.chart_data is not None
-    assert result.chart_data.label == "Green Space Distance Distribution"
+    assert result.chart_data.label == "Distance to green space"
     assert result.chart_data.values.get("<5") == 100.0  # All units in 0-5 range
 
 
-@patch("domain.green_space_index.METRICS", {
-    "Green Space Index": {"benchmark": 0.8, "action": "Test"}
+@patch("domain.metrics.green_space_index.METRICS", {
+    "green_space_index": {
+      "name": "Green Space Index",
+      "benchmark": 0.80,
+      "label": "Distance to green space",
+      "formula": "residents_close_to_green_count / residents_count",
+      "action": "The distance to green space needs to be decreased to meet the benchmark."
+    },
 })
-@patch("domain.green_space_index.RULEBOOK", {
+@patch("domain.metrics.green_space_index.RULEBOOK", {
     "program_types": {
         "Living": {"is_green": False},
         "Community": {"is_green": True},

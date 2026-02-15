@@ -6,10 +6,6 @@ from domain.model.elements import OpenSpace, Unit
 RULEBOOK = load_rulebook()
 METRICS = load_metrics()
 
-def is_green_program(program: ProgramType, rulebook: dict) -> bool:
-    return rulebook["program_types"][program.value]["is_green"]
-
-
 def get_level_gap_to_nearest_green(res_unit: Unit, green_spaces: list[OpenSpace]) -> float:
     """
     Calculate the level gap to the nearest green space.

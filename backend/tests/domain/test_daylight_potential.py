@@ -125,10 +125,12 @@ def test_calculate_daylight_potential_per_cluster(mock_facades, mock_units):
     assert result["2"] == pytest.approx(15.0 / 80.0, rel=1e-6)
 
 
-@patch("domain.daylight_potential.METRICS", {
-    "Daylight Potential": {
+@patch("domain.metrics.daylight_potential.METRICS", {
+    "daylight_potential": {
+        "name": "Daylight Potential",
         "benchmark": 0.15,
-        "action": "Increase window area"
+        "action": "Increase window area",
+        "formula": "window_area / net_floor_area"
     }
 })
 def test_get_daylight_potential_metric(mock_facades, mock_units):
