@@ -92,37 +92,29 @@ export const uiText = {
       name: 'Liveability',
       description: 'Capacity to support everyday wellbeing',
       icon: 'livable.svg',
-      metrics: [
-      {name: 'Daylight Potential', formula: 'window_area / net_floor_area'},
-      {name: 'Green Space Index', formula: 'residents_close_to_green_count / residents_count'},
-      ]
+      metrics: ['daylight_potential',
+                'green_space_index']
     },
     {
       name: 'Interconnection',
       description: 'Connections between people and programs',
       icon: 'synapses.svg',
-      metrics: [
-      {name: 'Program Diversity Index', formula: '1 - (program_frequencies / program_units_count ²)'},
-      {name: 'Circulation Efficiency', formula: '1 - (circulation_area / total_area)'},
-      ]
+      metrics: ['program_diversity_index',
+                'circulation_efficiency']
     },
     {
       name: 'Adaptability',
       description: 'Capacity of spaces and systems to transform over time',
       icon: 'adaptable.png',
-      metrics: [
-        {name: 'Occupancy Efficiency', formula: 'usable_area / total_area'},
-        {name: 'Net-Floor-Area Ratio', formula: 'net_floor_area / gross_floor_area'},
-      ]
+      metrics: ['occupancy_efficiency',
+                'net_floor_area_ratio']
     },
     {
       name: 'Sustainability',
       description: 'Environmental performance and long-term resilience',
       icon: 'sustainable.svg',
-      metrics: [
-        {name: 'Surface-to-Volume Ratio', formula: 'envelope_area / building_volume'},
-        {name: 'Carbon Efficiency', formula: '500 / (embodied_carbon / gross_floor_area)'},
-      ]
+      metrics: ['envelope_efficiency',
+                'carbon_efficiency']
     }
   ],
   promptBar: {
