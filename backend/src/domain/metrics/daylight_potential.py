@@ -1,7 +1,7 @@
 from domain.loader import load_metrics
 from domain.model.enum import MaterialType
 from domain.model.metric import MetricResult
-from domain.model.model import Facade, Unit
+from domain.model.elements import Facade, Unit
 
 
 METRICS = load_metrics()
@@ -50,13 +50,15 @@ def get_daylight_potential_metric(facades: list[Facade], units: list[Unit], leve
     total_value = calculate_daylight_potential(facades, units)
     
     
-    name = "Daylight Potential"
+    metric = "daylight_potential"
     
     return MetricResult(
-        name=name,  
-        benchmark=METRICS[name]["benchmark"],
+        name=METRICS[metric]["name"],  
+        benchmark=METRICS[metric]["benchmark"],
         total_value=total_value,
         value_per_level=value_per_level,
         value_per_cluster=value_per_cluster,
-        action=METRICS[name]["action"],
-        chart_data=None)  # Chart data can be added as needed
+        chart_data=None,
+        action=METRICS[metric]["action"],
+        formula=METRICS[metric]["formula"]
+        ) 

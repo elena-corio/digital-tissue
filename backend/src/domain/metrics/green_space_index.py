@@ -123,13 +123,15 @@ def get_green_space_index_metric(units: list[Unit], green_spaces: list[OpenSpace
     value_per_cluster = calculate_green_space_index_per_cluster(residential_units, green_spaces, clusters, RULEBOOK)
     distance_range_percentages = calculate_distance_range_percentages(distance_range_counts)
     
-    name = "Green Space Index"
+    metric = "green_space_index"
     
     return MetricResult(
-        name=name,  
-        benchmark=METRICS[name]["benchmark"],
+        name=METRICS[metric]["name"],  
+        benchmark=METRICS[metric]["benchmark"],
         total_value=total_value,
         value_per_level=value_per_level,
         value_per_cluster=value_per_cluster,
-        chart_data=ChartData(label="Green Space Distance Distribution", values=distance_range_percentages),
-        action=METRICS[name]["action"])
+        chart_data=ChartData(label=METRICS[metric]["label"], values=distance_range_percentages),
+        action=METRICS[metric]["action"],
+        formula=METRICS[metric]["formula"]
+        )
