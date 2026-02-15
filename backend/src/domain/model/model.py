@@ -1,14 +1,18 @@
 from dataclasses import dataclass
-import string
+from typing import Any
 
 from domain.model.enum import MaterialType, ProgramType, SectionType
 
 @dataclass
 class ModelElement:
-    cluster_id: string
-    speckle_type: string
-    geometry: any
+    cluster_id: str
+    speckle_type: str
+    geometry: Any
     level: int
+    
+@dataclass
+class OpenSpace(ModelElement):
+    area: float
 
 @dataclass
 class Unit (ModelElement):
