@@ -1,30 +1,26 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import uiText from '@/config/uiText.js'
-import TitleCard from '@/components/cards/TitleCard.vue';
-import MetricCard from '@/components/cards/MetricCard.vue';
+import { fetchLatestMetrics, matchMetricsToKPIs } from '@/services/metricsApi.js'
+import TitleCard from '@/components/cards/TitleCard.vue'
+import MetricCard from '@/components/cards/MetricCard.vue'
 
 const kpis = ref(JSON.parse(JSON.stringify(uiText.kpis)))
 const loading = ref(true)
 const error = ref(null)
 
-async function fetchMetricValues() {
+async function loadMetrics() {
   loading.value = true
   error.value = null
   try {
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/metrics`)
-    if (!response.ok) throw new Error('Failed to fetch metrics')
-    const values = await response.json()
-    // Merge values into metrics by name
-    kpis.value.forEach(kpi => {
-      kpi.metrics.forEach(metric => {
-        if (values.hasOwnProperty(metric.name)) {
-          metric.value = values[metric.name]
-        }
-      })
-    })
+    // Fetch latest metrics from backend
+    const backendMetrics = await fetchLatestMetrics()
+    
+    // Match backend metrics to KPIs from uiText
+    kpis.value = matchMetricsToKPIs(kpis.value, backendMetrics)
   } catch (e) {
     error.value = e.message
+    console.error('Failed to load metrics:', e)
   } finally {
     loading.value = false
   }
@@ -34,7 +30,7 @@ function formatValue(val) {
   return val !== undefined ? Number(val).toFixed(2) : 'N/A'
 }
 
-onMounted(fetchMetricValues)
+onMounted(loadMetrics)
 </script>
 
 <template>
@@ -56,7 +52,7 @@ onMounted(fetchMetricValues)
           :key="`metric0-${idx}`"
           :name="kpi.metrics[0].name"
           :value="formatValue(kpi.metrics[0].value)"
-          :benchmark="kpi.metrics[0].benchmark"
+          :benchmark="formatValue(kpi.metrics[0].benchmark)"
           :formula="kpi.metrics[0].formula"
         />
         <!-- Third row: Metric cards (metrics[1]) -->
@@ -65,7 +61,7 @@ onMounted(fetchMetricValues)
           :key="`metric1-${idx}`"
           :name="kpi.metrics[1].name"
           :value="formatValue(kpi.metrics[1].value)"
-          :benchmark="kpi.metrics[1].benchmark"
+          :benchmark="formatValue(kpi.metrics[1].benchmark)"
           :formula="kpi.metrics[1].formula"
         />
       </div>
