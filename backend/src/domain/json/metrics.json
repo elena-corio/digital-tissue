@@ -1,12 +1,11 @@
 {
-  "metrics": {
     "Daylight Potential": {
       "benchmark": 0.25,
       "label": "Glazed facade area",
       "action": "The windows area to be increased to meet the benchmark."
     },
     "Green Space Index": {
-      "benchmark": 1.00,
+      "benchmark": 0.80,
       "label": "Access to green space",
       "action": "The distance to green space needs to be decreased to meet the benchmark."
     },
@@ -40,8 +39,4 @@
       "label": "Carbon by material",
       "action": "The embodied carbon needs to be decreased to meet the benchmark."
     }
-  },
-  "formatting": {
-    "decimal_places": 2
-  }
 }
