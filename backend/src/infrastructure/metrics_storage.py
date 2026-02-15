@@ -3,8 +3,10 @@ from pathlib import Path
 from datetime import datetime
 from typing import Optional, Dict, Any
 
-
-METRICS_CACHE_DIR = Path(__file__).parent.parent.parent / "metrics_cache"
+# Get the backend directory (parent of src/)
+# When running: python src/main.py from /backend, __file__ will resolve correctly
+BACKEND_DIR = Path(__file__).parent.parent.parent.resolve()
+METRICS_CACHE_DIR = BACKEND_DIR / "metrics_cache"
 
 
 def ensure_cache_dir():
@@ -28,7 +30,19 @@ def save_metrics(version_id: str, metrics: Dict[str, Any]) -> None:
     serializable_metrics = {}
     for key, metric in metrics.items():
         if hasattr(metric, '__dict__'):
-            serializable_metrics[key] = metric.__dict__
+            metric_dict = metric.__dict__.copy()
+            
+            # Round total_value to 2 decimals
+            if 'total_value' in metric_dict and metric_dict['total_value'] is not None:
+                metric_dict['total_value'] = round(metric_dict['total_value'], 2)
+            
+            # Round value_per_cluster to 2 decimals
+            if 'value_per_cluster' in metric_dict and isinstance(metric_dict['value_per_cluster'], dict):
+                metric_dict['value_per_cluster'] = {
+                    k: round(v, 2) for k, v in metric_dict['value_per_cluster'].items()
+                }
+            
+            serializable_metrics[key] = metric_dict
         else:
             serializable_metrics[key] = metric
     
@@ -68,9 +82,15 @@ def list_all_metrics() -> Dict[str, str]:
     ensure_cache_dir()
     
     versions = {}
-    for file_path in METRICS_CACHE_DIR.glob("*.json"):
-        version_id = file_path.stem
-        versions[version_id] = str(file_path)
+    try:
+        all_files = list(METRICS_CACHE_DIR.iterdir())
+        json_files = [f for f in all_files if f.suffix == ".json"]
+        
+        for file_path in json_files:
+            version_id = file_path.stem
+            versions[version_id] = str(file_path)
+    except Exception as e:
+        print(f"Error listing metrics: {e}")
     
     return versions
 
@@ -93,3 +113,34 @@ def delete_metrics(version_id: str) -> bool:
         return True
     
     return False
+
+
+def get_latest_metrics() -> Optional[Dict[str, Any]]:
+    """
+    Retrieve the most recently saved metrics.
+    
+    Returns:
+        Dictionary of metrics or None if no metrics found
+    """
+    ensure_cache_dir()
+    
+    # List all JSON files
+    try:
+        all_files = list(METRICS_CACHE_DIR.iterdir())
+        json_files = [f for f in all_files if f.suffix == ".json"]
+    except Exception as e:
+        print(f"Error listing metrics: {e}")
+        return None
+    
+    if not json_files:
+        return None
+    
+    # Get the most recently modified file
+    latest_file = max(json_files, key=lambda f: f.stat().st_mtime)
+    
+    try:
+        with open(latest_file, "r") as f:
+            return json.load(f)
+    except Exception as e:
+        print(f"Error loading metrics: {e}")
+        return None
