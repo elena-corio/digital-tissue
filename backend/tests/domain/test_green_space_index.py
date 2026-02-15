@@ -12,7 +12,7 @@ from domain.green_space_index import (
     get_green_space_index_metric
 )
 from domain.model.enum import ProgramType
-from domain.model.model import Unit
+from domain.model.elements import OpenSpace, Unit
 
 
 @pytest.fixture
@@ -25,7 +25,7 @@ def mock_rulebook():
             "Community": {"is_green": True},
             "Circulation": {"is_green": False}
         },
-        "distance_score": [
+        "green_index_score": [
             {"max_gap": 5, "score": 1.0},
             {"max_gap": 10, "score": 0.8},
             {"max_gap": 20, "score": 0.5},
@@ -204,7 +204,7 @@ def test_calculate_distance_range_percentages_single_range():
         "Working": {"is_green": False},
         "Community": {"is_green": True},
     },
-    "distance_score": [
+    "green_index_score": [
         {"max_gap": 5, "score": 1.0},
         {"max_gap": 10, "score": 0.8},
         {"max_gap": 20, "score": 0.5},
@@ -219,10 +219,11 @@ def test_get_green_space_index_metric():
         Unit(cluster_id="1", speckle_type="unit", geometry=None, name=ProgramType.COMMUNITY, area=50.0, level=0),
         Unit(cluster_id="2", speckle_type="unit", geometry=None, name=ProgramType.WORKING, area=80.0, level=5),
     ]
+    green_spaces = [OpenSpace(cluster_id="1", speckle_type="open_space", geometry=None, area=50.0, level=0)]
     levels = [1, 5]
     clusters = ["1", "2"]
     
-    result = get_green_space_index_metric(units, levels, clusters)
+    result = get_green_space_index_metric(units, green_spaces, levels, clusters)
     
     assert result.name == "Green Space Index"
     assert result.benchmark == 0.8
@@ -243,7 +244,7 @@ def test_get_green_space_index_metric():
         "Living": {"is_green": False},
         "Community": {"is_green": True},
     },
-    "distance_score": [
+    "green_index_score": [
         {"max_gap": 5, "score": 1.0},
         {"max_gap": 100, "score": 0.0}
     ]
@@ -253,10 +254,11 @@ def test_get_green_space_index_metric_no_residential():
     units = [
         Unit(cluster_id="1", speckle_type="unit", geometry=None, name=ProgramType.COMMUNITY, area=50.0, level=0),
     ]
+    green_spaces = [OpenSpace(cluster_id="1", speckle_type="open_space", geometry=None, area=100.0, level=0)]
     levels = [1]
     clusters = ["1"]
     
-    result = get_green_space_index_metric(units, levels, clusters)
+    result = get_green_space_index_metric(units, green_spaces, levels, clusters)
     
     assert result.value_per_level == {}
     assert result.value_per_cluster == {"1": 1.0}  # COMMUNITY is residential and green with gap=0, score=1.0
