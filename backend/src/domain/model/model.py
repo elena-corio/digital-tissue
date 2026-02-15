@@ -5,7 +5,7 @@ from domain.model.elements import Column, Core, Facade, OpenSpace, Slabs, Unit
 
 @dataclass
 class Model:
-    #facades: list[Facade]
+    facades: list[Facade]
     #slabs: list[Slabs]
     #cores: list[Core]
     #columns: list[Column]
