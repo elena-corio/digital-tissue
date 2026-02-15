@@ -12,5 +12,6 @@ class MetricResult:
     total_value: float
     value_per_level: dict[int, float]
     value_per_cluster: dict[str, float]
-    action: str
     chart_data: ChartData
+    formula: str
+    action: str
