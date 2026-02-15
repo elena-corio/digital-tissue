@@ -40,7 +40,7 @@ def calculate_green_space_index(res_unit: Unit, green_units: list[Unit], ruleboo
     entry = get_distance_range_entry(level_gap, rulebook)
     
     if entry:
-        range_key = f"0-{entry['max_gap']}"
+        range_key = f"<{entry['max_gap']}"
         return (entry["score"], range_key)
     
     return (0.0, "unknown")
@@ -59,7 +59,7 @@ def calculate_green_space_index_avg(res_units: list[Unit], green_units: list[Uni
     
     # Initialize all ranges to 0
     for entry in rulebook["distance_score"]:
-        range_key = f"0-{entry['max_gap']}"
+        range_key = f"<{entry['max_gap']}"
         range_counts[range_key] = 0
     
     # Single pass: calculate score and count
@@ -132,5 +132,5 @@ def get_green_space_index_metric(units: list[Unit], levels: list[int], clusters:
         total_value=total_value,
         value_per_level=value_per_level,
         value_per_cluster=value_per_cluster,
-        chart_data=ChartData(label="Green Space Index Distribution", values=distance_range_percentages),
+        chart_data=ChartData(label="Green Space Distance Distribution", values=distance_range_percentages),
         action=METRICS[name]["action"])

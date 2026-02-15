@@ -58,6 +58,5 @@ def get_daylight_potential_metric(facades: list[Facade], units: list[Unit], leve
         total_value=total_value,
         value_per_level=value_per_level,
         value_per_cluster=value_per_cluster,
-        chart_data=None,  # Chart data can be added as needed
-        viewer_filter="facades",
-        action=METRICS[name]["action"])
+        action=METRICS[name]["action"],
+        chart_data=None)  # Chart data can be added as needed

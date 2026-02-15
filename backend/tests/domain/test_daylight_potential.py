@@ -143,7 +143,6 @@ def test_get_daylight_potential_metric(mock_facades, mock_units):
     assert result.total_value == pytest.approx(35.0 / 180.0, rel=1e-6)
     assert len(result.value_per_level) == 2
     assert len(result.value_per_cluster) == 2
-    assert result.viewer_filter == "facades"
     assert result.action == "Increase window area"
 
 

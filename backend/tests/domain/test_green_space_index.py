@@ -96,7 +96,7 @@ def test_calculate_green_space_index(mock_residential_units, mock_green_units, m
     # Unit at level 1, green at level 0 -> gap = 1 -> score = 1.0, range = "0-5"
     score, range_key = calculate_green_space_index(mock_residential_units[0], mock_green_units, mock_rulebook)
     assert score == 1.0
-    assert range_key == "0-5"
+    assert range_key == "<5"
 
 
 def test_calculate_green_space_index_different_ranges(mock_green_units, mock_rulebook):
@@ -106,7 +106,7 @@ def test_calculate_green_space_index_different_ranges(mock_green_units, mock_rul
     unit = Unit(cluster_id="1", speckle_type="unit", geometry=None, name=ProgramType.LIVING, area=100.0, level=12)
     score, range_key = calculate_green_space_index(unit, mock_green_units, mock_rulebook)
     assert score == 0.8
-    assert range_key == "0-10"
+    assert range_key == "<10"
 
 
 def test_calculate_green_space_index_avg(mock_residential_units, mock_green_units, mock_rulebook):
@@ -118,8 +118,8 @@ def test_calculate_green_space_index_avg(mock_residential_units, mock_green_unit
     # Unit 2: gap=1 (0-5, score=1.0)
     # Average = 3.0 / 3 = 1.0
     assert avg_score == 1.0
-    assert range_counts["0-5"] == 3
-    assert range_counts["0-10"] == 0
+    assert range_counts["<5"] == 3
+    assert range_counts["<10"] == 0
 
 
 def test_calculate_green_space_index_avg_empty_list(mock_green_units, mock_rulebook):
@@ -170,29 +170,29 @@ def test_calculate_green_space_index_per_cluster_empty_cluster(mock_residential_
 
 def test_calculate_distance_range_percentages():
     """Test conversion of counts to percentages."""
-    range_counts = {"0-5": 10, "0-10": 5, "0-20": 5}
+    range_counts = {"<5": 10, "<10": 5, "<20": 5}
     percentages = calculate_distance_range_percentages(range_counts)
     
-    assert percentages["0-5"] == 50.0
-    assert percentages["0-10"] == 25.0
-    assert percentages["0-20"] == 25.0
+    assert percentages["<5"] == 50.0
+    assert percentages["<10"] == 25.0
+    assert percentages["<20"] == 25.0
 
 
 def test_calculate_distance_range_percentages_empty():
     """Test percentages with zero counts."""
-    range_counts = {"0-5": 0, "0-10": 0}
+    range_counts = {"<5": 0, "<10": 0}
     percentages = calculate_distance_range_percentages(range_counts)
     
-    assert percentages["0-5"] == 0.0
-    assert percentages["0-10"] == 0.0
+    assert percentages["<5"] == 0.0
+    assert percentages["<10"] == 0.0
 
 
 def test_calculate_distance_range_percentages_single_range():
     """Test percentages with single range."""
-    range_counts = {"0-5": 20}
+    range_counts = {"<5": 20}
     percentages = calculate_distance_range_percentages(range_counts)
     
-    assert percentages["0-5"] == 100.0
+    assert percentages["<5"] == 100.0
 
 
 @patch("domain.green_space_index.METRICS", {
@@ -229,8 +229,10 @@ def test_get_green_space_index_metric():
     assert result.total_value == 1.0  # Only LIVING has gap 1
     assert len(result.value_per_level) == 1  # Only level 1 has residential
     assert len(result.value_per_cluster) == 1  # Only cluster 1 has residential
-    assert isinstance(result.count_per_distance_range, dict)
     assert result.action == "Increase proximity to green spaces"
+    assert result.chart_data is not None
+    assert result.chart_data.label == "Green Space Distance Distribution"
+    assert result.chart_data.values.get("<5") == 100.0  # All units in 0-5 range
 
 
 @patch("domain.green_space_index.METRICS", {
