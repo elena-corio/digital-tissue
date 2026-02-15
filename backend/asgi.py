@@ -1,11 +1,14 @@
-"""Entry point for Render.com deployment"""
+"""ASGI entry point for Render.com deployment"""
 import sys
 from pathlib import Path
 
 # Add src directory to Python path
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
-from main import app
+# Now import main (which is in src/ directory)
+import main
+
+app = main.app
 
 if __name__ == "__main__":
     import uvicorn
