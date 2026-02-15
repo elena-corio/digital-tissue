@@ -1,6 +1,6 @@
 from unittest.mock import patch
 import pytest
-from domain.green_space_index import (
+from domain.metrics.green_space_index import (
     is_green_program,
     get_level_gap_to_nearest_green,
     get_distance_range_entry,

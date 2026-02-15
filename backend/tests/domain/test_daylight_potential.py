@@ -1,13 +1,13 @@
 from unittest.mock import patch
 import pytest
-from domain.daylight_potential import (
+from domain.metrics.daylight_potential import (
     calculate_daylight_potential,
     calculate_daylight_potential_per_level,
     calculate_daylight_potential_per_cluster,
     get_daylight_potential_metric
 )
 from domain.model.enum import MaterialType, ProgramType
-from domain.model.model import Facade, Unit
+from domain.model.elements import Facade, Unit
 
 
 @pytest.fixture
