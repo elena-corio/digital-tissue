@@ -2,7 +2,7 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from adapters.api.metrics import router as metrics_router
-from application.speckle_workflow import run_application
+from application.metrics_workflow import run_application
 
 app = FastAPI(title="Digital Tissue Backend")
 

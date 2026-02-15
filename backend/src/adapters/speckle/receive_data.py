@@ -2,28 +2,19 @@ from dataclasses import dataclass
 from typing import Any, Dict
 from specklepy.api import operations
 
-@dataclass
-class Item:
-    geometry: Any
-    properties: Dict[str, Any]
-
-@dataclass
-class Collection:
-    name: str
-    items: list[Item]
+from adapters.speckle.mappers import speckle_to_open_space, speckle_to_unit
+from domain.model.model import Model
     
 def receive_data(version, transport):
     # Receive the full data tree
-    obj = operations.receive(version.referenced_object, transport)
-
-
-    print(f"Project: {obj.name}")
-    for element in obj.elements:
-        for child in element.elements:
-            #print(f"    Child: {child.speckle_type}")
-            #print(f"        Properties: {child.properties}")
-            if child.speckle_type == "Objects.Geometry.Mesh":
-                #print(child.__dict__.keys())
-                print(f"        Points: {child.area}")
-               
-            
+    data = operations.receive(version.referenced_object, transport)
+    units_collection = next(collection for collection in data.elements if collection.name == "UNITS")
+    units = [speckle_to_unit(u) for u in units_collection.elements]
+    
+    open_spaces_collection = next(collection for collection in data.elements if collection.name == "OPEN_SPACES")
+    green_spaces = [speckle_to_open_space(gs) for gs in open_spaces_collection.elements]
+    
+    levels = set(unit.level for unit in units)
+    clusters = set(unit.cluster_id for unit in units)
+    
+    return Model(units=units, open_spaces=green_spaces, levels=list(levels), clusters=list(clusters))
