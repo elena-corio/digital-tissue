@@ -11,7 +11,6 @@ class MetricResult:
     benchmark: float
     total_value: float
     value_per_level: dict[int, float]
-    value_per_cluster: dict[int, float]
-    chart_data: ChartData
-    viewer_filter: str
+    value_per_cluster: dict[str, float]
     action: str
+    chart_data: ChartData

@@ -18,10 +18,10 @@
     "Plastic": { "is_transparent": false, "density": 1200, "carbon_factor": 2.5 },
     "Composite": { "is_transparent": false,"density": 1800, "carbon_factor": 4.0 }
   },
-  "distance_score": [ 
-    {"max_level_gap": 3, "score": 1.0}, 
-    {"max_distance": 9, "score": 0.8}, 
-    {"max_distance": 18, "score": 0.5}, 
-    {"max_distance": 36, "score": 0.2}, 
-    {"max_distance": 100, "score": 0.0} ]
+  "green_index_score": [ 
+    {"max_gap": 5, "score": 1.0}, 
+    {"max_gap": 20, "score": 0.8}, 
+    {"max_gap": 35, "score": 0.5}, 
+    {"max_gap": 50, "score": 0.2}, 
+    {"max_gap": 100, "score": 0.0} ]
 }

@@ -1,6 +1,6 @@
 from domain.loader import load_metrics, load_rulebook
 from domain.model.enum import ProgramType
-from domain.model.metric import MetricResult
+from domain.model.metric import ChartData, MetricResult
 from domain.model.model import Unit
 
 RULEBOOK = load_rulebook()
@@ -9,51 +9,120 @@ METRICS = load_metrics()
 def is_green_program(program: ProgramType, rulebook: dict) -> bool:
     return rulebook["program_types"][program.value]["is_green"]
 
-def calculate_green_space_index(res_unit: Unit, green_units: list[Unit]) -> float:
+
+def get_level_gap_to_nearest_green(res_unit: Unit, green_units: list[Unit]) -> float:
     """
-    Calculate the green space index based on the level gap to the nearest green space.
+    Calculate the level gap to the nearest green space.
     """
-    level_gap = 100.0
-    for green_unit in green_units:
-        new_level_gap = abs(res_unit.level - green_unit.level)
-        if new_level_gap < level_gap:
-            level_gap = new_level_gap
+    if not green_units:
+        return 100.0
     
-    return level_gap
+    return min(abs(res_unit.level - green_unit.level) for green_unit in green_units)
 
 
-def calculate_green_space_index_avg(res_units: list[Unit], green_units: list[Unit]) -> float:
+def get_distance_range_entry(level_gap: float, rulebook: dict) -> dict:
+    """
+    Find the distance range entry for the level gap using max_gap.
+    Returns the rulebook entry dict or None if not found.
+    """
+    for entry in rulebook["distance_score"]:
+        if level_gap <= entry["max_gap"]:
+            return entry
+    return None
+
+
+def calculate_green_space_index(res_unit: Unit, green_units: list[Unit], rulebook: dict) -> tuple[float, str]:
+    """
+    Calculate green space index score and distance range for a single unit.
+    Returns (score, range_key).
+    """
+    level_gap = get_level_gap_to_nearest_green(res_unit, green_units)
+    entry = get_distance_range_entry(level_gap, rulebook)
+    
+    if entry:
+        range_key = f"0-{entry['max_gap']}"
+        return (entry["score"], range_key)
+    
+    return (0.0, "unknown")
+
+
+def calculate_green_space_index_avg(res_units: list[Unit], green_units: list[Unit], rulebook: dict) -> tuple[float, dict[str, int]]:
+    """
+    Calculate average green space index and count units per distance range in single pass.
+    Returns (average_score, count_per_range).
+    """
     if not res_units:
-        return 0.0
-    return sum(calculate_green_space_index(res_unit, green_units) for res_unit in res_units) / len(res_units)
+        return (0.0, {})
+    
+    total_score = 0.0
+    range_counts = {}
+    
+    # Initialize all ranges to 0
+    for entry in rulebook["distance_score"]:
+        range_key = f"0-{entry['max_gap']}"
+        range_counts[range_key] = 0
+    
+    # Single pass: calculate score and count
+    for res_unit in res_units:
+        score, range_key = calculate_green_space_index(res_unit, green_units, rulebook)
+        total_score += score
+        if range_key in range_counts:
+            range_counts[range_key] += 1
+    
+    avg_score = total_score / len(res_units)
+    return (avg_score, range_counts)
 
-def calculate_green_space_index_per_level(res_units: list[Unit], green_units: list[Unit], levels: list[int]) -> dict[int, float]:
+
+def calculate_green_space_index_per_level(res_units: list[Unit], green_units: list[Unit], levels: list[int], rulebook: dict) -> dict[int, float]:
+    """
+    Calculate average green space index per level.
+    """
     value_per_level = {}
     for level in levels:
-        level_res_units = list(filter(lambda unit: unit.level == level, res_units))
+        level_res_units = [unit for unit in res_units if unit.level == level]
         if not level_res_units:
             continue
-        value_per_level[level] = calculate_green_space_index_avg(level_res_units, green_units)
+        avg_score, _ = calculate_green_space_index_avg(level_res_units, green_units, rulebook)
+        value_per_level[level] = avg_score
     return value_per_level
 
-def calculate_green_space_index_per_cluster(res_units: list[Unit], green_units: list[Unit], clusters: list[str]) -> dict[str, float]:
+
+def calculate_green_space_index_per_cluster(res_units: list[Unit], green_units: list[Unit], clusters: list[str], rulebook: dict) -> dict[str, float]:
+    """
+    Calculate average green space index per cluster.
+    """
     value_per_cluster = {}
     for cluster in clusters:
-        cluster_res_units = list(filter(lambda unit: unit.cluster_id == cluster, res_units))
+        cluster_res_units = [unit for unit in res_units if unit.cluster_id == cluster]
         if not cluster_res_units:
             continue
-        value_per_cluster[cluster] = calculate_green_space_index_avg(cluster_res_units, green_units)
+        avg_score, _ = calculate_green_space_index_avg(cluster_res_units, green_units, rulebook)
+        value_per_cluster[cluster] = avg_score
     return value_per_cluster
+
+
+def calculate_distance_range_percentages(range_counts: dict[str, int]) -> dict[str, float]:
+    """
+    Convert distance range counts to percentages.
+    """
+    total = sum(range_counts.values())
+    if total == 0:
+        return {key: 0.0 for key in range_counts}
+    
+    return {key: round((value / total) * 100, 2) for key, value in range_counts.items()}
+
 
 def get_green_space_index_metric(units: list[Unit], levels: list[int], clusters: list[str]) -> MetricResult:
     """
     Calculate the overall green space index metric for a list of units.
     """
-    residential_units = list(filter(lambda unit: unit.name in [ProgramType.LIVING, ProgramType.COMMUNITY], units))
-    green_units = list(filter(lambda unit: is_green_program(unit.name, RULEBOOK), units))
-    total_value = calculate_green_space_index_avg(residential_units, green_units)
-    value_per_level = calculate_green_space_index_per_level(residential_units, green_units, levels)
-    value_per_cluster = calculate_green_space_index_per_cluster(residential_units, green_units, clusters)
+    residential_units = [unit for unit in units if unit.name in [ProgramType.LIVING, ProgramType.COMMUNITY]]
+    green_units = [unit for unit in units if is_green_program(unit.name, RULEBOOK)]
+    
+    total_value, distance_range_counts = calculate_green_space_index_avg(residential_units, green_units, RULEBOOK)
+    value_per_level = calculate_green_space_index_per_level(residential_units, green_units, levels, RULEBOOK)
+    value_per_cluster = calculate_green_space_index_per_cluster(residential_units, green_units, clusters, RULEBOOK)
+    distance_range_percentages = calculate_distance_range_percentages(distance_range_counts)
     
     name = "Green Space Index"
     
@@ -63,6 +132,5 @@ def get_green_space_index_metric(units: list[Unit], levels: list[int], clusters:
         total_value=total_value,
         value_per_level=value_per_level,
         value_per_cluster=value_per_cluster,
-        chart_data=None,
-        viewer_filter="units",
+        chart_data=ChartData(label="Green Space Index Distribution", values=distance_range_percentages),
         action=METRICS[name]["action"])
