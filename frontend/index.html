@@ -4,6 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Digital Tissue</title>
+    <script>
+      (function (location) {
+        if (location.search && location.search.startsWith('?/')) {
+          var decoded = location.search
+            .slice(2)
+            .split('&')
+            .map(function (segment) {
+              return segment.replace(/~and~/g, '&');
+            })
+            .join('?');
+          window.history.replaceState(null, '', location.pathname + decoded + location.hash);
+        }
+      })(window.location);
+    </script>
   </head>
   <body>
     <div id="app"></div>
