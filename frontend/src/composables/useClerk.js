@@ -49,6 +49,18 @@ export function useClerk() {
     }
   }
 
+  const getSessionToken = async () => {
+    if (!clerkInstance) {
+      await ensureClerk()
+    }
+
+    if (!clerkInstance || !clerkInstance.session) {
+      return null
+    }
+
+    return clerkInstance.session.getToken()
+  }
+
   return {
     clerk: computed(() => clerkInstance),
     initClerk,
@@ -56,6 +68,7 @@ export function useClerk() {
     isSignedIn,
     user,
     session,
-    signOut
+    signOut,
+    getSessionToken
   }
 }

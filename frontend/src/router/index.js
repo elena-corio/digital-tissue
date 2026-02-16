@@ -61,15 +61,24 @@ const router = createRouter({
 })
 
 // Navigation guard to protect routes requiring authentication
-router.beforeEach((to, from, next) => {
-  const { isSignedIn } = useClerk()
-  
-  if (to.meta.requiresAuth && !isSignedIn.value) {
-    // Redirect to sign-in if route requires auth and user is not signed in
-    next({ name: 'sign-in' })
-  } else {
-    next()
+router.beforeEach(async (to, from, next) => {
+  const { isSignedIn, initClerk } = useClerk()
+
+  if (to.meta.requiresAuth) {
+    try {
+      await initClerk()
+    } catch (error) {
+      next({ name: 'sign-in' })
+      return
+    }
+
+    if (!isSignedIn.value) {
+      next({ name: 'sign-in' })
+      return
+    }
   }
+
+  next()
 })
 
 export default router
