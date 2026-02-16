@@ -36,11 +36,26 @@ def save_metrics(version_id: str, metrics: Dict[str, Any]) -> None:
             if 'total_value' in metric_dict and metric_dict['total_value'] is not None:
                 metric_dict['total_value'] = round(metric_dict['total_value'], 2)
             
+            # Round value_per_level to 2 decimals
+            if 'value_per_level' in metric_dict and isinstance(metric_dict['value_per_level'], dict):
+                metric_dict['value_per_level'] = {
+                    k: round(v, 2) for k, v in metric_dict['value_per_level'].items()
+                }
+            
             # Round value_per_cluster to 2 decimals
             if 'value_per_cluster' in metric_dict and isinstance(metric_dict['value_per_cluster'], dict):
                 metric_dict['value_per_cluster'] = {
                     k: round(v, 2) for k, v in metric_dict['value_per_cluster'].items()
                 }
+            
+            # Round chart_data values to 2 decimals
+            if 'chart_data' in metric_dict and hasattr(metric_dict['chart_data'], '__dict__'):
+                chart_data_dict = metric_dict['chart_data'].__dict__.copy()
+                if 'values' in chart_data_dict and isinstance(chart_data_dict['values'], dict):
+                    chart_data_dict['values'] = {
+                        k: round(v, 2) for k, v in chart_data_dict['values'].items()
+                    }
+                metric_dict['chart_data'] = chart_data_dict
             
             serializable_metrics[key] = metric_dict
         else:

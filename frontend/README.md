@@ -1,3 +1,12 @@
+# TODO
+
+Install chart.js and vue-chartjs
+Create Insights.vue component (similar structure to Viewer.vue)
+Add pie chart + bar chart for clusters
+Wire up API calls
+Display action message
+Test & style
+
 # Digital Tissue Frontend
 
 Vue 3 + Vite application for computational design dashboards and Speckle model visualization.
