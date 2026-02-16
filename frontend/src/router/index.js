@@ -32,7 +32,7 @@ const routes = [
     path: '/workspace',
     name: 'workspace',
     component: Workspace,
-    redirect: '/workspace/viewer',
+    redirect: { name: 'workspace-viewer' },
     meta: { requiresAuth: true },
     children: [
       {
