@@ -110,7 +110,7 @@ const loadModel = async (url) => {
     error.value = `Failed to load model: ${err.message}`;
     loading.value = false;
     emit('error', err);
-    console.error('Model Loading Error:', err);
+
   }
 };
 

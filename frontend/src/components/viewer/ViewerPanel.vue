@@ -55,12 +55,10 @@ const modelLink = computed(() =>
 );
 
 const onViewerReady = (viewer) => {
-  console.log('✅ Viewer initialized:', viewer);
   emit('viewer-ready', viewer);
 };
 
 const onModelLoaded = (url) => {
-  console.log('✅ Model loaded:', url);
   emit('model-loaded', url);
 };
 
