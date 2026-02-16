@@ -75,12 +75,12 @@ router.beforeEach(async (to, from, next) => {
       await initClerk()
     } catch (error) {
       console.warn('Clerk initialization failed, redirecting to sign-in:', error)
-      next({ name: 'sign-in' })
+      next({ name: 'sign-in', query: { redirect: to.fullPath } })
       return
     }
 
     if (!isSignedIn.value) {
-      next({ name: 'sign-in' })
+      next({ name: 'sign-in', query: { redirect: to.fullPath } })
       return
     }
   }
