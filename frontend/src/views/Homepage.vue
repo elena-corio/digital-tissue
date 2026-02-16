@@ -6,7 +6,6 @@
       <div class="button-group">
         <button
           class="btn btn-primary get-started-btn"
-          :class="{ 'btn-disabled': !isLoggedIn }"
           @click="handleGetStarted"
         >
           {{ uiText.pages.homepage.getStarted }}
@@ -22,15 +21,16 @@
 <script setup>
 import { uiText } from '@/config/uiText.js'
 import { useRouter } from 'vue-router'
-import { isLoggedIn } from '@/store/auth.js'
+import { useClerk } from '@/composables/useClerk.js'
 
 const router = useRouter()
+const { isSignedIn } = useClerk()
 
 function handleGetStarted() {
-  if (isLoggedIn.value) {
+  if (isSignedIn.value) {
     router.push('/workspace')
   } else {
-    router.push({ path: '/login', query: { redirect: '/workspace' } })
+    router.push({ path: '/sign-in', query: { redirect: '/workspace' } })
   }
 }
 </script>

@@ -5,16 +5,16 @@
         <img :src="logoSrc" alt="Digital Tissue Logo" class="header-logo" />
         <h2 class="header-title">{{ uiText.app.title }}</h2>
       </router-link>
-      <template v-if="isLoggedIn">
+      <template v-if="isSignedIn">
         <div class="header-avatar-logout">
           <Avatar class="header-avatar" />
-          <button @click="handleLogout" class="btn btn-tertiary">
-            {{ uiText.navigation.logout }}
+          <button @click="handleSignOut" class="btn btn-tertiary">
+            Sign Out
           </button>
         </div>
       </template>
-      <router-link v-else to="/login" class="btn btn-tertiary">
-        {{ uiText.navigation.login }}
+      <router-link v-else to="/sign-in" class="btn btn-tertiary">
+        Sign In
       </router-link>
     </div>
   </header>
@@ -22,15 +22,16 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
+import { useClerk } from '@/composables/useClerk.js';
 import { uiText } from '@/config/uiText.js';
 import logoSrc from '@/assets/images/logo.svg';
-import { isLoggedIn, logout } from '@/store/auth.js';
 import Avatar from '@/components/layout/Avatar.vue';
 
 const router = useRouter();
+const { isSignedIn, signOut } = useClerk();
 
-const handleLogout = () => {
-  logout();
+const handleSignOut = async () => {
+  await signOut();
   router.push('/');
 };
 </script>
