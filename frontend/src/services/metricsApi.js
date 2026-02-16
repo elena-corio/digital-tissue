@@ -4,6 +4,20 @@
  */
 
 const API_URL = import.meta.env.VITE_API_URL
+import { useClerk } from '@/composables/useClerk.js'
+
+const buildAuthHeaders = async () => {
+  const { getSessionToken } = useClerk()
+  const token = await getSessionToken()
+
+  if (!token) {
+    return {}
+  }
+
+  return {
+    Authorization: `Bearer ${token}`
+  }
+}
 
 /**
  * Fetch the latest metrics from backend
@@ -11,7 +25,8 @@ const API_URL = import.meta.env.VITE_API_URL
  */
 export async function fetchLatestMetrics() {
   try {
-    const response = await fetch(`${API_URL}/api/metrics`)
+    const headers = await buildAuthHeaders()
+    const response = await fetch(`${API_URL}/api/metrics`, { headers })
     
     if (!response.ok) {
       if (response.status === 404) {
@@ -35,7 +50,8 @@ export async function fetchLatestMetrics() {
  */
 export async function fetchMetricsByVersion(versionId) {
   try {
-    const response = await fetch(`${API_URL}/api/metrics/${versionId}`)
+    const headers = await buildAuthHeaders()
+    const response = await fetch(`${API_URL}/api/metrics/${versionId}`, { headers })
     
     if (!response.ok) {
       if (response.status === 404) {
@@ -58,7 +74,8 @@ export async function fetchMetricsByVersion(versionId) {
  */
 export async function listMetricVersions() {
   try {
-    const response = await fetch(`${API_URL}/api/metrics/history`)
+    const headers = await buildAuthHeaders()
+    const response = await fetch(`${API_URL}/api/metrics/history`, { headers })
     
     if (!response.ok) {
       throw new Error('Failed to fetch metric versions from backend')
