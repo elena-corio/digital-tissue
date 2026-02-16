@@ -1,15 +1,20 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from specklepy.transports.server import ServerTransport
 from adapters.speckle.get_client import get_client
 from adapters.speckle.get_latest_version import get_latest_version
 from adapters.speckle.receive_data import receive_data
 from config import PROJECT_ID
 from infrastructure.metrics_storage import get_metrics, get_latest_metrics, list_all_metrics
+from infrastructure.clerk_auth import verify_clerk_token
 from application.metrics_service import calculate_and_save_metrics
 import json
 from pathlib import Path
 
-router = APIRouter(prefix="/api/metrics", tags=["metrics"])
+router = APIRouter(
+    prefix="/api/metrics",
+    tags=["metrics"],
+    dependencies=[Depends(verify_clerk_token)]
+)
 
 
 def _load_metric_definitions():
