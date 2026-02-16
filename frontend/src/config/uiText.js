@@ -21,7 +21,8 @@ export const uiText = {
       subtitle: 'Active workspace environment',
       tabs: {
         viewer: 'Viewer',
-        metrics: 'Metrics'
+        metrics: 'Metrics',
+        insight: 'Insight'
       },
       viewer: {
         title: 'Model Viewer',
@@ -30,6 +31,10 @@ export const uiText = {
       metrics: {
         title: 'Key Performance Indicators',
         subtitle: 'Track key performance indicators and analytics'
+      },
+      insight: {
+        title: 'Metrics Insight',
+        subtitle: 'Visualize and analyze metrics with your model'
       }
     },
     about: {

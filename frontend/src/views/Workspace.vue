@@ -15,6 +15,13 @@
       >
         {{ uiText.pages.workspace.tabs.metrics }}
       </router-link>
+      <router-link 
+        to="/workspace/insight" 
+        class="tab"
+        active-class="tab-active"
+      >
+        {{ uiText.pages.workspace.tabs.insight }}
+      </router-link>
     </div>
     
     <div class="workspace-content">

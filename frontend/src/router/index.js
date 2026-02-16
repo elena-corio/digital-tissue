@@ -31,6 +31,11 @@ const routes = [
         path: 'metrics',
         name: 'workspace-metrics',
         component: () => import('@/views/workspace/Metrics.vue')
+      },
+      {
+        path: 'insight',
+        name: 'workspace-insight',
+        component: () => import('@/views/workspace/Insight.vue')
       }
     ]
   },
