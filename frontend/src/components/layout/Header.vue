@@ -21,18 +21,16 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router';
 import { useClerk } from '@/composables/useClerk.js';
 import { uiText } from '@/config/uiText.js';
 import logoSrc from '@/assets/images/logo.svg';
 import Avatar from '@/components/layout/Avatar.vue';
 
-const router = useRouter();
 const { isSignedIn, signOut } = useClerk();
 
 const handleSignOut = async () => {
-  await signOut();
-  router.push('/');
+  const baseUrl = import.meta.env.BASE_URL;
+  await signOut({ redirectUrl: baseUrl });
 };
 </script>
 

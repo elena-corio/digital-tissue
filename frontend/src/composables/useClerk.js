@@ -43,9 +43,9 @@ export function useClerk() {
     return !!session.value
   })
 
-  const signOut = async () => {
+  const signOut = async (options = {}) => {
     if (clerkInstance) {
-      await clerkInstance.signOut()
+      await clerkInstance.signOut(options)
     }
   }
 
