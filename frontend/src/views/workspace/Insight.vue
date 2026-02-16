@@ -38,8 +38,8 @@ import { fetchLatestMetrics } from '@/services/metricsApi.js';
 
 import { viewerModels } from '@/config/modelConfig.js';
 
-const projectId = viewerModels[0].projectId;
-const inputModelId = ref(viewerModels[0].modelId);
+const projectId = viewerModels.data.projectId;
+const inputModelId = ref(viewerModels.data.modelId);
 
 // Metrics data
 const metricsData = ref({});

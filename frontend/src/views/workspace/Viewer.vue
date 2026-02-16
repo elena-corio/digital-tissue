@@ -19,9 +19,9 @@ import { ref } from 'vue';
 import ViewerPanel from '@/components/viewer/ViewerPanel.vue';
 import { viewerModels } from '@/config/modelConfig.js';
 
-const projectId = viewerModels[0].projectId;
-const inputModelId1 = ref(viewerModels[0].modelId);
-const inputModelId2 = ref(viewerModels[1].modelId);
+const projectId = viewerModels.structure.projectId;
+const inputModelId1 = ref(viewerModels.structure.modelId);
+const inputModelId2 = ref(viewerModels.program.modelId);
 </script>
 
 <style scoped>
