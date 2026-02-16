@@ -10,7 +10,7 @@
       "name": "Green Space Index",
       "benchmark": 0.80,
       "label": "Distance to green space",
-      "formula": "max (0, 1 - distance_to_green / target)",
+      "formula": "max (0, 1 - distance_to_green / target*)\n*300 m",
       "action": "The distance of residential units to green space needs to be decreased to meet the benchmark."
     },
     "program_diversity_index": {
@@ -50,9 +50,9 @@
     },
     "carbon_efficiency": {
       "name": "Carbon Efficiency",
-      "benchmark": 1.00,
+      "benchmark": 0.50,
       "label": "Carbon by material",
-      "formula": "500 / (embodied_carbon / gross_floor_area)",
+      "formula": "max (0, 1 - embodied_carbon_intensity / target*)\n*600 kgCO2e/kg",
       "action": "The embodied carbon needs to be decreased to meet the benchmark."
     }
 }

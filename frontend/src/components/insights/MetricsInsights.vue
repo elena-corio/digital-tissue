@@ -15,7 +15,7 @@
     <div v-else class="metric-content">
       <!-- Header -->
       <div class="metric-header">
-        <h2 class="metric-name">{{ metricData.name }}</h2>
+        <h3 class="metric-name">{{ metricData.name }}</h3>
         <div class="metric-summary">
           <div class="summary-item">
             <span class="label">Value:</span>
@@ -34,9 +34,9 @@
           <h3>Formula</h3>
           <p class="formula">{{ metricData.formula }}</p>
         </div>
-        <div class="detail-box">
-          <h3>Action</h3>
-          <p class="action">{{ metricData.action }}</p>
+        <div class="detail-box" :class="actionClass">
+          <h3>{{ actionTitle }}</h3>
+          <p class="action">{{ dynamicAction }}</p>
         </div>
       </div>
 
@@ -114,12 +114,60 @@ const valueClass = computed(() => {
   return props.metricData.total_value >= props.metricData.benchmark ? 'success' : 'warning';
 });
 
+const dynamicAction = computed(() => {
+  const value = props.metricData?.total_value;
+  const benchmark = props.metricData?.benchmark;
+  
+  if (!value || !benchmark) {
+    return 'No data available';
+  }
+  
+  // Check if value is > 200% of benchmark (possible error)
+  if (value > benchmark * 2) {
+    return '⚠️ Warning: Value is significantly above benchmark. This might indicate an error in the calculation or data.';
+  }
+  
+  // Check if target is reached
+  if (value >= benchmark) {
+    return '✅ Well done! Target benchmark has been reached. Performance is satisfactory.';
+  }
+  
+  // Below benchmark - show original action
+  return props.metricData.action;
+});
+
+const actionTitle = computed(() => {
+  const value = props.metricData?.total_value;
+  const benchmark = props.metricData?.benchmark;
+  
+  if (!value || !benchmark) return 'Status';
+  
+  if (value > benchmark * 2) return '⚠️ Warning';
+  if (value >= benchmark) return 'Status';
+  return 'Action Required';
+});
+
+const actionClass = computed(() => {
+  const value = props.metricData?.total_value;
+  const benchmark = props.metricData?.benchmark;
+  
+  if (!value || !benchmark) return '';
+  
+  if (value > benchmark * 2) return 'action-error';
+  if (value >= benchmark) return 'action-success';
+  return 'action-warning';
+});
+
 function formatValue(val) {
   return val !== null && val !== undefined ? Number(val).toFixed(2) : 'N/A';
 }
 </script>
 
 <style scoped>
+h3 {
+  color: var(--navy-blue-100);
+}
+
 .metrics-insights {
   width: 100%;
   height: 100%;
@@ -151,9 +199,6 @@ function formatValue(val) {
 }
 
 .metric-name {
-  font-size: var(--font-size-2xl);
-  font-weight: var(--font-weight-bold);
-  color: var(--navy-blue-100);
   margin-bottom: var(--space-sm);
 }
 
@@ -180,11 +225,11 @@ function formatValue(val) {
 }
 
 .value.success {
-  color: var(--green-100);
+  color: var(--color-success);
 }
 
 .value.warning {
-  color: var(--orange-100);
+  color: var(--color-warning);
 }
 
 .benchmark {
@@ -198,36 +243,69 @@ function formatValue(val) {
 }
 
 .detail-box {
-  background-color: var(--white);
+  background-color: white;
   padding: var(--space-md);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-medium);
   border: 1px solid var(--light-grey-100);
 }
 
 .detail-box h3 {
-  font-size: var(--font-size-md);
-  font-weight: var(--font-weight-semibold);
-  color: var(--navy-blue-100);
   margin-bottom: var(--space-sm);
 }
 
 .formula, .action {
   font-size: var(--font-size-sm);
-  color: var(--navy-blue-75);
+  color: var(--navy-blue-50);
   line-height: 1.6;
 }
 
+.detail-box.action-success {
+  background-color: #d1fae5;
+  border-color: var(--color-success);
+}
+
+.detail-box.action-success h3 {
+  color: var(--color-success);
+}
+
+.detail-box.action-success .action {
+  color: #065f46;
+}
+
+.detail-box.action-warning {
+  background-color: #fef3c7;
+  border-color: var(--color-warning);
+}
+
+.detail-box.action-warning h3 {
+  color: var(--color-warning);
+}
+
+.detail-box.action-warning .action {
+  color: #92400e;
+}
+
+.detail-box.action-error {
+  background-color: #fee2e2;
+  border-color: var(--color-error);
+}
+
+.detail-box.action-error h3 {
+  color: var(--color-error);
+}
+
+.detail-box.action-error .action {
+  color: #991b1b;
+}
+
 .data-section {
-  background-color: var(--white);
+  background-color: white;
   padding: var(--space-md);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-medium);
   border: 1px solid var(--light-grey-100);
 }
 
 .data-section h3 {
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-semibold);
-  color: var(--navy-blue-100);
   margin-bottom: var(--space-md);
 }
 
@@ -244,12 +322,12 @@ function formatValue(val) {
   justify-content: space-between;
   padding: var(--space-xs) var(--space-sm);
   background-color: var(--light-lila-25);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-small);
 }
 
 .data-key {
   font-size: var(--font-size-sm);
-  color: var(--navy-blue-75);
+  color: var(--navy-blue-50);
 }
 
 .data-value {
@@ -273,14 +351,14 @@ function formatValue(val) {
 .chart-label {
   min-width: 100px;
   font-size: var(--font-size-sm);
-  color: var(--navy-blue-75);
+  color: var(--navy-blue-50);
 }
 
 .chart-bar {
   flex: 1;
   height: 24px;
   background-color: var(--light-grey-50);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-small);
   position: relative;
   overflow: hidden;
 }

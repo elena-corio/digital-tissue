@@ -104,30 +104,27 @@ onMounted(loadMetrics);
 }
 
 .insights-container {
-  background-color: var(--light-lila-50);
+  background-color: white;
   border-radius: var(--radius-md);
   padding: var(--space-lg);
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
+  box-shadow: var(--shadow-lg);
 }
 
 .metric-selector {
   display: flex;
   flex-direction: column;
   gap: var(--space-xs);
-  background-color: var(--white);
-  padding: var(--space-md);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--light-grey-100);
+background-color: white;
+  border-radius: var(--radius-medium);
 }
 
 .metric-selector label {
   font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
   color: var(--navy-blue-100);
-  text-transform: uppercase;
 }
 
 .metric-dropdown {
@@ -135,7 +132,7 @@ onMounted(loadMetrics);
   font-size: var(--font-size-md);
   border: 2px solid var(--light-grey-100);
   border-radius: var(--radius-sm);
-  background-color: var(--white);
+  background-color: white;
   color: var(--navy-blue-100);
   cursor: pointer;
   transition: border-color 0.2s ease;

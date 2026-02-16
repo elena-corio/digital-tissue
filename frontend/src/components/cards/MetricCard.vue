@@ -100,15 +100,15 @@ const isAboveBenchmark = computed(() => {
 .value {
   font-size: var(--font-size-h2);
   font-weight: var(--font-weight-bold);
-  color: var(--fucsia-100); /* Default: below benchmark */
+  color: var(--color-error); /* Default: below benchmark */
 }
 
 .value.value-above {
-  color: var(--light-blue-100);
+  color: var(--color-success);
 }
 
 .value.value-below {
-  color: var(--fucsia-100);
+  color: var(--color-error);
 }
 
 .benchmark {
