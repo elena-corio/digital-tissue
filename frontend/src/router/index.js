@@ -64,10 +64,17 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   const { isSignedIn, initClerk } = useClerk()
 
+  // Skip authentication in local development if VITE_SKIP_AUTH is set
+  if (import.meta.env.VITE_SKIP_AUTH === 'true') {
+    next()
+    return
+  }
+
   if (to.meta.requiresAuth) {
     try {
       await initClerk()
     } catch (error) {
+      console.warn('Clerk initialization failed, redirecting to sign-in:', error)
       next({ name: 'sign-in' })
       return
     }

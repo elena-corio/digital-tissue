@@ -7,8 +7,13 @@ const API_URL = import.meta.env.VITE_API_URL
 import { useClerk } from '@/composables/useClerk.js'
 
 const buildAuthHeaders = async () => {
+  // Skip auth headers in local development if VITE_SKIP_AUTH is set
+  if (import.meta.env.VITE_SKIP_AUTH === 'true') {
+    return {}
+  }
+
   const { getSessionToken } = useClerk()
-  const token = await getSessionToken()
+  const token = await getSessionToken('backend')
 
   if (!token) {
     return {}

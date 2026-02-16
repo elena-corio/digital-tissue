@@ -49,7 +49,7 @@ export function useClerk() {
     }
   }
 
-  const getSessionToken = async () => {
+  const getSessionToken = async (template = null) => {
     if (!clerkInstance) {
       await ensureClerk()
     }
@@ -58,7 +58,11 @@ export function useClerk() {
       return null
     }
 
-    return clerkInstance.session.getToken()
+    if (template) {
+      return await clerkInstance.session.getToken({ template })
+    }
+
+    return await clerkInstance.session.getToken()
   }
 
   return {
