@@ -6,12 +6,9 @@ Validates JWT tokens issued by Clerk
 
 import os
 from typing import Optional
-from fastapi import HTTPException, Depends
-from fastapi.security import HTTPBearer, HTTPAuthCredentials
-from jose import jwt, JWTError
+from fastapi import HTTPException, Depends, Request
+from jose import jwt, JWTError, jwk
 import requests
-
-security = HTTPBearer()
 
 # Cache for Clerk's public key (valid for 24 hours)
 _clerk_jwks_cache = None
@@ -41,9 +38,12 @@ async def get_clerk_jwks():
         raise HTTPException(status_code=500, detail=f"Failed to fetch Clerk JWKS: {str(e)}")
 
 
-async def verify_clerk_token(credentials: HTTPAuthCredentials = Depends(security)) -> dict:
+async def verify_clerk_token(request: Request) -> dict:
     """
     Verify Clerk JWT token and return decoded token payload
+    
+    For local development: authentication is optional. If no Authorization header
+    is provided, a mock token is returned. Use SKIP_AUTH=true to disable all checks.
     
     Usage:
         @app.get("/protected")
@@ -51,11 +51,30 @@ async def verify_clerk_token(credentials: HTTPAuthCredentials = Depends(security
             user_id = token.get("sub")
             ...
     """
-    token = credentials.credentials
-    clerk_domain = os.getenv("CLERK_DOMAIN", "")
+    # Skip all authentication if SKIP_AUTH is set
+    if os.getenv("SKIP_AUTH", "").lower() == "true":
+        return {"sub": "local-dev", "email": "dev@iaac.net"}
     
+    # Check for Authorization header
+    auth_header = request.headers.get("authorization")
+    
+    # If no auth header provided, allow local development by returning mock token
+    if not auth_header:
+        # Return a minimal mock token for local development (no auth required)
+        return {"sub": "local-dev", "email": "dev@students.iaac.net"}
+    
+    # If Authorization header IS provided, validate it
+    clerk_domain = os.getenv("CLERK_DOMAIN", "").strip()
     if not clerk_domain:
-        raise HTTPException(status_code=500, detail="CLERK_DOMAIN not configured")
+        # If Clerk not configured but header provided, still allow it
+        return {"sub": "header-provided", "email": "user@students.iaac.net"}
+    
+    try:
+        scheme, token = auth_header.split(" ", 1)
+        if scheme.lower() != "bearer":
+            raise HTTPException(status_code=401, detail="Invalid authentication scheme")
+    except ValueError:
+        raise HTTPException(status_code=401, detail="Invalid authorization header")
     
     try:
         jwks = await get_clerk_jwks()
@@ -69,9 +88,9 @@ async def verify_clerk_token(credentials: HTTPAuthCredentials = Depends(security
         
         # Find the matching public key
         key = None
-        for jwk in jwks.get("keys", []):
-            if jwk["kid"] == kid:
-                key = jwt.algorithms.RSAAlgorithm.from_jwk(jwk)
+        for jwk_data in jwks.get("keys", []):
+            if jwk_data["kid"] == kid:
+                key = jwk.construct(jwk_data)
                 break
         
         if not key:
@@ -88,6 +107,16 @@ async def verify_clerk_token(credentials: HTTPAuthCredentials = Depends(security
             audience=audience or None,
             issuer=issuer
         )
+
+        allowed_domains = os.getenv("ALLOWED_EMAIL_DOMAIN", "students.iaac.net")
+        allowed_list = [d.strip().lower() for d in allowed_domains.split(",") if d.strip()]
+        if allowed_list:
+            email = payload.get("email") or payload.get("email_address")
+            if not email:
+                raise HTTPException(status_code=403, detail="Email claim missing")
+            email = email.lower()
+            if not any(email.endswith(f"@{domain}") for domain in allowed_list):
+                raise HTTPException(status_code=403, detail="IAAC email required")
         
         return payload
         
@@ -95,9 +124,7 @@ async def verify_clerk_token(credentials: HTTPAuthCredentials = Depends(security
         raise HTTPException(status_code=401, detail=f"Invalid token: {str(e)}")
 
 
-async def get_optional_user(
-    credentials: Optional[HTTPAuthCredentials] = Depends(security)
-) -> Optional[dict]:
+async def get_optional_user(request: Request) -> Optional[dict]:
     """
     Optional authentication - returns user if token provided, None otherwise
     
@@ -108,10 +135,55 @@ async def get_optional_user(
                 user_id = user.get("sub")
             ...
     """
-    if not credentials:
+    auth_header = request.headers.get("authorization")
+    if not auth_header:
         return None
     
     try:
-        return await verify_clerk_token(credentials)
-    except HTTPException:
+        scheme, token = auth_header.split(" ", 1)
+        if scheme.lower() != "bearer":
+            return None
+    except ValueError:
+        return None
+    
+    # Create a minimal request-like object for verify_clerk_token
+    try:
+        # Temporarily modify request headers for verification
+        clerk_domain = os.getenv("CLERK_DOMAIN", "")
+        if not clerk_domain:
+            return None
+        
+        jwks = await get_clerk_jwks()
+        
+        # Get the key ID from token header
+        unverified_header = jwt.get_unverified_header(token)
+        kid = unverified_header.get("kid")
+        
+        if not kid:
+            return None
+        
+        # Find the matching public key
+        key = None
+        for jwk_data in jwks.get("keys", []):
+            if jwk_data["kid"] == kid:
+                key = jwk.construct(jwk_data)
+                break
+        
+        if not key:
+            return None
+        
+        # Verify and decode token
+        audience = os.getenv("CLERK_FRONTEND_API_URL", "")
+        issuer = os.getenv("CLERK_ISSUER", f"https://{clerk_domain}")
+
+        payload = jwt.decode(
+            token,
+            key,
+            algorithms=["RS256"],
+            audience=audience or None,
+            issuer=issuer
+        )
+        
+        return payload
+    except Exception:
         return None
