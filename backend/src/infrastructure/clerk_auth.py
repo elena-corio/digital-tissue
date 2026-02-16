@@ -51,23 +51,20 @@ async def verify_clerk_token(request: Request) -> dict:
             user_id = token.get("sub")
             ...
     """
-    # Skip all authentication if SKIP_AUTH is set
+    # Skip all authentication if SKIP_AUTH is set (local development only)
     if os.getenv("SKIP_AUTH", "").lower() == "true":
         return {"sub": "local-dev", "email": "dev@iaac.net"}
     
     # Check for Authorization header
     auth_header = request.headers.get("authorization")
-    
-    # If no auth header provided, allow local development by returning mock token
+
     if not auth_header:
-        # Return a minimal mock token for local development (no auth required)
-        return {"sub": "local-dev", "email": "dev@students.iaac.net"}
+        raise HTTPException(status_code=401, detail="Missing authorization header")
     
     # If Authorization header IS provided, validate it
     clerk_domain = os.getenv("CLERK_DOMAIN", "").strip()
     if not clerk_domain:
-        # If Clerk not configured but header provided, still allow it
-        return {"sub": "header-provided", "email": "user@students.iaac.net"}
+        raise HTTPException(status_code=500, detail="CLERK_DOMAIN environment variable not set")
     
     try:
         scheme, token = auth_header.split(" ", 1)
