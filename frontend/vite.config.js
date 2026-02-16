@@ -9,6 +9,9 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
+  optimizeDeps: {
+    include: ['@clerk/clerk-js']
+  },
   base: process.env.NODE_ENV === 'production' ? '/digital-tissue/' : '/',
   server: {
     port: 5173,

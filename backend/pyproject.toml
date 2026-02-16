@@ -10,6 +10,9 @@ dependencies = [
     "pytest-asyncio>=0.23.0",
     "specklepy>=3.2.4",
     "uvicorn>=0.40.0",
+    "python-jose[cryptography]>=3.3.0",
+    "requests>=2.32.0",
+    "python-dotenv>=1.0.1",
 ]
 [tool.setuptools.packages.find]
 where = ["src"]

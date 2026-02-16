@@ -25,9 +25,6 @@ import {
   FilteringExtension
 } from '@speckle/viewer';
 
-const authToken = import.meta.env.VITE_SPECKLE_TOKEN // Get auth token from environment variable
-console.log('Auth token:', authToken)
-
 const props = defineProps({
   modelUrl: { type: String, required: true },  // URL to the Speckle model
   height: { type: String, default: '600px' },  // Container height
@@ -102,7 +99,7 @@ const loadModel = async (url) => {
     // Load each resource (a model might have multiple files)
     for (const resourceUrl of urls) {
       // Create a loader for this specific resource
-      const loader = new SpeckleLoader(viewer.getWorldTree(), resourceUrl, authToken);
+      const loader = new SpeckleLoader(viewer.getWorldTree(), resourceUrl);
       // Load and display the geometry
       await viewer.loadObject(loader, true);
     }
@@ -113,7 +110,7 @@ const loadModel = async (url) => {
     error.value = `Failed to load model: ${err.message}`;
     loading.value = false;
     emit('error', err);
-    console.error('Model Loading Error:', err);
+
   }
 };
 

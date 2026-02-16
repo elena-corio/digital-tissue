@@ -1,3 +1,14 @@
+import sys
+from pathlib import Path
+
+from dotenv import load_dotenv
+
+# Add parent directory to path so relative imports work
+sys.path.insert(0, str(Path(__file__).parent))
+
+# Load backend/.env for local development
+load_dotenv(dotenv_path=Path(__file__).resolve().parent.parent / ".env")
+
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -10,6 +21,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",                # Local development
+        "http://localhost:5174",                # Vite fallback port
         "https://elena-corio.github.io"       # Production frontend URL
     ],
     allow_credentials=True,
