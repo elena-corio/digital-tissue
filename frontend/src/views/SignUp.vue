@@ -23,13 +23,9 @@ onMounted(async () => {
   
   if (clerk.value && signUpContainer.value) {
     const baseUrl = import.meta.env.BASE_URL;
-    // Get redirect from URL params if present
-    const urlParams = new URLSearchParams(window.location.search);
-    const redirect = urlParams.get('redirect') || `${baseUrl}workspace/viewer`;
-    
     unmount = clerk.value.mountSignUp(signUpContainer.value, {
       signInUrl: `${baseUrl}sign-in`,
-      afterSignUpUrl: redirect
+      afterSignUpUrl: `${baseUrl}workspace`
     });
   }
 });

@@ -17,17 +17,7 @@ const ensureClerk = async () => {
     }
 
     clerkInstance = new Clerk(clerkPubKey)
-    await clerkInstance.load({
-      routing: 'path',
-      routerPush: (to) => {
-        window.history.pushState({}, '', to)
-        window.dispatchEvent(new PopStateEvent('popstate'))
-      },
-      routerReplace: (to) => {
-        window.history.replaceState({}, '', to)
-        window.dispatchEvent(new PopStateEvent('popstate'))
-      }
-    })
+    await clerkInstance.load()
 
     isLoaded.value = true
     user.value = clerkInstance.user
