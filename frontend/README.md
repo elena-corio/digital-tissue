@@ -1,12 +1,3 @@
-# TODO
-
-Install chart.js and vue-chartjs
-Create Insights.vue component (similar structure to Viewer.vue)
-Add pie chart + bar chart for clusters
-Wire up API calls
-Display action message
-Test & style
-
 # Digital Tissue Frontend
 
 Vue 3 + Vite application for computational design dashboards and Speckle model visualization.
@@ -19,9 +10,23 @@ npm install
 npm run dev
 ```
 
-The app will open at `http://localhost:5173`. 
+The app will open at `http://localhost:5173` (or another port if 5173 is in use). 
 
 Make sure the **backend is running first** (`python src/main.py` from `/backend` folder) so the frontend can fetch metrics from `http://localhost:8000/api/metrics`.
+
+### Local Development (Auth Optional)
+
+For local testing without Clerk authentication, set in `.env`:
+```
+VITE_SKIP_AUTH=true
+```
+
+This allows you to:
+- Skip Clerk authentication checks
+- Access `/workspace` without signing in
+- Test the full app without Clerk setup
+
+For production, remove `VITE_SKIP_AUTH=true` or set it to `false`.
 
 ## Development Commands
 

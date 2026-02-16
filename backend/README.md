@@ -13,12 +13,38 @@ Python FastAPI backend for metric calculation and Speckle model analysis.
 
 2. Install dependencies:
    ```bash
-   uv sync --active
+   uv sync
    ```
+   Or with pip:
+   ```bash
+   pip install -e .
+   ```
+
+3. Configure authentication (Clerk JWT verification):
+  ```bash
+  # backend/.env
+  CLERK_DOMAIN=your-app.clerk.accounts.dev
+  CLERK_ISSUER=https://your-app.clerk.accounts.dev
+  CLERK_FRONTEND_API_URL=http://localhost:5174  # Update to match your frontend port
+  ALLOWED_EMAIL_DOMAIN=students.iaac.net
+  ```
+
+### Local Development (Auth Optional)
+
+For local testing without authentication, the backend will:
+- Accept requests with **no Authorization header** and return a mock token
+- Allow both authenticated (with Clerk JWT) and unauthenticated requests
+- This makes local development easier without setting up Clerk
+
+To skip all authentication: set `SKIP_AUTH=true` in `.env`
 
 ### Running the Server
 
 ```bash
+# Option 1: Using uvicorn directly (recommended for development)
+python -m uvicorn asgi:app --reload
+
+# Option 2: Running main.py directly
 python src/main.py
 ```
 
@@ -27,7 +53,7 @@ This will:
 - **Calculate if needed**: If cache is empty, fetch latest Speckle version and calculate all metrics
 - **Start server**: Listen on `http://127.0.0.1:8000`
 
-The server runs with auto-reload enabled for development.
+The server runs with auto-reload enabled for development (uvicorn) or without (main.py).
 
 ### Testing
 
@@ -248,6 +274,10 @@ Key packages (see `pyproject.toml`):
 ## Deployment
 
 ### Local Development
+```bash
+python -m uvicorn asgi:app --reload
+```
+Or:
 ```bash
 python src/main.py
 ```
