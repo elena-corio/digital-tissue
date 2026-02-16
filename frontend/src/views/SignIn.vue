@@ -25,7 +25,7 @@ onMounted(async () => {
     const baseUrl = import.meta.env.BASE_URL;
     unmount = clerk.value.mountSignIn(signInContainer.value, {
       signUpUrl: `${baseUrl}sign-up`,
-      afterSignInUrl: `${baseUrl}workspace`
+      afterSignInUrl: `${baseUrl}workspace/viewer`
     });
   }
 });
