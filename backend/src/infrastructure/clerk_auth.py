@@ -5,6 +5,7 @@ Validates JWT tokens issued by Clerk
 """
 
 import os
+import logging
 from typing import Optional
 from fastapi import HTTPException, Depends, Request
 from jose import jwt, JWTError, jwk
@@ -13,6 +14,71 @@ import requests
 # Cache for Clerk's public key (valid for 24 hours)
 _clerk_jwks_cache = None
 _clerk_jwks_cache_time = None
+logger = logging.getLogger(__name__)
+
+
+def _get_allowed_domains() -> list[str]:
+    """Read and normalize the allowed email domains from environment."""
+    allowed_domains = os.getenv("ALLOWED_EMAIL_DOMAIN", "students.iaac.net")
+    return [domain.strip().lower() for domain in allowed_domains.split(",") if domain.strip()]
+
+
+def _extract_email_from_payload(payload: dict) -> Optional[str]:
+    """Extract email from Clerk token payload across common claim shapes."""
+    direct_email = payload.get("email") or payload.get("email_address")
+    if isinstance(direct_email, str) and direct_email.strip():
+        return direct_email.strip().lower()
+
+    email_addresses = payload.get("email_addresses")
+    primary_email_id = payload.get("primary_email_address_id")
+    if primary_email_id and isinstance(email_addresses, list):
+        for item in email_addresses:
+            if not isinstance(item, dict):
+                continue
+            if item.get("id") == primary_email_id:
+                email = item.get("email_address") or item.get("email")
+                if isinstance(email, str) and email.strip():
+                    return email.strip().lower()
+
+    if isinstance(email_addresses, list):
+        for item in email_addresses:
+            if not isinstance(item, dict):
+                continue
+            email = item.get("email_address") or item.get("email")
+            if isinstance(email, str) and email.strip():
+                return email.strip().lower()
+
+    return None
+
+
+def _log_auth_failure(reason: str, payload: Optional[dict] = None) -> None:
+    """Log auth failures without exposing secrets."""
+    if isinstance(payload, dict):
+        user_id = payload.get("sub", "unknown")
+        email = _extract_email_from_payload(payload) or "unknown"
+    else:
+        user_id = "unknown"
+        email = "unknown"
+
+    logger.warning("Authentication failed: %s | user_id=%s | email=%s", reason, user_id, email)
+
+
+def _enforce_domain_authorization(payload: dict) -> dict:
+    """Enforce allowed email-domain policy on a decoded token payload."""
+    allowed_domains = _get_allowed_domains()
+    if not allowed_domains:
+        return payload
+
+    email = _extract_email_from_payload(payload)
+    if not email:
+        _log_auth_failure("Email claim missing", payload)
+        raise HTTPException(status_code=403, detail="Email claim missing")
+
+    if not any(email.endswith(f"@{domain}") for domain in allowed_domains):
+        _log_auth_failure(f"Email domain not allowed (allowed={allowed_domains})", payload)
+        raise HTTPException(status_code=403, detail="IAAC email required")
+
+    return payload
 
 async def get_clerk_jwks():
     """Fetch Clerk's JWKS (public keys) for JWT verification"""
@@ -59,18 +125,22 @@ async def verify_clerk_token(request: Request) -> dict:
     auth_header = request.headers.get("authorization")
 
     if not auth_header:
+        logger.warning("Authentication failed: Missing authorization header")
         raise HTTPException(status_code=401, detail="Missing authorization header")
     
     # If Authorization header IS provided, validate it
     clerk_domain = os.getenv("CLERK_DOMAIN", "").strip()
     if not clerk_domain:
+        logger.error("Authentication failed: CLERK_DOMAIN environment variable not set")
         raise HTTPException(status_code=500, detail="CLERK_DOMAIN environment variable not set")
     
     try:
         scheme, token = auth_header.split(" ", 1)
         if scheme.lower() != "bearer":
+            logger.warning("Authentication failed: Invalid authentication scheme")
             raise HTTPException(status_code=401, detail="Invalid authentication scheme")
     except ValueError:
+        logger.warning("Authentication failed: Invalid authorization header format")
         raise HTTPException(status_code=401, detail="Invalid authorization header")
     
     try:
@@ -105,19 +175,10 @@ async def verify_clerk_token(request: Request) -> dict:
             issuer=issuer
         )
 
-        allowed_domains = os.getenv("ALLOWED_EMAIL_DOMAIN", "students.iaac.net")
-        allowed_list = [d.strip().lower() for d in allowed_domains.split(",") if d.strip()]
-        if allowed_list:
-            email = payload.get("email") or payload.get("email_address")
-            if not email:
-                raise HTTPException(status_code=403, detail="Email claim missing")
-            email = email.lower()
-            if not any(email.endswith(f"@{domain}") for domain in allowed_list):
-                raise HTTPException(status_code=403, detail="IAAC email required")
-        
-        return payload
+        return _enforce_domain_authorization(payload)
         
     except JWTError as e:
+        logger.warning("Authentication failed: Invalid token (%s)", str(e))
         raise HTTPException(status_code=401, detail=f"Invalid token: {str(e)}")
 
 
@@ -139,8 +200,10 @@ async def get_optional_user(request: Request) -> Optional[dict]:
     try:
         scheme, token = auth_header.split(" ", 1)
         if scheme.lower() != "bearer":
+            logger.warning("Optional auth failed: Invalid authentication scheme")
             return None
     except ValueError:
+        logger.warning("Optional auth failed: Invalid authorization header format")
         return None
     
     # Create a minimal request-like object for verify_clerk_token
@@ -148,6 +211,7 @@ async def get_optional_user(request: Request) -> Optional[dict]:
         # Temporarily modify request headers for verification
         clerk_domain = os.getenv("CLERK_DOMAIN", "")
         if not clerk_domain:
+            logger.warning("Optional auth failed: CLERK_DOMAIN environment variable not set")
             return None
         
         jwks = await get_clerk_jwks()
@@ -157,6 +221,7 @@ async def get_optional_user(request: Request) -> Optional[dict]:
         kid = unverified_header.get("kid")
         
         if not kid:
+            logger.warning("Optional auth failed: Token missing 'kid' header")
             return None
         
         # Find the matching public key
@@ -167,6 +232,7 @@ async def get_optional_user(request: Request) -> Optional[dict]:
                 break
         
         if not key:
+            logger.warning("Optional auth failed: No matching key for token kid")
             return None
         
         # Verify and decode token
@@ -180,7 +246,8 @@ async def get_optional_user(request: Request) -> Optional[dict]:
             audience=audience or None,
             issuer=issuer
         )
-        
-        return payload
+
+        return _enforce_domain_authorization(payload)
     except Exception:
+        logger.warning("Optional auth failed: Token verification error")
         return None
