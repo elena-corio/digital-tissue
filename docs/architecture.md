@@ -74,6 +74,7 @@ services/
 
 config/
 ├── uiText.js         ALL UI strings and KPI structure
+├── metricsConfig.js  Metric literals (name, label, formula, action) + placeholders
 ├── modelConfig.js    Viewer configuration
 └── router/index.js   Vue Router setup
 ```
@@ -131,14 +132,10 @@ Metrics.vue mounts
     ↓
 fetchLatestMetrics() → GET http://localhost:8000/api/metrics
     ↓
-Backend returns enriched metrics:
+Backend returns metric data keyed by slug (numeric values and breakdowns):
 {
   "daylight_potential": {
-    "name": "Daylight Potential",
-    "formula": "window_area / net_floor_area",
     "benchmark": 0.25,
-    "label": "Glazed facade area",
-    "action": "Increase windows...",
     "total_value": 0.42,
     "value_per_level": {...},
     "value_per_cluster": {...}
@@ -146,7 +143,8 @@ Backend returns enriched metrics:
   ...
 }
     ↓
-matchMetricsToKPIs(uiText.kpis, backendMetrics)
+metricsApi.js enriches data with frontend config literals (`config/metricsConfig.js`)
+and maps KPI structure (`config/uiText.js`)
     ↓ Converts metric slugs to objects:
 {
   name: "Liveability",
@@ -157,10 +155,10 @@ matchMetricsToKPIs(uiText.kpis, backendMetrics)
 }
     ↓
 MetricCard components render with:
-- Name (from backend)
+- Name/label/formula/action (from frontend config)
 - Value (rounded to 2 decimals)
-- Benchmark (rounded to 2 decimals)
-- Formula (from backend on hover)
+- Benchmark (from backend, rounded to 2 decimals)
+- Placeholder values (`xx.XX`) when numeric data is unavailable
 ```
 
 ## API Endpoints
@@ -239,9 +237,12 @@ Each KPI is paired with 2 metrics. Display is organized in a 3-row grid:
 - Examples: proximity scoring (0-300m), efficiency thresholds
 
 **Metric Definitions** (`domain/json/metrics.json`):
-- Name, formula, benchmark per metric
-- Label, action, and other metadata
-- Provides UI text for frontend
+- Backend-side metric definitions for calculations and benchmark values
+- Source of numeric benchmark targets exposed by API
+
+**Frontend Metric Literals** (`frontend/src/config/metricsConfig.js`):
+- Display name, label, formula, action text
+- Placeholder tokens for missing values (`xx.XX`)
 
 **Implementation Status**:
 - ✅ 2 fully implemented: Daylight Potential, Green Space Index
