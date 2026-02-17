@@ -10,7 +10,7 @@
       <span class="metric-name">{{ name }}</span>
     </div>
     <div class="metric-value">
-      <span class="value" :class="isAboveBenchmark ? 'value-above' : 'value-below'">{{ value }}</span>
+      <span class="value" :class="valueClass">{{ value }}</span>
       <span class="benchmark">/ {{ benchmark }}</span>
     </div>
   </div>
@@ -31,7 +31,17 @@ const showTooltip = ref(false);
 const isAboveBenchmark = computed(() => {
   const numValue = parseFloat(props.value);
   const numBenchmark = parseFloat(props.benchmark);
+  if (Number.isNaN(numValue) || Number.isNaN(numBenchmark)) {
+    return null;
+  }
   return numValue >= numBenchmark;
+});
+
+const valueClass = computed(() => {
+  if (isAboveBenchmark.value === null) {
+    return '';
+  }
+  return isAboveBenchmark.value ? 'value-above' : 'value-below';
 });
 </script>
 

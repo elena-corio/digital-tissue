@@ -5,6 +5,7 @@
 
 const API_URL = import.meta.env.VITE_API_URL
 import { useClerk } from '@/composables/useClerk.js'
+import { metricDefinitions, metricPlaceholders } from '@/config/metricsConfig.js'
 
 const buildAuthHeaders = async () => {
   // Skip auth headers in local development if VITE_SKIP_AUTH is set
@@ -41,7 +42,7 @@ export async function fetchLatestMetrics() {
     }
     
     const metricsData = await response.json()
-    return metricsData  // Return raw data keyed by metric slug
+    return enrichMetricsWithFrontendConfig(metricsData)
   } catch (error) {
     console.error('Error fetching metrics:', error)
     throw error
@@ -66,11 +67,32 @@ export async function fetchMetricsByVersion(versionId) {
     }
     
     const metricsData = await response.json()
-    return metricsData  // Return raw data keyed by metric slug
+    return enrichMetricsWithFrontendConfig(metricsData)
   } catch (error) {
     console.error('Error fetching metrics:', error)
     throw error
   }
+}
+
+function enrichMetricsWithFrontendConfig(metricsData) {
+  const enriched = {}
+
+  for (const [metricSlug, backendMetric] of Object.entries(metricsData || {})) {
+    const frontendMetric = metricDefinitions[metricSlug] || {}
+
+    enriched[metricSlug] = {
+      ...backendMetric,
+      name: frontendMetric.name || backendMetric?.name || metricSlug,
+      label: frontendMetric.label || backendMetric?.label || null,
+      formula: frontendMetric.formula || backendMetric?.formula || null,
+      action: frontendMetric.action || backendMetric?.action || null,
+      benchmark: backendMetric?.benchmark ?? frontendMetric.benchmark ?? null,
+      value_placeholder: metricPlaceholders.value,
+      benchmark_placeholder: metricPlaceholders.benchmark
+    }
+  }
+
+  return enriched
 }
 
 /**
@@ -144,19 +166,26 @@ export function matchMetricsToKPIs(kpis, backendMetrics) {
   const updatedKPIs = JSON.parse(JSON.stringify(kpis)) // Deep copy
   
   updatedKPIs.forEach(kpi => {
+    const metricSlugs = Array.isArray(kpi.metrics)
+      ? kpi.metrics
+      : Object.keys(kpi.metrics || {})
+
     // Convert metric slugs to metric objects
-    kpi.metrics = kpi.metrics.map(metricSlug => {
+    kpi.metrics = metricSlugs.map(metricSlug => {
       const backendMetric = backendMetrics[metricSlug]
+      const frontendMetric = metricDefinitions[metricSlug] || {}
       
       if (backendMetric) {
         return {
-          name: backendMetric.name || metricSlug,
+          name: frontendMetric.name || backendMetric.name || metricSlug,
           slug: metricSlug,
           value: backendMetric.total_value,
-          benchmark: backendMetric.benchmark,
-          label: backendMetric.label,
-          formula: backendMetric.formula,
-          action: backendMetric.action,
+          benchmark: backendMetric.benchmark ?? frontendMetric.benchmark ?? null,
+          label: frontendMetric.label || backendMetric.label,
+          formula: frontendMetric.formula || backendMetric.formula,
+          action: frontendMetric.action || backendMetric.action,
+          value_placeholder: metricPlaceholders.value,
+          benchmark_placeholder: metricPlaceholders.benchmark,
           chart_data: backendMetric.chart_data,
           value_per_level: backendMetric.value_per_level,
           value_per_cluster: backendMetric.value_per_cluster,
@@ -164,13 +193,15 @@ export function matchMetricsToKPIs(kpis, backendMetrics) {
       } else {
         console.warn(`⚠️ Metric "${metricSlug}" not found in backend response`)
         return {
-          name: metricSlug,
+          name: frontendMetric.name || metricSlug,
           slug: metricSlug,
           value: null,
-          benchmark: null,
-          label: null,
-          formula: null,
-          action: null,
+          benchmark: frontendMetric.benchmark ?? null,
+          label: frontendMetric.label || null,
+          formula: frontendMetric.formula || null,
+          action: frontendMetric.action || null,
+          value_placeholder: metricPlaceholders.value,
+          benchmark_placeholder: metricPlaceholders.benchmark,
         }
       }
     })

@@ -27,7 +27,19 @@ async function loadMetrics() {
 }
 
 function formatValue(val) {
-  return val !== undefined ? Number(val).toFixed(2) : 'N/A'
+  const numericValue = Number(val)
+  if (val === null || val === undefined || Number.isNaN(numericValue)) {
+    return null
+  }
+  return numericValue.toFixed(2)
+}
+
+function displayValue(metric) {
+  return formatValue(metric?.value) ?? metric?.value_placeholder ?? 'xx.XX'
+}
+
+function displayBenchmark(metric) {
+  return formatValue(metric?.benchmark) ?? metric?.benchmark_placeholder ?? 'xx.XX'
 }
 
 onMounted(loadMetrics)
@@ -51,8 +63,8 @@ onMounted(loadMetrics)
           v-for="(kpi, idx) in kpis" 
           :key="`metric0-${idx}`"
           :name="kpi.metrics[0].name"
-          :value="formatValue(kpi.metrics[0].value)"
-          :benchmark="formatValue(kpi.metrics[0].benchmark)"
+          :value="displayValue(kpi.metrics[0])"
+          :benchmark="displayBenchmark(kpi.metrics[0])"
           :formula="kpi.metrics[0].formula"
         />
         <!-- Third row: Metric cards (metrics[1]) -->
@@ -60,8 +72,8 @@ onMounted(loadMetrics)
           v-for="(kpi, idx) in kpis" 
           :key="`metric1-${idx}`"
           :name="kpi.metrics[1].name"
-          :value="formatValue(kpi.metrics[1].value)"
-          :benchmark="formatValue(kpi.metrics[1].benchmark)"
+          :value="displayValue(kpi.metrics[1])"
+          :benchmark="displayBenchmark(kpi.metrics[1])"
           :formula="kpi.metrics[1].formula"
         />
       </div>

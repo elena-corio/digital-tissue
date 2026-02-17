@@ -97,29 +97,37 @@ export const uiText = {
       name: 'Liveability',
       description: 'Capacity to support everyday wellbeing',
       icon: 'livable.svg',
-      metrics: ['daylight_potential',
-                'green_space_index']
+      metrics: {
+        daylight_potential: true,
+        green_space_index: true
+      }
     },
     {
       name: 'Interconnection',
       description: 'Connections between people and programs',
       icon: 'synapses.svg',
-      metrics: ['program_diversity_index',
-                'circulation_efficiency']
+      metrics: {
+        program_diversity_index: true,
+        circulation_efficiency: true
+      }
     },
     {
       name: 'Adaptability',
       description: 'Capacity of spaces and systems to transform over time',
       icon: 'adaptable.png',
-      metrics: ['occupancy_efficiency',
-                'net_floor_area_ratio']
+      metrics: {
+        occupancy_efficiency: true,
+        net_floor_area_ratio: true
+      }
     },
     {
       name: 'Sustainability',
       description: 'Environmental performance and long-term resilience',
       icon: 'sustainable.svg',
-      metrics: ['envelope_efficiency',
-                'carbon_efficiency']
+      metrics: {
+        envelope_efficiency: true,
+        carbon_efficiency: true
+      }
     }
   ],
   promptBar: {
