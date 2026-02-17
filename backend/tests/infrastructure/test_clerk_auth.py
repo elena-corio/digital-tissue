@@ -111,3 +111,46 @@ async def test_verify_clerk_token_returns_generic_invalid_token_error(monkeypatc
 
     assert exc_info.value.status_code == 401
     assert exc_info.value.detail == "Invalid token"
+
+
+@pytest.mark.asyncio
+async def test_verify_clerk_token_allows_missing_header_in_local_by_default(monkeypatch):
+    monkeypatch.delenv("SKIP_AUTH", raising=False)
+    monkeypatch.delenv("LOCAL_AUTH_OPTIONAL", raising=False)
+    monkeypatch.delenv("RENDER", raising=False)
+
+    scope = {
+        "type": "http",
+        "method": "GET",
+        "path": "/api/metrics",
+        "headers": [],
+        "client": ("127.0.0.1", 12345),
+    }
+    request = Request(scope)
+
+    payload = await verify_clerk_token(request)
+
+    assert payload.get("sub") == "local-dev"
+    assert payload.get("email") == "dev@iaac.net"
+
+
+@pytest.mark.asyncio
+async def test_verify_clerk_token_requires_header_in_production(monkeypatch):
+    monkeypatch.delenv("SKIP_AUTH", raising=False)
+    monkeypatch.setenv("RENDER", "true")
+    monkeypatch.delenv("LOCAL_AUTH_OPTIONAL", raising=False)
+
+    scope = {
+        "type": "http",
+        "method": "GET",
+        "path": "/api/metrics",
+        "headers": [],
+        "client": ("127.0.0.1", 12345),
+    }
+    request = Request(scope)
+
+    with pytest.raises(HTTPException) as exc_info:
+        await verify_clerk_token(request)
+
+    assert exc_info.value.status_code == 401
+    assert exc_info.value.detail == "Missing authorization header"

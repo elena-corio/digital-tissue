@@ -33,6 +33,7 @@ CLERK_ISSUER=https://your-app.clerk.accounts.dev
 CLERK_FRONTEND_API_URL=http://localhost:5174  # Update to match your frontend port
 ALLOWED_EMAIL_DOMAIN=students.iaac.net
 CORS_ALLOWED_ORIGINS=http://localhost:5173,http://localhost:5174,https://elena-corio.github.io
+LOCAL_AUTH_OPTIONAL=true
 AUTH_FAILURE_WINDOW_SECONDS=300
 AUTH_FAILURE_MAX_ATTEMPTS=20
 # SKIP_AUTH not set - authentication is optional in local dev, required in production
@@ -56,8 +57,21 @@ python src/main.py
 
 ### Local Development (`VITE_SKIP_AUTH=true`)
 - **Frontend**: No authentication required, direct access to all routes
-- **Backend**: Set `SKIP_AUTH=true` to bypass JWT/domain checks and return a mock user payload
+- **Backend**: Missing auth headers are accepted by default in local dev (`RENDER` not set) and return a mock user payload
 - **Purpose**: Easy testing without Clerk setup
+
+Optional local backend override:
+- Set `LOCAL_AUTH_OPTIONAL=false` to require auth headers even in local dev
+- Set `SKIP_AUTH=true` to bypass all auth checks
+
+### Common pitfall (local no data)
+
+If frontend is running without Clerk tokens and backend is configured to require auth headers (for example `LOCAL_AUTH_OPTIONAL=false`), metrics endpoints return `401` and the frontend can look empty.
+
+Quick fix for local testing:
+- set `LOCAL_AUTH_OPTIONAL=true` (recommended), or
+- set `SKIP_AUTH=true` (bypass all auth checks)
+- restart backend after env changes
 
 ### Production (no `VITE_SKIP_AUTH`)
 - **Frontend**: Clerk JS required, must sign in to access `/workspace`

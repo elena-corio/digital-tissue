@@ -41,6 +41,15 @@ def _get_auth_rate_limit_max_attempts() -> int:
         return 20
 
 
+def _is_local_auth_optional() -> bool:
+    """Allow missing auth header in local development unless explicitly disabled."""
+    explicit_value = os.getenv("LOCAL_AUTH_OPTIONAL")
+    if explicit_value is not None:
+        return explicit_value.strip().lower() == "true"
+
+    return os.getenv("RENDER") is None
+
+
 def _get_client_ip(request: Request) -> str:
     forwarded_for = request.headers.get("x-forwarded-for")
     if forwarded_for:
@@ -182,13 +191,16 @@ async def verify_clerk_token(request: Request) -> dict:
     if os.getenv("SKIP_AUTH", "").lower() == "true":
         return {"sub": "local-dev", "email": "dev@iaac.net"}
 
+    # Check for Authorization header
+    auth_header = request.headers.get("authorization")
+
+    if not auth_header and _is_local_auth_optional():
+        return {"sub": "local-dev", "email": "dev@iaac.net"}
+
     client_ip = _get_client_ip(request)
     if _is_auth_rate_limited(client_ip):
         logger.warning("Authentication blocked by rate limit | ip=%s", client_ip)
         raise HTTPException(status_code=429, detail="Too many authentication failures. Try again later.")
-    
-    # Check for Authorization header
-    auth_header = request.headers.get("authorization")
 
     if not auth_header:
         logger.warning("Authentication failed: Missing authorization header")

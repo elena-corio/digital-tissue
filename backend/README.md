@@ -27,20 +27,23 @@ Python FastAPI backend for metric calculation and Speckle model analysis.
   CLERK_ISSUER=https://your-app.clerk.accounts.dev
   CLERK_FRONTEND_API_URL=http://localhost:5174  # Update to match your frontend port
   ALLOWED_EMAIL_DOMAIN=students.iaac.net
-   CORS_ALLOWED_ORIGINS=http://localhost:5173,http://localhost:5174,https://elena-corio.github.io
- AUTH_FAILURE_WINDOW_SECONDS=300
- AUTH_FAILURE_MAX_ATTEMPTS=20
+    CORS_ALLOWED_ORIGINS=http://localhost:5173,http://localhost:5174,https://elena-corio.github.io
+    LOCAL_AUTH_OPTIONAL=true
+    AUTH_FAILURE_WINDOW_SECONDS=300
+    AUTH_FAILURE_MAX_ATTEMPTS=20
   ```
 
-### Local Development (Auth Toggle)
+  ### Local Development (Auth Optional by Default)
 
-By default, protected endpoints still require an `Authorization` header.
+  In local development (when `RENDER` is not set), protected endpoints accept missing `Authorization` headers and return a mock local user payload.
 
-To skip authentication checks in local development, set `SKIP_AUTH=true` in `.env`.
-When enabled:
-- JWT verification is bypassed
-- Domain checks are bypassed
-- A mock local user payload is returned
+  > ⚠️ Common pitfall: if local auth is tightened (for example `LOCAL_AUTH_OPTIONAL=false`) while the frontend runs without Clerk tokens, API calls return `401` and the UI may appear as “no data from backend”.
+
+  You can explicitly control this behavior with `LOCAL_AUTH_OPTIONAL`:
+  - `LOCAL_AUTH_OPTIONAL=true` → allow missing auth header
+  - `LOCAL_AUTH_OPTIONAL=false` → require auth header even locally
+
+  To bypass all checks regardless of headers, set `SKIP_AUTH=true`.
 
 ### Running the Server
 

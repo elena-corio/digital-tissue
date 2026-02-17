@@ -15,6 +15,7 @@ CLERK_ISSUER=https://your-app.clerk.accounts.dev
 CLERK_FRONTEND_API_URL=http://localhost:5174
 ALLOWED_EMAIL_DOMAIN=students.iaac.net
 CORS_ALLOWED_ORIGINS=http://localhost:5173,http://localhost:5174,https://elena-corio.github.io
+LOCAL_AUTH_OPTIONAL=true
 AUTH_FAILURE_WINDOW_SECONDS=300
 AUTH_FAILURE_MAX_ATTEMPTS=20
 ```
@@ -62,6 +63,9 @@ When enabled:
 - JWT validation is skipped
 - domain authorization is skipped
 - a mock local payload is returned
+
+Without `SKIP_AUTH`, missing auth headers are still allowed locally by default (`RENDER` not set).
+Set `LOCAL_AUTH_OPTIONAL=false` if you want strict auth behavior during local testing.
 
 ## Auth Failure Logging
 
