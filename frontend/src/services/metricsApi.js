@@ -7,9 +7,11 @@ const API_URL = import.meta.env.VITE_API_URL
 import { useClerk } from '@/composables/useClerk.js'
 import { metricDefinitions, metricPlaceholders } from '@/config/metricsConfig.js'
 
+const isAuthBypassEnabled = import.meta.env.DEV && import.meta.env.VITE_SKIP_AUTH === 'true'
+
 const buildAuthHeaders = async () => {
-  // Skip auth headers in local development if VITE_SKIP_AUTH is set
-  if (import.meta.env.VITE_SKIP_AUTH === 'true') {
+  // Skip auth headers only in development when explicitly enabled
+  if (isAuthBypassEnabled) {
     return {}
   }
 

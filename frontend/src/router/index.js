@@ -60,12 +60,14 @@ const router = createRouter({
   routes
 })
 
+const isAuthBypassEnabled = import.meta.env.DEV && import.meta.env.VITE_SKIP_AUTH === 'true'
+
 // Navigation guard to protect routes requiring authentication
 router.beforeEach(async (to, from, next) => {
   const { isSignedIn, initClerk } = useClerk()
 
-  // Skip authentication in local development if VITE_SKIP_AUTH is set
-  if (import.meta.env.VITE_SKIP_AUTH === 'true') {
+  // Skip authentication only in development when explicitly enabled
+  if (isAuthBypassEnabled) {
     next()
     return
   }
