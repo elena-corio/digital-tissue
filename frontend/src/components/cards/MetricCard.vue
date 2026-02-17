@@ -110,7 +110,7 @@ const valueClass = computed(() => {
 .value {
   font-size: var(--font-size-h2);
   font-weight: var(--font-weight-bold);
-  color: var(--color-error); /* Default: below benchmark */
+  color: var(--orange-100); /* Default: below benchmark */
 }
 
 .value.value-above {
@@ -118,7 +118,7 @@ const valueClass = computed(() => {
 }
 
 .value.value-below {
-  color: var(--color-error);
+  color: var(--orange-100);
 }
 
 .benchmark {

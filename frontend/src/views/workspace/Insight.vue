@@ -35,14 +35,67 @@ import { ref, computed, onMounted } from 'vue';
 import ViewerPanel from '@/components/viewer/ViewerPanel.vue';
 import MetricsInsights from '@/components/insights/MetricsInsights.vue';
 import { fetchLatestMetrics } from '@/services/metricsApi.js';
+import { metricDefinitions, metricPlaceholders } from '@/config/metricsConfig.js';
 
 import { viewerModels } from '@/config/modelConfig.js';
 
 const projectId = viewerModels.data.projectId;
 const inputModelId = ref(viewerModels.data.modelId);
 
+function buildDefaultMetrics() {
+  return Object.fromEntries(
+    Object.entries(metricDefinitions).map(([slug, metric]) => [
+      slug,
+      {
+        slug,
+        name: metric.name || slug,
+        label: metric.label || null,
+        formula: metric.formula || null,
+        action: metric.action || null,
+        total_value: null,
+        benchmark: null,
+        value_placeholder: metricPlaceholders.value,
+        benchmark_placeholder: metricPlaceholders.benchmark,
+        value_per_level: {},
+        value_per_cluster: {},
+        chart_data: null
+      }
+    ])
+  );
+}
+
+function mergeMetrics(defaultMetrics, backendMetrics) {
+  const merged = { ...defaultMetrics };
+
+  for (const [slug, backendMetric] of Object.entries(backendMetrics || {})) {
+    merged[slug] = {
+      ...(merged[slug] || {
+        slug,
+        name: slug,
+        value_placeholder: metricPlaceholders.value,
+        benchmark_placeholder: metricPlaceholders.benchmark,
+        value_per_level: {},
+        value_per_cluster: {},
+        chart_data: null
+      }),
+      ...backendMetric,
+      slug,
+      name: backendMetric?.name || merged[slug]?.name || slug,
+      total_value: backendMetric?.total_value ?? merged[slug]?.total_value ?? null,
+      benchmark: backendMetric?.benchmark ?? merged[slug]?.benchmark ?? null,
+      value_placeholder: merged[slug]?.value_placeholder || metricPlaceholders.value,
+      benchmark_placeholder: merged[slug]?.benchmark_placeholder || metricPlaceholders.benchmark,
+      value_per_level: backendMetric?.value_per_level || merged[slug]?.value_per_level || {},
+      value_per_cluster: backendMetric?.value_per_cluster || merged[slug]?.value_per_cluster || {},
+      chart_data: backendMetric?.chart_data || merged[slug]?.chart_data || null
+    };
+  }
+
+  return merged;
+}
+
 // Metrics data
-const metricsData = ref({});
+const metricsData = ref(buildDefaultMetrics());
 const selectedMetricKey = ref('');
 const loading = ref(true);
 const error = ref(null);
@@ -51,7 +104,7 @@ const error = ref(null);
 const availableMetrics = computed(() => {
   const metrics = {};
   for (const [key, data] of Object.entries(metricsData.value)) {
-    if (data && data.name) {
+    if (data?.name) {
       metrics[key] = { name: data.name };
     }
   }
@@ -70,18 +123,24 @@ const selectedMetricData = computed(() => {
 async function loadMetrics() {
   loading.value = true;
   error.value = null;
+  const defaultMetrics = buildDefaultMetrics();
   try {
     const data = await fetchLatestMetrics();
-    metricsData.value = data;
+    metricsData.value = mergeMetrics(defaultMetrics, data);
     
     // Auto-select first metric if available
-    const keys = Object.keys(data);
+    const keys = Object.keys(metricsData.value);
     if (keys.length > 0) {
-      selectedMetricKey.value = keys[0];
+      selectedMetricKey.value = keys.includes(selectedMetricKey.value) ? selectedMetricKey.value : keys[0];
     }
   } catch (e) {
+    metricsData.value = defaultMetrics;
     error.value = e.message;
     console.error('Failed to load metrics:', e);
+    const keys = Object.keys(defaultMetrics);
+    if (keys.length > 0 && !selectedMetricKey.value) {
+      selectedMetricKey.value = keys[0];
+    }
   } finally {
     loading.value = false;
   }
