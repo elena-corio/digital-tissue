@@ -1,14 +1,4 @@
-import os
-
-
-def _require_env(name: str) -> str:
-	value = os.getenv(name, "").strip()
-	if not value:
-		raise RuntimeError(f"Missing required environment variable: {name}")
-	return value
-
-
-WORKSPACE_ID = _require_env("WORKSPACE_ID")
-PROJECT_ID = _require_env("PROJECT_ID")
-SOURCE_MODEL_ID = _require_env("SOURCE_MODEL_ID")
-# TARGET_MODEL_ID = _require_env("TARGET_MODEL_ID")
+WORKSPACE_ID = "a1cd06bae2"
+PROJECT_ID = "dcca94731b"
+SOURCE_MODEL_ID = "827526cd48"
+# TARGET_MODEL_ID = "39d99ae41a"
