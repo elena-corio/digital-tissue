@@ -27,16 +27,23 @@ Python FastAPI backend for metric calculation and Speckle model analysis.
   CLERK_ISSUER=https://your-app.clerk.accounts.dev
   CLERK_FRONTEND_API_URL=http://localhost:5174  # Update to match your frontend port
   ALLOWED_EMAIL_DOMAIN=students.iaac.net
+    CORS_ALLOWED_ORIGINS=http://localhost:5173,http://localhost:5174,https://elena-corio.github.io
+    LOCAL_AUTH_OPTIONAL=true
+    AUTH_FAILURE_WINDOW_SECONDS=300
+    AUTH_FAILURE_MAX_ATTEMPTS=20
   ```
 
-### Local Development (Auth Optional)
+  ### Local Development (Auth Optional by Default)
 
-For local testing without authentication, the backend will:
-- Accept requests with **no Authorization header** and return a mock token
-- Allow both authenticated (with Clerk JWT) and unauthenticated requests
-- This makes local development easier without setting up Clerk
+  In local development (when `RENDER` is not set), protected endpoints accept missing `Authorization` headers and return a mock local user payload.
 
-To skip all authentication: set `SKIP_AUTH=true` in `.env`
+  > ⚠️ Common pitfall: if local auth is tightened (for example `LOCAL_AUTH_OPTIONAL=false`) while the frontend runs without Clerk tokens, API calls return `401` and the UI may appear as “no data from backend”.
+
+  You can explicitly control this behavior with `LOCAL_AUTH_OPTIONAL`:
+  - `LOCAL_AUTH_OPTIONAL=true` → allow missing auth header
+  - `LOCAL_AUTH_OPTIONAL=false` → require auth header even locally
+
+  To bypass all checks regardless of headers, set `SKIP_AUTH=true`.
 
 ### Running the Server
 
@@ -124,6 +131,15 @@ backend/src/
 - FastAPI REST endpoints with enriched metric definitions
 - Speckle client integration via SpecklePy
 - Data mappers: Speckle objects → domain models
+
+## Authentication & Authorization
+
+- Clerk JWT validation is implemented in `src/infrastructure/clerk_auth.py`.
+- All `/api/metrics` routes use `verify_clerk_token` and enforce access checks.
+- Domain authorization is enforced through `ALLOWED_EMAIL_DOMAIN` (comma-separated list supported).
+- Unauthorized domains return `403`.
+- Auth failures are logged (missing header, malformed header, JWT failures, missing email claim, disallowed domain) without logging tokens.
+- Repeated auth failures are rate-limited per client IP (`429 Too Many Requests`).
 
 ## API Endpoints
 
