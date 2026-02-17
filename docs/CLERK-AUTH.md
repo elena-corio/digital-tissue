@@ -14,6 +14,9 @@ CLERK_DOMAIN=your-app.clerk.accounts.dev
 CLERK_ISSUER=https://your-app.clerk.accounts.dev
 CLERK_FRONTEND_API_URL=http://localhost:5174
 ALLOWED_EMAIL_DOMAIN=students.iaac.net
+CORS_ALLOWED_ORIGINS=http://localhost:5173,http://localhost:5174,https://elena-corio.github.io
+AUTH_FAILURE_WINDOW_SECONDS=300
+AUTH_FAILURE_MAX_ATTEMPTS=20
 ```
 
 Notes:
@@ -70,6 +73,10 @@ Logged cases include:
 - JWT validation failures
 - missing email claim
 - disallowed email domain
+
+Repeated auth failures are rate-limited per client IP and return `429`.
+
+For invalid JWTs, the API returns a generic `401 Invalid token` response while detailed causes stay in server logs.
 
 ## Protected API Routes
 

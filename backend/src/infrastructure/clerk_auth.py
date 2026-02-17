@@ -6,6 +6,7 @@ Validates JWT tokens issued by Clerk
 
 import os
 import logging
+import time
 from typing import Optional
 from fastapi import HTTPException, Depends, Request
 from jose import jwt, JWTError, jwk
@@ -14,6 +15,7 @@ import requests
 # Cache for Clerk's public key (valid for 24 hours)
 _clerk_jwks_cache = None
 _clerk_jwks_cache_time = None
+_auth_failures_by_ip: dict[str, list[float]] = {}
 logger = logging.getLogger(__name__)
 
 
@@ -21,6 +23,64 @@ def _get_allowed_domains() -> list[str]:
     """Read and normalize the allowed email domains from environment."""
     allowed_domains = os.getenv("ALLOWED_EMAIL_DOMAIN", "students.iaac.net")
     return [domain.strip().lower() for domain in allowed_domains.split(",") if domain.strip()]
+
+
+def _get_auth_rate_limit_window_seconds() -> int:
+    value = os.getenv("AUTH_FAILURE_WINDOW_SECONDS", "300")
+    try:
+        return max(1, int(value))
+    except ValueError:
+        return 300
+
+
+def _get_auth_rate_limit_max_attempts() -> int:
+    value = os.getenv("AUTH_FAILURE_MAX_ATTEMPTS", "20")
+    try:
+        return max(1, int(value))
+    except ValueError:
+        return 20
+
+
+def _get_client_ip(request: Request) -> str:
+    forwarded_for = request.headers.get("x-forwarded-for")
+    if forwarded_for:
+        first_ip = forwarded_for.split(",", 1)[0].strip()
+        if first_ip:
+            return first_ip
+
+    if request.client and request.client.host:
+        return request.client.host
+
+    return "unknown"
+
+
+def _prune_old_failures(ip_address: str, now: float, window_seconds: int) -> None:
+    failures = _auth_failures_by_ip.get(ip_address, [])
+    cutoff = now - window_seconds
+    active = [timestamp for timestamp in failures if timestamp >= cutoff]
+    if active:
+        _auth_failures_by_ip[ip_address] = active
+    elif ip_address in _auth_failures_by_ip:
+        del _auth_failures_by_ip[ip_address]
+
+
+def _record_auth_failure(ip_address: str, now: Optional[float] = None) -> None:
+    current_time = time.time() if now is None else now
+    window_seconds = _get_auth_rate_limit_window_seconds()
+    _prune_old_failures(ip_address, current_time, window_seconds)
+    _auth_failures_by_ip.setdefault(ip_address, []).append(current_time)
+
+
+def _is_auth_rate_limited(ip_address: str, now: Optional[float] = None) -> bool:
+    current_time = time.time() if now is None else now
+    window_seconds = _get_auth_rate_limit_window_seconds()
+    max_attempts = _get_auth_rate_limit_max_attempts()
+    _prune_old_failures(ip_address, current_time, window_seconds)
+    return len(_auth_failures_by_ip.get(ip_address, [])) >= max_attempts
+
+
+def _clear_auth_failures(ip_address: str) -> None:
+    _auth_failures_by_ip.pop(ip_address, None)
 
 
 def _extract_email_from_payload(payload: dict) -> Optional[str]:
@@ -101,7 +161,8 @@ async def get_clerk_jwks():
         _clerk_jwks_cache_time = time.time()
         return _clerk_jwks_cache
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to fetch Clerk JWKS: {str(e)}")
+        logger.exception("Failed to fetch Clerk JWKS")
+        raise HTTPException(status_code=500, detail="Failed to fetch Clerk JWKS")
 
 
 async def verify_clerk_token(request: Request) -> dict:
@@ -120,12 +181,18 @@ async def verify_clerk_token(request: Request) -> dict:
     # Skip all authentication if SKIP_AUTH is set (local development only)
     if os.getenv("SKIP_AUTH", "").lower() == "true":
         return {"sub": "local-dev", "email": "dev@iaac.net"}
+
+    client_ip = _get_client_ip(request)
+    if _is_auth_rate_limited(client_ip):
+        logger.warning("Authentication blocked by rate limit | ip=%s", client_ip)
+        raise HTTPException(status_code=429, detail="Too many authentication failures. Try again later.")
     
     # Check for Authorization header
     auth_header = request.headers.get("authorization")
 
     if not auth_header:
         logger.warning("Authentication failed: Missing authorization header")
+        _record_auth_failure(client_ip)
         raise HTTPException(status_code=401, detail="Missing authorization header")
     
     # If Authorization header IS provided, validate it
@@ -138,9 +205,11 @@ async def verify_clerk_token(request: Request) -> dict:
         scheme, token = auth_header.split(" ", 1)
         if scheme.lower() != "bearer":
             logger.warning("Authentication failed: Invalid authentication scheme")
+            _record_auth_failure(client_ip)
             raise HTTPException(status_code=401, detail="Invalid authentication scheme")
     except ValueError:
         logger.warning("Authentication failed: Invalid authorization header format")
+        _record_auth_failure(client_ip)
         raise HTTPException(status_code=401, detail="Invalid authorization header")
     
     try:
@@ -175,11 +244,18 @@ async def verify_clerk_token(request: Request) -> dict:
             issuer=issuer
         )
 
-        return _enforce_domain_authorization(payload)
+        authorized_payload = _enforce_domain_authorization(payload)
+        _clear_auth_failures(client_ip)
+        return authorized_payload
+
+    except HTTPException:
+        _record_auth_failure(client_ip)
+        raise
         
     except JWTError as e:
         logger.warning("Authentication failed: Invalid token (%s)", str(e))
-        raise HTTPException(status_code=401, detail=f"Invalid token: {str(e)}")
+        _record_auth_failure(client_ip)
+        raise HTTPException(status_code=401, detail="Invalid token")
 
 
 async def get_optional_user(request: Request) -> Optional[dict]:

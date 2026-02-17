@@ -17,16 +17,27 @@ from application.metrics_workflow import run_application
 
 app = FastAPI(title="Digital Tissue Backend")
 
+
+def _get_allowed_origins() -> list[str]:
+    """Read allowed CORS origins from env, with safe local defaults."""
+    import os
+
+    env_origins = os.getenv("CORS_ALLOWED_ORIGINS", "").strip()
+    if env_origins:
+        return [origin.strip() for origin in env_origins.split(",") if origin.strip()]
+
+    return [
+        "http://localhost:5173",
+        "http://localhost:5174",
+        "https://elena-corio.github.io",
+    ]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",                # Local development
-        "http://localhost:5174",                # Vite fallback port
-        "https://elena-corio.github.io"       # Production frontend URL
-    ],
+    allow_origins=_get_allowed_origins(),
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["Authorization", "Content-Type"],
 )
 
 # Register API routers

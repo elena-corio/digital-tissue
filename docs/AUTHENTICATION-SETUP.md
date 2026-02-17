@@ -32,6 +32,9 @@ CLERK_DOMAIN=your-app.clerk.accounts.dev
 CLERK_ISSUER=https://your-app.clerk.accounts.dev
 CLERK_FRONTEND_API_URL=http://localhost:5174  # Update to match your frontend port
 ALLOWED_EMAIL_DOMAIN=students.iaac.net
+CORS_ALLOWED_ORIGINS=http://localhost:5173,http://localhost:5174,https://elena-corio.github.io
+AUTH_FAILURE_WINDOW_SECONDS=300
+AUTH_FAILURE_MAX_ATTEMPTS=20
 # SKIP_AUTH not set - authentication is optional in local dev, required in production
 ```
 
@@ -81,6 +84,8 @@ The backend logs auth failures (without token contents) for:
 - JWT verification failures
 - missing email claim
 - disallowed email domain
+
+Repeated failures from the same client IP are temporarily rate-limited and return `429`.
 
 ## 6) Key files
 

@@ -27,6 +27,9 @@ Python FastAPI backend for metric calculation and Speckle model analysis.
   CLERK_ISSUER=https://your-app.clerk.accounts.dev
   CLERK_FRONTEND_API_URL=http://localhost:5174  # Update to match your frontend port
   ALLOWED_EMAIL_DOMAIN=students.iaac.net
+   CORS_ALLOWED_ORIGINS=http://localhost:5173,http://localhost:5174,https://elena-corio.github.io
+ AUTH_FAILURE_WINDOW_SECONDS=300
+ AUTH_FAILURE_MAX_ATTEMPTS=20
   ```
 
 ### Local Development (Auth Toggle)
@@ -133,6 +136,7 @@ backend/src/
 - Domain authorization is enforced through `ALLOWED_EMAIL_DOMAIN` (comma-separated list supported).
 - Unauthorized domains return `403`.
 - Auth failures are logged (missing header, malformed header, JWT failures, missing email claim, disallowed domain) without logging tokens.
+- Repeated auth failures are rate-limited per client IP (`429 Too Many Requests`).
 
 ## API Endpoints
 
