@@ -35,10 +35,22 @@ export async function fetchLatestMetrics() {
     const response = await fetch(`${API_URL}/api/metrics`, { headers })
     
     if (!response.ok) {
+      let detail = ''
+      try {
+        const errorBody = await response.json()
+        detail = errorBody?.detail || ''
+      } catch {
+        detail = ''
+      }
+
       if (response.status === 404) {
         throw new Error('Metrics not available. Please calculate metrics first.')
       }
-      throw new Error('Failed to fetch metrics from backend')
+      throw new Error(
+        detail
+          ? `Failed to fetch metrics from backend (${response.status}): ${detail}`
+          : `Failed to fetch metrics from backend (${response.status})`
+      )
     }
     
     const metricsData = await response.json()
@@ -60,10 +72,22 @@ export async function fetchMetricsByVersion(versionId) {
     const response = await fetch(`${API_URL}/api/metrics/${versionId}`, { headers })
     
     if (!response.ok) {
+      let detail = ''
+      try {
+        const errorBody = await response.json()
+        detail = errorBody?.detail || ''
+      } catch {
+        detail = ''
+      }
+
       if (response.status === 404) {
         throw new Error(`Metrics not found for version ${versionId}`)
       }
-      throw new Error('Failed to fetch metrics from backend')
+      throw new Error(
+        detail
+          ? `Failed to fetch metrics from backend (${response.status}): ${detail}`
+          : `Failed to fetch metrics from backend (${response.status})`
+      )
     }
     
     const metricsData = await response.json()
