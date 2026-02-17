@@ -86,7 +86,7 @@ function enrichMetricsWithFrontendConfig(metricsData) {
       label: frontendMetric.label || backendMetric?.label || null,
       formula: frontendMetric.formula || backendMetric?.formula || null,
       action: frontendMetric.action || backendMetric?.action || null,
-      benchmark: backendMetric?.benchmark ?? frontendMetric.benchmark ?? null,
+      benchmark: backendMetric?.benchmark ?? null,
       value_placeholder: metricPlaceholders.value,
       benchmark_placeholder: metricPlaceholders.benchmark
     }
@@ -180,7 +180,7 @@ export function matchMetricsToKPIs(kpis, backendMetrics) {
           name: frontendMetric.name || backendMetric.name || metricSlug,
           slug: metricSlug,
           value: backendMetric.total_value,
-          benchmark: backendMetric.benchmark ?? frontendMetric.benchmark ?? null,
+          benchmark: backendMetric.benchmark ?? null,
           label: frontendMetric.label || backendMetric.label,
           formula: frontendMetric.formula || backendMetric.formula,
           action: frontendMetric.action || backendMetric.action,
@@ -196,7 +196,7 @@ export function matchMetricsToKPIs(kpis, backendMetrics) {
           name: frontendMetric.name || metricSlug,
           slug: metricSlug,
           value: null,
-          benchmark: frontendMetric.benchmark ?? null,
+          benchmark: null,
           label: frontendMetric.label || null,
           formula: frontendMetric.formula || null,
           action: frontendMetric.action || null,
