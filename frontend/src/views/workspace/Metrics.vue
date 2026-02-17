@@ -5,7 +5,7 @@ import { fetchLatestMetrics, matchMetricsToKPIs } from '@/services/metricsApi.js
 import TitleCard from '@/components/cards/TitleCard.vue'
 import MetricCard from '@/components/cards/MetricCard.vue'
 
-const kpis = ref(JSON.parse(JSON.stringify(uiText.kpis)))
+const kpis = ref(matchMetricsToKPIs(uiText.kpis, {}))
 const loading = ref(true)
 const error = ref(null)
 
@@ -27,7 +27,19 @@ async function loadMetrics() {
 }
 
 function formatValue(val) {
-  return val !== undefined ? Number(val).toFixed(2) : 'N/A'
+  const numericValue = Number(val)
+  if (val === null || val === undefined || Number.isNaN(numericValue)) {
+    return null
+  }
+  return numericValue.toFixed(2)
+}
+
+function displayValue(metric) {
+  return formatValue(metric?.value) ?? metric?.value_placeholder ?? 'xx.XX'
+}
+
+function displayBenchmark(metric) {
+  return formatValue(metric?.benchmark) ?? metric?.benchmark_placeholder ?? 'xx.XX'
 }
 
 onMounted(loadMetrics)
@@ -50,19 +62,19 @@ onMounted(loadMetrics)
         <MetricCard 
           v-for="(kpi, idx) in kpis" 
           :key="`metric0-${idx}`"
-          :name="kpi.metrics[0].name"
-          :value="formatValue(kpi.metrics[0].value)"
-          :benchmark="formatValue(kpi.metrics[0].benchmark)"
-          :formula="kpi.metrics[0].formula"
+          :name="kpi.metrics?.[0]?.name ?? 'Metric'"
+          :value="displayValue(kpi.metrics?.[0])"
+          :benchmark="displayBenchmark(kpi.metrics?.[0])"
+          :formula="kpi.metrics?.[0]?.formula"
         />
         <!-- Third row: Metric cards (metrics[1]) -->
         <MetricCard 
           v-for="(kpi, idx) in kpis" 
           :key="`metric1-${idx}`"
-          :name="kpi.metrics[1].name"
-          :value="formatValue(kpi.metrics[1].value)"
-          :benchmark="formatValue(kpi.metrics[1].benchmark)"
-          :formula="kpi.metrics[1].formula"
+          :name="kpi.metrics?.[1]?.name ?? 'Metric'"
+          :value="displayValue(kpi.metrics?.[1])"
+          :benchmark="displayBenchmark(kpi.metrics?.[1])"
+          :formula="kpi.metrics?.[1]?.formula"
         />
       </div>
     </div>

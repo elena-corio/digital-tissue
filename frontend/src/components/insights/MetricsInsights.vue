@@ -3,27 +3,19 @@
     <div v-if="loading" class="loading">
       Loading metrics...
     </div>
-    
-    <div v-else-if="error" class="error">
-      {{ error }}
-    </div>
-    
-    <div v-else-if="!metricData" class="no-data">
-      <p>No metric selected or data unavailable</p>
-    </div>
-    
+
     <div v-else class="metric-content">
       <!-- Header -->
       <div class="metric-header">
-        <h3 class="metric-name">{{ metricData.name }}</h3>
+        <h3 class="metric-name">{{ displayMetric.name }}</h3>
         <div class="metric-summary">
           <div class="summary-item">
             <span class="label">Value:</span>
-            <span class="value" :class="valueClass">{{ formatValue(metricData.total_value) }}</span>
+            <span class="value" :class="valueClass">{{ formatValue(displayMetric.total_value, displayMetric.value_placeholder) }}</span>
           </div>
           <div class="summary-item">
             <span class="label">Benchmark:</span>
-            <span class="benchmark">{{ formatValue(metricData.benchmark) }}</span>
+            <span class="benchmark">{{ formatValue(displayMetric.benchmark, displayMetric.benchmark_placeholder) }}</span>
           </div>
         </div>
       </div>
@@ -32,7 +24,7 @@
       <div class="metric-details">
         <div class="detail-box">
           <h3>Formula</h3>
-          <p class="formula">{{ metricData.formula }}</p>
+          <p class="formula">{{ displayMetric.formula || 'N/A' }}</p>
         </div>
         <div class="detail-box" :class="actionClass">
           <h3>{{ actionTitle }}</h3>
@@ -44,7 +36,7 @@
       <div v-if="hasLevelData" class="data-section">
         <h3>Value per Level</h3>
         <div class="data-list">
-          <div v-for="(value, level) in metricData.value_per_level" :key="level" class="data-item">
+          <div v-for="(value, level) in displayMetric.value_per_level" :key="level" class="data-item">
             <span class="data-key">Level {{ level }}:</span>
             <span class="data-value">{{ formatValue(value) }}</span>
           </div>
@@ -55,7 +47,7 @@
       <div v-if="hasClusterData" class="data-section">
         <h3>Value per Cluster</h3>
         <div class="data-list">
-          <div v-for="(value, cluster) in metricData.value_per_cluster" :key="cluster" class="data-item">
+          <div v-for="(value, cluster) in displayMetric.value_per_cluster" :key="cluster" class="data-item">
             <span class="data-key">Cluster {{ cluster }}:</span>
             <span class="data-value">{{ formatValue(value) }}</span>
           </div>
@@ -64,9 +56,9 @@
 
       <!-- Chart Data -->
       <div v-if="hasChartData" class="data-section">
-        <h3>{{ metricData.chart_data.label }}</h3>
+        <h3>{{ displayMetric.chart_data.label }}</h3>
         <div class="chart-data">
-          <div v-for="(value, range) in metricData.chart_data.values" :key="range" class="chart-item">
+          <div v-for="(value, range) in displayMetric.chart_data.values" :key="range" class="chart-item">
             <span class="chart-label">{{ range }}</span>
             <div class="chart-bar">
               <div class="chart-fill" :style="{ width: `${value}%` }"></div>
@@ -97,29 +89,46 @@ const props = defineProps({
   }
 });
 
+const displayMetric = computed(() => props.metricData || {
+  name: 'Metric',
+  total_value: null,
+  benchmark: null,
+  formula: null,
+  action: null,
+  value_placeholder: 'xx.XX',
+  benchmark_placeholder: 'xx.XX',
+  value_per_level: {},
+  value_per_cluster: {},
+  chart_data: null
+});
+
 const hasLevelData = computed(() => 
-  props.metricData?.value_per_level && Object.keys(props.metricData.value_per_level).length > 0
+  displayMetric.value?.value_per_level && Object.keys(displayMetric.value.value_per_level).length > 0
 );
 
 const hasClusterData = computed(() => 
-  props.metricData?.value_per_cluster && Object.keys(props.metricData.value_per_cluster).length > 0
+  displayMetric.value?.value_per_cluster && Object.keys(displayMetric.value.value_per_cluster).length > 0
 );
 
 const hasChartData = computed(() => 
-  props.metricData?.chart_data && props.metricData.chart_data.values
+  displayMetric.value?.chart_data && displayMetric.value.chart_data.values
 );
 
+function hasNumericValue(value) {
+  return value !== null && value !== undefined && !Number.isNaN(Number(value));
+}
+
 const valueClass = computed(() => {
-  if (!props.metricData?.total_value || !props.metricData?.benchmark) return '';
-  return props.metricData.total_value >= props.metricData.benchmark ? 'success' : 'warning';
+  if (!hasNumericValue(displayMetric.value?.total_value) || !hasNumericValue(displayMetric.value?.benchmark)) return '';
+  return displayMetric.value.total_value >= displayMetric.value.benchmark ? 'success' : 'warning';
 });
 
 const dynamicAction = computed(() => {
-  const value = props.metricData?.total_value;
-  const benchmark = props.metricData?.benchmark;
+  const value = displayMetric.value?.total_value;
+  const benchmark = displayMetric.value?.benchmark;
   
-  if (!value || !benchmark) {
-    return 'No data available';
+  if (!hasNumericValue(value) || !hasNumericValue(benchmark)) {
+    return '⚠️ Warning: Values not available.';
   }
   
   // Check if value is > 200% of benchmark (possible error)
@@ -133,14 +142,14 @@ const dynamicAction = computed(() => {
   }
   
   // Below benchmark - show original action
-  return props.metricData.action;
+  return displayMetric.value?.action || 'Action guidance unavailable.';
 });
 
 const actionTitle = computed(() => {
-  const value = props.metricData?.total_value;
-  const benchmark = props.metricData?.benchmark;
+  const value = displayMetric.value?.total_value;
+  const benchmark = displayMetric.value?.benchmark;
   
-  if (!value || !benchmark) return 'Status';
+  if (!hasNumericValue(value) || !hasNumericValue(benchmark)) return '⚠️ Warning';
   
   if (value > benchmark * 2) return '⚠️ Warning';
   if (value >= benchmark) return 'Status';
@@ -148,18 +157,21 @@ const actionTitle = computed(() => {
 });
 
 const actionClass = computed(() => {
-  const value = props.metricData?.total_value;
-  const benchmark = props.metricData?.benchmark;
+  const value = displayMetric.value?.total_value;
+  const benchmark = displayMetric.value?.benchmark;
   
-  if (!value || !benchmark) return '';
+  if (!hasNumericValue(value) || !hasNumericValue(benchmark)) return 'action-warning';
   
   if (value > benchmark * 2) return 'action-error';
   if (value >= benchmark) return 'action-success';
   return 'action-warning';
 });
 
-function formatValue(val) {
-  return val !== null && val !== undefined ? Number(val).toFixed(2) : 'N/A';
+function formatValue(val, placeholder = 'xx.XX') {
+  const numericValue = Number(val);
+  return val !== null && val !== undefined && !Number.isNaN(numericValue)
+    ? numericValue.toFixed(2)
+    : placeholder;
 }
 </script>
 
@@ -282,20 +294,20 @@ h3 {
 }
 
 .detail-box.action-warning .action {
-  color: #92400e;
+  color: var(--yellow-100);
 }
 
 .detail-box.action-error {
-  background-color: #fee2e2;
-  border-color: var(--color-error);
+  background-color: var(--orange-50);
+  border-color: var(--orange-100);
 }
 
 .detail-box.action-error h3 {
-  color: var(--color-error);
+  color: var(--orange-100);
 }
 
 .detail-box.action-error .action {
-  color: #991b1b;
+  color: var(--orange-100);
 }
 
 .data-section {

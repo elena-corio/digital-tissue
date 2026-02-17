@@ -76,6 +76,7 @@ frontend/src/
 ├── services/
 │   └── metricsApi.js       # Backend API communication
 ├── config/
+│   ├── metricsConfig.js   # Metric literals (name/label/formula/action) + placeholders
 │   ├── modelConfig.js      # Model viewer configuration
 │   └── uiText.js           # ALL UI text (no hardcoded strings)
 ├── assets/
@@ -92,12 +93,19 @@ frontend/src/
 ## Key Features
 
 ### No Hardcoded Strings
-All UI text lives in `src/config/uiText.js`:
+All general UI text lives in `src/config/uiText.js`:
 - Navigation labels
 - Page titles and descriptions
 - KPI names and descriptions
 - Error messages
 - Common button labels
+
+Metric literal strings live in `src/config/metricsConfig.js`:
+- Metric name
+- Label
+- Formula
+- Action text
+- Placeholder values (`xx.XX`)
 
 Update text in one place; changes propagate everywhere.
 
@@ -117,10 +125,10 @@ Update text in one place; changes propagate everywhere.
    - Row 3: Second metric per KPI
 
 **Metric Display:**
-- Name (from backend)
-- Formula (from backend)
-- Benchmark value (rounded to 2 decimals)
+- Name/label/formula/action (from frontend `metricsConfig.js`)
+- Benchmark value (from backend, rounded to 2 decimals)
 - Calculated value (rounded to 2 decimals)
+- Placeholder values (`xx.XX`) when value or benchmark is unavailable
 - Tooltip with formula on hover
 - Color coding: green if ≥ benchmark, gray if below
 
