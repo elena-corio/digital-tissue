@@ -194,6 +194,16 @@ export function matchMetricsToKPIs(kpis, backendMetrics) {
   updatedKPIs.forEach(kpi => {
     const metricSlugs = Array.isArray(kpi.metrics)
       ? kpi.metrics
+          .map(metric => {
+            if (typeof metric === 'string') {
+              return metric
+            }
+            if (metric && typeof metric === 'object') {
+              return metric.slug || metric.key || metric.name || null
+            }
+            return null
+          })
+          .filter(Boolean)
       : Object.keys(kpi.metrics || {})
 
     // Convert metric slugs to metric objects

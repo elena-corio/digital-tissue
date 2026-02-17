@@ -143,6 +143,10 @@ def _enforce_domain_authorization(payload: dict) -> dict:
         _log_auth_failure("Email claim missing", payload)
         raise HTTPException(status_code=403, detail="Email claim missing")
 
+    if os.getenv("DEBUG_AUTH_EMAIL", "").strip().lower() == "true":
+        domain = email.split("@")[-1] if "@" in email else "unknown"
+        logger.info("Auth domain check | domain=%s | allowed=%s", domain, allowed_domains)
+
     if not any(email.endswith(f"@{domain}") for domain in allowed_domains):
         _log_auth_failure(f"Email domain not allowed (allowed={allowed_domains})", payload)
         raise HTTPException(status_code=403, detail="IAAC email required")
