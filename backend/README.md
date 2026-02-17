@@ -29,14 +29,15 @@ Python FastAPI backend for metric calculation and Speckle model analysis.
   ALLOWED_EMAIL_DOMAIN=students.iaac.net
   ```
 
-### Local Development (Auth Optional)
+### Local Development (Auth Toggle)
 
-For local testing without authentication, the backend will:
-- Accept requests with **no Authorization header** and return a mock token
-- Allow both authenticated (with Clerk JWT) and unauthenticated requests
-- This makes local development easier without setting up Clerk
+By default, protected endpoints still require an `Authorization` header.
 
-To skip all authentication: set `SKIP_AUTH=true` in `.env`
+To skip authentication checks in local development, set `SKIP_AUTH=true` in `.env`.
+When enabled:
+- JWT verification is bypassed
+- Domain checks are bypassed
+- A mock local user payload is returned
 
 ### Running the Server
 
@@ -124,6 +125,14 @@ backend/src/
 - FastAPI REST endpoints with enriched metric definitions
 - Speckle client integration via SpecklePy
 - Data mappers: Speckle objects → domain models
+
+## Authentication & Authorization
+
+- Clerk JWT validation is implemented in `src/infrastructure/clerk_auth.py`.
+- All `/api/metrics` routes use `verify_clerk_token` and enforce access checks.
+- Domain authorization is enforced through `ALLOWED_EMAIL_DOMAIN` (comma-separated list supported).
+- Unauthorized domains return `403`.
+- Auth failures are logged (missing header, malformed header, JWT failures, missing email claim, disallowed domain) without logging tokens.
 
 ## API Endpoints
 
