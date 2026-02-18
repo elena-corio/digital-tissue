@@ -33,7 +33,7 @@ const clerk = useClerk();
 
 const handleSignOut = async () => {
   const baseUrl = import.meta.env.BASE_URL;
-  await clerk.value?.signOut?.({ redirectUrl: baseUrl });
+  await clerk.value?.signOut?.({ fallbackRedirectUrl: baseUrl });
 };
 </script>
 
