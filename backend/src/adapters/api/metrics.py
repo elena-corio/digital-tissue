@@ -1,4 +1,12 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends, Header
+import os
+
+# Dependency for API key protection
+def verify_api_key(x_api_key: str = Header(...)):
+    expected_key = os.getenv("API_KEY")
+    if not expected_key or x_api_key != expected_key:
+        raise HTTPException(status_code=401, detail="Invalid or missing API key")
+    return True
 from specklepy.transports.server import ServerTransport
 from adapters.speckle.get_client import get_client
 from adapters.speckle.get_latest_version import get_latest_version
@@ -92,7 +100,7 @@ async def list_saved_metrics():
 
 
 @router.post("/calculate")
-async def calculate_metrics():
+async def calculate_metrics(_=Depends(verify_api_key)):
     """
     Calculate metrics for the latest Speckle version.
     Triggered by deployment/webhook.
