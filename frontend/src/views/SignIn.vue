@@ -5,13 +5,26 @@
         <h1>Welcome Back</h1>
         <p>Sign in to access your workspace</p>
       </div>
-      <SignIn routing="vue" fallbackRedirectUrl="https://www.digitaltissue.org/#/" />
+      <SignIn routing="vue" fallbackRedirectUrl="/workspace" />
     </div>
   </div>
 </template>
 
 <script setup>
 import { SignIn } from '@clerk/vue';
+import { onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+
+const route = useRoute();
+const router = useRouter();
+
+onMounted(() => {
+  if (route.query.redirect_url) {
+    // Replace with clean sign-in route and preserve intended redirect
+    const redirect = route.query.redirect || '/workspace';
+    router.replace({ name: 'sign-in', query: { redirect } });
+  }
+});
 </script>
 
 <style scoped>

@@ -5,7 +5,7 @@
         <h1>Create Account</h1>
         <p>Sign up to get started with Digital Tissue</p>
       </div>
-      <SignUp routing="vue" fallbackRedirectUrl="https://www.digitaltissue.org/#/"/>
+      <SignUp routing="vue" fallbackRedirectUrl="/workspace"/>
     </div>
   </div>
 </template>
