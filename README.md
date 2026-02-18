@@ -90,3 +90,23 @@ For detailed documentation, see the [docs/](docs/) folder.
 ## Contributing
 
 Please see the individual frontend and backend README files for contribution guidelines and development workflow.
+
+
+## Clerk Security Best Practices
+
+1. **Never put secret keys in client-side code**
+   - Only use Clerk publishable keys in frontend code.
+   - Never expose `CLERK_SECRET_KEY`, `CLERK_JWT_KEY`, or any backend API keys in the browser.
+
+2. **Use Clerk’s server helpers for backend logic**
+   - Always validate Clerk tokens on the backend using official libraries or your own secure validation logic.
+
+3. **Do NOT pass backend tokens to the frontend**
+   - Only pass frontend-scoped, short-lived tokens to the browser.
+   - Never expose backend secrets or long-lived tokens in client-side code.
+
+4. **Use secure HTTP-only cookies for session tokens (optional)**
+   - For extra security, consider using HTTP-only cookies for session tokens so they are not accessible via JavaScript.
+
+5. **If you’re using a custom backend, issue your own API tokens**
+   - If your backend needs to issue tokens, generate and validate them securely, and never expose signing keys to the frontend.

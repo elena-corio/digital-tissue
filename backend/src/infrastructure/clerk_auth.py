@@ -237,6 +237,16 @@ async def verify_clerk_token(request: Request) -> dict:
         )
 
         _clear_auth_failures(client_ip)
+        # Enforce allowed email domain(s) from config/env
+        allowed_domains = os.getenv("ALLOWED_EMAIL_DOMAIN", "students.iaac.net")
+        allowed_domains = [d.strip().lower() for d in allowed_domains.split(",") if d.strip()]
+        email = payload.get("email") or payload.get("email_address")
+        if not email:
+            logger.warning("Authentication failed: Email claim missing | payload=%s", payload)
+            raise HTTPException(status_code=403, detail="Forbidden: Email claim missing")
+        if not any(email.lower().endswith(f"@{domain}") for domain in allowed_domains):
+            logger.warning("Authentication failed: Email domain not allowed | email=%s | allowed=%s", email, allowed_domains)
+            raise HTTPException(status_code=403, detail="Forbidden: Email domain not allowed")
         return payload
 
     except HTTPException:
