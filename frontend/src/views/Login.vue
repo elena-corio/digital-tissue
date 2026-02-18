@@ -2,36 +2,14 @@
   <div class="login-center-container">
     <div class="login-tab-card">
       <h2 class="login-tab-title">{{ uiText.pages.login.authTab }}</h2>
-      <form class="login-tab-form" @submit.prevent="handleLogin">
-        <label class="login-tab-label">{{ uiText.pages.login.usernameLabel }}</label>
-        <input v-model="username" type="text" class="form-input" :placeholder="uiText.pages.login.usernamePlaceholder" />
-        <label class="login-tab-label">{{ uiText.pages.login.tokenLabel }}</label>
-        <input v-model="token" type="password" class="form-input" :placeholder="uiText.pages.login.tokenPlaceholder" required />
-        <button type="submit" class="login-tab-btn">{{ uiText.pages.login.loginBtn }}</button>
-      </form>
+      <div class="login-placeholder">
+        <p>This login page is a placeholder for future authentication (e.g., Clerk).</p>
+        <p>No token is required at this time.</p>
+      </div>
     </div>
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue'
-import { uiText } from '@/config/uiText.js'
-import { useRouter } from 'vue-router'
-import { login } from '@/store/auth.js'
-import { useRoute } from 'vue-router'
-
-const username = ref('')
-const token = ref('')
-
-const router = useRouter()
-const route = useRoute()
-
-const handleLogin = () => {
-  login(token.value, username.value)
-  const redirect = route.query.redirect || '/'
-  router.push(redirect)
-}
-</script>
 
 <style scoped>
 .login-center-container {
