@@ -27,21 +27,23 @@ def startup_event():
     
     # Only attempt calculation in local development, not on Render
     if os.getenv("RENDER") is None:  # Not running on Render
+        import logging
+        logger = logging.getLogger("startup")
         if not list_all_metrics():
-            print("No cached metrics found. Calculating metrics...")
+            logger.info("No cached metrics found. Calculating metrics...")
             try:
                 run_application()
-                print("Metrics calculated successfully on startup")
+                logger.info("Metrics calculated successfully on startup")
             except Exception as e:
-                print(f"Warning: Failed to calculate metrics on startup: {e}")
+                logger.warning("Failed to calculate metrics on startup: %s", e, exc_info=True)
         else:
-            print("Metrics cache found. Skipping calculation.")
+            logger.info("Metrics cache found. Skipping calculation.")
     else:
         # On Render, just load from existing metrics_cache
         if list_all_metrics():
-            print("Metrics cache found on Render.")
+            logger.info("Metrics cache found on Render.")
         else:
-            print("WARNING: No metrics cache found on Render. Deploy metrics first.")
+            logger.warning("No metrics cache found on Render. Deploy metrics first.")
 
 
 if __name__ == "__main__":

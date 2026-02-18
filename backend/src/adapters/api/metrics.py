@@ -1,5 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends, Header
 import os
+import logging
+logger = logging.getLogger("metrics")
 
 # Dependency for API key protection
 def verify_api_key(x_api_key: str = Header(...)):
@@ -27,6 +29,7 @@ def _load_metric_definitions():
         with open(json_path, 'r') as f:
             return json.load(f)
     except FileNotFoundError:
+        logger.warning("metrics.json not found at %s", json_path)
         return {}
 
 
@@ -112,25 +115,23 @@ async def calculate_metrics(_=Depends(verify_api_key)):
         # Get latest version and model data
         client = get_client()
         version = get_latest_version(client)
-        
         if not version:
+            logger.error("No versions found in Speckle project for metrics calculation")
             raise HTTPException(
                 status_code=404,
                 detail="No versions found in Speckle project"
             )
-        
         transport = ServerTransport(stream_id=PROJECT_ID, client=client)
         model = receive_data(version, transport)
-        
         # Calculate and save metrics
         metrics = calculate_and_save_metrics(version.id, model)
-        
+        logger.info("Metrics calculated successfully for version %s", version.id)
         return {"message": "Metrics calculated successfully", "metrics": metrics}
-    
     except Exception as e:
+        logger.exception("Error calculating metrics: %s", e)
         raise HTTPException(
             status_code=500,
-            detail=f"Error calculating metrics: {str(e)}"
+            detail="Error calculating metrics. See server logs for details."
         )
 
 
