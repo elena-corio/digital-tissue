@@ -4,7 +4,7 @@
  */
 
 const API_URL = import.meta.env.VITE_API_URL
-import { useClerk } from '@/composables/useClerk.js'
+import { useAuth } from '@clerk/vue'
 import { metricDefinitions, metricPlaceholders } from '@/config/metricsConfig.js'
 
 const isAuthBypassEnabled = import.meta.env.DEV && import.meta.env.VITE_SKIP_AUTH === 'true'
@@ -15,8 +15,8 @@ const buildAuthHeaders = async () => {
     return {}
   }
 
-  const { getSessionToken } = useClerk()
-  const token = await getSessionToken()
+  const { getToken } = useAuth()
+  const token = await getToken()
 
   if (!token) {
     return {}
