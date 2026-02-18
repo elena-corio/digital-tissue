@@ -1,6 +1,13 @@
-from fastapi import APIRouter, HTTPException, Depends, Header
+from fastapi import APIRouter, HTTPException, Depends, Header, Request
 import os
 import logging
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
+from slowapi import Limiter
+from slowapi.extension import Limiter as LimiterExtension
+from slowapi import _rate_limit_exceeded_handler
+from slowapi import Limiter as SlowAPILimiter
+from slowapi.extension import Limiter as SlowAPILimiterExtension
 logger = logging.getLogger("metrics")
 
 # Dependency for API key protection
@@ -18,6 +25,11 @@ from infrastructure.metrics_storage import get_metrics, get_latest_metrics, list
 from application.metrics_service import calculate_and_save_metrics
 import json
 from pathlib import Path
+
+from slowapi.extension import Limiter as SlowAPILimiterExtension
+from slowapi import Limiter as SlowAPILimiter
+from slowapi.util import get_remote_address
+from fastapi import Request
 
 router = APIRouter(prefix="/api/metrics", tags=["metrics"])
 
@@ -66,8 +78,14 @@ def _enrich_metrics(calculated_metrics):
     return enriched
 
 
+from slowapi.extension import Limiter as SlowAPILimiterExtension
+from slowapi import Limiter as SlowAPILimiter
+from slowapi.util import get_remote_address
+from fastapi import Request
+
 @router.get("")
-async def fetch_latest_metrics():
+@SlowAPILimiterExtension.limit("10/minute")
+async def fetch_latest_metrics(request: Request):
     """
     Fetch the latest calculated metrics enriched with definitions.
     Returns calculated values + names, formulas, benchmarks from backend.
@@ -87,7 +105,8 @@ async def fetch_latest_metrics():
 
 
 @router.get("/history")
-async def list_saved_metrics():
+@SlowAPILimiterExtension.limit("10/minute")
+async def list_saved_metrics(request: Request):
     """
     List all saved metric versions (history).
     
@@ -103,7 +122,8 @@ async def list_saved_metrics():
 
 
 @router.post("/calculate")
-async def calculate_metrics(_=Depends(verify_api_key)):
+@SlowAPILimiterExtension.limit("5/minute")
+async def calculate_metrics(request: Request, _=Depends(verify_api_key)):
     """
     Calculate metrics for the latest Speckle version.
     Triggered by deployment/webhook.
@@ -136,7 +156,8 @@ async def calculate_metrics(_=Depends(verify_api_key)):
 
 
 @router.get("/{version_id}")
-async def fetch_metrics(version_id: str):
+@SlowAPILimiterExtension.limit("10/minute")
+async def fetch_metrics(request: Request, version_id: str):
     """
     Fetch cached metrics for a specific Speckle version, enriched with definitions.
     

@@ -1,11 +1,23 @@
+
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from config import get_cors_allowed_origins
 from adapters.api.metrics import router as metrics_router
 from application.metrics_workflow import run_application
 
+# --- SlowAPI rate limiting ---
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
+
+limiter = Limiter(key_func=get_remote_address)
+
 app = FastAPI(title="Digital Tissue Backend")
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
+
 
 app.add_middleware(
     CORSMiddleware,
