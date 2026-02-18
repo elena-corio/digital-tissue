@@ -21,12 +21,12 @@
 </template>
 
 <script setup>
-import { useClerk } from '@/composables/useClerk.js';
+import { useAuth } from '@clerk/vue';
 import { uiText } from '@/config/uiText.js';
 import logoSrc from '@/assets/images/logo.svg';
 import Avatar from '@/components/layout/Avatar.vue';
 
-const { isSignedIn, signOut } = useClerk();
+const { isSignedIn, signOut } = useAuth();
 
 const handleSignOut = async () => {
   const baseUrl = import.meta.env.BASE_URL;
