@@ -10,9 +10,9 @@ const app = createApp(App)
 app.use(router)
 app.use(clerkPlugin, {
   publishableKey: import.meta.env.VITE_CLERK_PUBLISHABLE_KEY,
-  signInUrl: '/digital-tissue/#/sign-in',
-  signUpUrl: '/digital-tissue/#/sign-up',
-  afterSignOutUrl: '/digital-tissue/#/sign-in'
+  signInUrl: '#/sign-in',
+  signUpUrl: '#/sign-up',
+  afterSignOutUrl: '#/sign-in'
 })
 
 // Handle GitHub Pages 404.html redirect for SPA routes

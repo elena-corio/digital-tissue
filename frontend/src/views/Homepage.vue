@@ -28,9 +28,9 @@ const { isSignedIn } = useAuth()
 
 function handleGetStarted() {
   if (isSignedIn.value) {
-    router.push('/workspace')
+    router.push({ name: 'workspace' })
   } else {
-    router.push({ path: '/sign-in', query: { redirect: '/workspace' } })
+    router.push({ name: 'digital-tissue-sign-in', query: { redirect: '/workspace' } })
   }
 }
 </script>
