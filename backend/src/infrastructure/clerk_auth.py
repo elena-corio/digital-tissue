@@ -19,10 +19,6 @@ _auth_failures_by_ip: dict[str, list[float]] = {}
 logger = logging.getLogger(__name__)
 
 
-def _get_allowed_domains() -> list[str]:
-    """Read and normalize the allowed email domains from environment."""
-    allowed_domains = os.getenv("ALLOWED_EMAIL_DOMAIN", "students.iaac.net")
-    return [domain.strip().lower() for domain in allowed_domains.split(",") if domain.strip()]
 
 
 def _get_auth_rate_limit_window_seconds() -> int:
@@ -132,26 +128,6 @@ def _log_auth_failure(reason: str, payload: Optional[dict] = None) -> None:
     logger.warning("Authentication failed: %s | user_id=%s | email=%s", reason, user_id, email)
 
 
-def _enforce_domain_authorization(payload: dict) -> dict:
-    """Enforce allowed email-domain policy on a decoded token payload."""
-    allowed_domains = _get_allowed_domains()
-    if not allowed_domains:
-        return payload
-
-    email = _extract_email_from_payload(payload)
-    if not email:
-        _log_auth_failure("Email claim missing", payload)
-        raise HTTPException(status_code=403, detail="Email claim missing")
-
-    if os.getenv("DEBUG_AUTH_EMAIL", "").strip().lower() == "true":
-        domain = email.split("@")[-1] if "@" in email else "unknown"
-        logger.info("Auth domain check | domain=%s | allowed=%s", domain, allowed_domains)
-
-    if not any(email.endswith(f"@{domain}") for domain in allowed_domains):
-        _log_auth_failure(f"Email domain not allowed (allowed={allowed_domains})", payload)
-        raise HTTPException(status_code=403, detail="IAAC email required")
-
-    return payload
 
 async def get_clerk_jwks():
     """Fetch Clerk's JWKS (public keys) for JWT verification"""
@@ -260,9 +236,8 @@ async def verify_clerk_token(request: Request) -> dict:
             issuer=issuer
         )
 
-        authorized_payload = _enforce_domain_authorization(payload)
         _clear_auth_failures(client_ip)
-        return authorized_payload
+        return payload
 
     except HTTPException:
         _record_auth_failure(client_ip)
@@ -339,7 +314,7 @@ async def get_optional_user(request: Request) -> Optional[dict]:
             issuer=issuer
         )
 
-        return _enforce_domain_authorization(payload)
+        return payload
     except Exception:
         logger.warning("Optional auth failed: Token verification error")
         return None
