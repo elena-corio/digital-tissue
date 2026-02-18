@@ -71,20 +71,9 @@ router.beforeEach(async (to, from, next) => {
     return
   }
 
-  if (to.meta.requiresAuth) {
-    try {
-      await initClerk()
-    } catch (error) {
-      console.warn('Clerk initialization failed, redirecting to sign-in:', error)
-      next({ name: 'sign-in' })
-      return
-    }
 
-    if (!isSignedIn.value) {
-      next({ name: 'sign-in' })
-      return
-    }
-  }
+  // TODO: Add Clerk Vue SDK route guard here
+  // Example: if (!isSignedIn.value) { next({ name: 'sign-in' }); return }
 
   next()
 })

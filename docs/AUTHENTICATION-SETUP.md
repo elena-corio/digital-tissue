@@ -103,7 +103,7 @@ Repeated failures from the same client IP are temporarily rate-limited and retur
 
 ## 6) Key files
 
-- `frontend/src/composables/useClerk.js` - Clerk initialization and session management
+- `frontend/src/main.js` - Clerk Vue plugin initialization
 - `frontend/src/services/metricsApi.js` - Auth header building with dev mode bypass
 - `frontend/src/router/index.js` - Route protection with `VITE_SKIP_AUTH` check
 - `frontend/src/views/SignIn.vue` - Sign in page
