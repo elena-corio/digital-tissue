@@ -12,6 +12,19 @@
 
 <script setup>
 import { SignUp } from '@clerk/vue';
+import { onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+
+const route = useRoute();
+const router = useRouter();
+
+onMounted(() => {
+  if (route.query.redirect_url) {
+    // Replace with clean sign-up route and preserve intended redirect
+    const redirect = route.query.redirect || '/workspace';
+    router.replace({ name: 'sign-up', query: { redirect } });
+  }
+});
 </script>
 
 <style scoped>
