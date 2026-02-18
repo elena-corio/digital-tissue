@@ -5,7 +5,7 @@
         <h1>Welcome Back</h1>
         <p>Sign in to access your workspace</p>
       </div>
-      <SignIn routing="vue" />
+      <SignIn routing="vue" fallbackRedirectUrl="https://www.digitaltissue.org/#/" />
     </div>
   </div>
 </template>
