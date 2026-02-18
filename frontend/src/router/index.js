@@ -7,37 +7,16 @@ import SignIn from '@/views/SignIn.vue'
 import SignUp from '@/views/SignUp.vue'
 
 const routes = [
-  {
-    path: '/',
-    name: 'homepage',
-    component: Homepage
-  },
-  {
-    path: '/about',
-    name: 'about',
-    component: About
-  },
-  {
-    path: '/sign-in',
-    name: 'sign-in',
-    component: SignIn
-  },
-  {
-    path: '/sign-up',
-    name: 'sign-up',
-    component: SignUp
-  },
-  // Add routes for Clerk subpath deployment
-  {
-    path: '/digital-tissue/sign-in',
-    name: 'digital-tissue-sign-in',
-    component: SignIn
-  },
-  {
-    path: '/digital-tissue/sign-up',
-    name: 'digital-tissue-sign-up',
-    component: SignUp
-  },
+  // Redirect Clerk defaults → your subpath
+  { path: '/sign-in', redirect: '/digital-tissue/sign-in' },
+  { path: '/sign-up', redirect: '/digital-tissue/sign-up' },
+
+  // Your actual routes
+  { path: '/digital-tissue/sign-in', name: 'digital-tissue-sign-in', component: SignIn },
+  { path: '/digital-tissue/sign-up', name: 'digital-tissue-sign-up', component: SignUp },
+
+  { path: '/', name: 'homepage', component: Homepage },
+  { path: '/about', name: 'about', component: About },
   {
     path: '/workspace',
     name: 'workspace',
