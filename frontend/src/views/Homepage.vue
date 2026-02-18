@@ -30,7 +30,7 @@ function handleGetStarted() {
   if (isSignedIn.value) {
     router.push({ name: 'workspace' })
   } else {
-    router.push({ name: 'digital-tissue-sign-in', query: { redirect: '/workspace' } })
+    router.push({ name: 'sign-in', query: { redirect: '/workspace' } })
   }
 }
 </script>
