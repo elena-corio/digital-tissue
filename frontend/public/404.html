@@ -5,19 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Redirecting...</title>
     <script>
-      (function () {
-        // GitHub Pages SPA redirect for /digital-tissue base path.
-        var segmentCount = 1;
-        var location = window.location;
-        var origin = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
-        var pathSegments = location.pathname.split('/');
-        var basePath = pathSegments.slice(0, 1 + segmentCount).join('/');
-        var rest = pathSegments.slice(1 + segmentCount).join('/');
-        var search = location.search ? '&' + location.search.slice(1).replace(/&/g, '~and~') : '';
-        var redirectUrl = origin + basePath + '/?/' + rest + search + location.hash;
-        location.replace(redirectUrl);
-      })();
+      // Redirect all 404s to index.html for SPA routing on GitHub Pages
+      var l = window.location;
+      var p = l.pathname.replace(/^\/digital-tissue/, '');
+      window.location.replace('/digital-tissue/index.html?redirect=' + encodeURIComponent(p + l.search + l.hash));
     </script>
+    <noscript>
+      <meta http-equiv="refresh" content="0; url=/digital-tissue/index.html">
+    </noscript>
   </head>
   <body></body>
 </html>
