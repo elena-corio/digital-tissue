@@ -1,3 +1,5 @@
+// TEMP: Quick test to confirm buildAuthHeaders returns the expected object
+buildAuthHeaders().then(console.log)
 /**
  * Metrics API service
  * Handles fetching and parsing metrics from the backend
@@ -9,13 +11,19 @@ import { metricDefinitions, metricPlaceholders } from '@/config/metricsConfig.js
 
 const isAuthBypassEnabled = import.meta.env.DEV && import.meta.env.VITE_SKIP_AUTH === 'true'
 
-const buildAuthHeaders = async () => {
+async function buildAuthHeaders() {
   // Skip auth headers only in development when explicitly enabled
   if (isAuthBypassEnabled) {
     return {}
   }
 
-  const { getToken } = useAuth()
+  const auth = useAuth()
+  console.log('DEBUG useAuth() result:', auth)
+  const { getToken } = auth
+  if (typeof getToken !== 'function') {
+    console.error('getToken is not a function! useAuth() result:', auth)
+    return {}
+  }
   const token = await getToken()
 
   if (!token) {
