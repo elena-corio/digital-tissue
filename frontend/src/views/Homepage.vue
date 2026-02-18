@@ -21,10 +21,10 @@
 <script setup>
 import { uiText } from '@/config/uiText.js'
 import { useRouter } from 'vue-router'
-import { useClerk } from '@/composables/useClerk.js'
+import { useAuth } from '@clerk/vue'
 
 const router = useRouter()
-const { isSignedIn } = useClerk()
+const { isSignedIn } = useAuth()
 
 function handleGetStarted() {
   if (isSignedIn.value) {

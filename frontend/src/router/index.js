@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { useClerk } from '@/composables/useClerk.js'
+// TODO: Integrate Clerk Vue SDK for route guards
 
 import Homepage from '@/views/Homepage.vue'
 import Workspace from '@/views/Workspace.vue'
@@ -63,9 +63,8 @@ const router = createRouter({
 const isAuthBypassEnabled = import.meta.env.DEV && import.meta.env.VITE_SKIP_AUTH === 'true'
 
 // Navigation guard to protect routes requiring authentication
+// TODO: Use Clerk Vue SDK's useAuth() or middleware for route guards
 router.beforeEach(async (to, from, next) => {
-  const { isSignedIn, initClerk } = useClerk()
-
   // Skip authentication only in development when explicitly enabled
   if (isAuthBypassEnabled) {
     next()

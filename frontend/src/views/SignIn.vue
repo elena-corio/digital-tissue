@@ -12,29 +12,10 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
-import { useClerk } from '@/composables/useClerk.js';
+// TODO: Integrate Clerk Vue SDK for sign-in widget
 
 const signInContainer = ref(null);
-let unmount = null;
-
-onMounted(async () => {
-  const { clerk, initClerk } = useClerk();
-  await initClerk();
-  
-  if (clerk.value && signInContainer.value) {
-    const baseUrl = import.meta.env.BASE_URL;
-    unmount = clerk.value.mountSignIn(signInContainer.value, {
-      signUpUrl: `${baseUrl}sign-up`,
-      afterSignInUrl: `${baseUrl}workspace`
-    });
-  }
-});
-
-onUnmounted(() => {
-  if (unmount) {
-    unmount();
-  }
-});
+// TODO: Use Clerk Vue SDK's <SignIn /> component or composable here
 </script>
 
 <style scoped>
