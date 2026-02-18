@@ -237,6 +237,8 @@ async def verify_clerk_token(request: Request) -> dict:
         )
 
         _clear_auth_failures(client_ip)
+        # Log the decoded payload for debugging
+        logger.info("Decoded Clerk JWT payload: %s", payload)
         # Enforce allowed email domain(s) from config/env
         allowed_domains = os.getenv("ALLOWED_EMAIL_DOMAIN", "students.iaac.net")
         allowed_domains = [d.strip().lower() for d in allowed_domains.split(",") if d.strip()]
