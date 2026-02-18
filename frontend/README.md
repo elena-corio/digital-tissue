@@ -180,19 +180,20 @@ All cards are responsive grid items with consistent styling.
 
 ## Deployment
 
-### GitHub Pages
+
+### Custom Domain Deployment
 
 Automatic deployment via GitHub Actions:
 1. Push code to `main` branch
 2. GitHub Actions runs workflow in `.github/workflows/deploy.yml`:
-   - Installs dependencies: `npm ci`
-   - Builds project: `npm run build`
-   - Uploads `frontend/dist` to GitHub Pages
-3. Live at: `https://elena-corio.github.io`
+  - Installs dependencies: `npm ci`
+  - Builds project: `npm run build`
+  - Uploads `frontend/dist` to GitHub Pages
+3. Live at: `https://digitaltissue.org`
 
 **Configuration:**
-- Base path in `vite.config.js`: `/digital-tissue/`
-- Assets use dynamic imports for GitHub Pages compatibility
+- Base path in `vite.config.js`: `/`
+- All assets and routes are served from the root
 
 ### Environment Variables
 
@@ -229,15 +230,15 @@ npm run test
 - `services/` - API and business logic
 - `store/` - Global state (Pinia)
 - `config/` - Configuration and constants
-- Development: `base: '/'`
-- Production: `base: '/digital-tissue/'`
+
+Development & Production: `base: '/'`
 
 Manual deployment:
 1. Run `npm run build` from the frontend directory
-2. Deploy the `frontend/dist` folder to GitHub Pages
+2. Deploy the `frontend/dist` folder to your custom domain host or GitHub Pages with custom domain set
 
 Setup requirements:
-- Enable GitHub Pages in repository settings
+- Set custom domain in repository settings to `digitaltissue.org`
 - Set source to "GitHub Actions"
 
 ## Speckle Viewer Integration

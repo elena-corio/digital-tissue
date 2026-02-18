@@ -27,7 +27,7 @@ Python FastAPI backend for metric calculation and Speckle model analysis.
   CLERK_ISSUER=https://your-app.clerk.accounts.dev
   CLERK_FRONTEND_API_URL=http://localhost:5174  # Update to match your frontend port
   ALLOWED_EMAIL_DOMAIN=students.iaac.net
-    CORS_ALLOWED_ORIGINS=http://localhost:5173,http://localhost:5174,https://elena-corio.github.io
+    CORS_ALLOWED_ORIGINS=http://localhost:5173,http://localhost:5174,https://digitaltissue.org
     LOCAL_AUTH_OPTIONAL=true
     AUTH_FAILURE_WINDOW_SECONDS=300
     AUTH_FAILURE_MAX_ATTEMPTS=20
