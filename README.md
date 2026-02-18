@@ -20,8 +20,15 @@ digital-tissue/
 **Backend** (Terminal 1):
 ```bash
 cd backend
-python src/main.py
+..\.venv\Scripts\python.exe src/main.py
 ```
+
+Or, if you are already in the backend directory:
+
+```bash
+.venv\Scripts\python.exe src/main.py
+```
+
 This will:
 - Check if metrics are cached
 - Calculate metrics if cache is empty  
@@ -38,6 +45,21 @@ For detailed instructions, see individual README files:
 
 - [frontend/README.md](frontend/README.md)
 - [backend/README.md](backend/README.md)
+
+## Running the backend locally
+
+From the project root, run:
+
+```
+cd backend
+..\.venv\Scripts\python.exe src/main.py
+```
+
+Or, if you are already in the backend directory:
+
+```
+.venv\Scripts\python.exe src/main.py
+```
 
 ## Data Flow
 

@@ -1,7 +1,7 @@
 fastapi>=0.129.0
 pytest>=9.0.2
 pytest-asyncio>=0.23.0
-python-jose[cryptography]>=3.3.0
+python-jose>=3.3.0
 requests>=2.32.0
 specklepy>=3.2.4
 uvicorn>=0.40.0

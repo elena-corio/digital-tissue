@@ -21,16 +21,19 @@
 </template>
 
 <script setup>
-import { useAuth } from '@clerk/vue';
+import { useAuth, useClerk } from '@clerk/vue';
 import { uiText } from '@/config/uiText.js';
 import logoSrc from '@/assets/images/logo.svg';
 import Avatar from '@/components/layout/Avatar.vue';
 
-const { isSignedIn, signOut } = useAuth();
+
+
+const { isSignedIn } = useAuth();
+const clerk = useClerk();
 
 const handleSignOut = async () => {
   const baseUrl = import.meta.env.BASE_URL;
-  await signOut({ redirectUrl: baseUrl });
+  await clerk.value?.signOut?.({ redirectUrl: baseUrl });
 };
 </script>
 

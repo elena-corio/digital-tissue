@@ -1,15 +1,8 @@
-// TEMP: Quick test to confirm buildAuthHeaders returns the expected object
-buildAuthHeaders().then(console.log)
-/**
- * Metrics API service
- * Handles fetching and parsing metrics from the backend
- */
-
-const API_URL = import.meta.env.VITE_API_URL
 import { useAuth } from '@clerk/vue'
 import { metricDefinitions, metricPlaceholders } from '@/config/metricsConfig.js'
 
 const isAuthBypassEnabled = import.meta.env.DEV && import.meta.env.VITE_SKIP_AUTH === 'true'
+const API_URL = import.meta.env.VITE_API_URL
 
 async function buildAuthHeaders() {
   // Skip auth headers only in development when explicitly enabled
