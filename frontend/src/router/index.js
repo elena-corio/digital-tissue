@@ -27,6 +27,17 @@ const routes = [
     name: 'sign-up',
     component: SignUp
   },
+  // Add routes for Clerk subpath deployment
+  {
+    path: '/digital-tissue/sign-in',
+    name: 'digital-tissue-sign-in',
+    component: SignIn
+  },
+  {
+    path: '/digital-tissue/sign-up',
+    name: 'digital-tissue-sign-up',
+    component: SignUp
+  },
   {
     path: '/workspace',
     name: 'workspace',
