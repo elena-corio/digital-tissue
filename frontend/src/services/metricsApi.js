@@ -16,7 +16,7 @@ const buildAuthHeaders = async () => {
   }
 
   const { getSessionToken } = useClerk()
-  const token = await getSessionToken('backend')
+  const token = await getSessionToken()
 
   if (!token) {
     return {}
