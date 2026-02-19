@@ -8,14 +8,14 @@
       <template v-if="isLoggedIn">
         <div class="header-avatar-logout">
           <Avatar class="header-avatar" />
-          <button @click="handleLogout" class="btn btn-tertiary">
-            {{ uiText.navigation.logout }}
+          <button @click="handleSignOut" class="btn btn-tertiary">
+            Sign Out
           </button>
         </div>
       </template>
-      <router-link v-else to="/login" class="btn btn-tertiary">
-        {{ uiText.navigation.login }}
-      </router-link>
+      <button v-else @click="handleSignIn" class="btn btn-tertiary">
+        Sign In
+      </button>
     </div>
   </header>
 </template>
@@ -24,14 +24,22 @@
 import { useRouter } from 'vue-router';
 import { uiText } from '@/config/uiText.js';
 import logoSrc from '@/assets/images/logo.svg';
-import { isLoggedIn, logout } from '@/store/auth.js';
+import { isLoggedIn } from '@/store/auth.js';
+import { useClerk } from '@/composables/useClerk.js';
 import Avatar from '@/components/layout/Avatar.vue';
 
 const router = useRouter();
 
-const handleLogout = () => {
-  logout();
-  router.push('/');
+const { getClerk } = useClerk();
+
+const handleSignIn = async () => {
+  const Clerk = await getClerk();
+  Clerk.openSignIn(); // Opens Clerk's sign-in modal/tab
+};
+
+const handleSignOut = async () => {
+  const Clerk = await getClerk();
+  await Clerk.signOut({ redirectUrl: window.location.origin });
 };
 </script>
 

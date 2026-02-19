@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useClerk } from '@/composables/useClerk'
 
 import Homepage from '@/views/Homepage.vue'
 import Workspace from '@/views/Workspace.vue'
@@ -47,9 +48,21 @@ const routes = [
 ]
 
 
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes
 })
+
+// Clerk route protection (no wrapper, no hash)
+router.beforeEach(async (to, from, next) => {
+  const { requireAuth } = useClerk();
+  // Only protect routes with meta.requiresAuth
+  if (to.matched.some(r => r.meta && r.meta.requiresAuth)) {
+    await requireAuth(router, to, next);
+    return;
+  }
+  next();
+});
 
 export default router
