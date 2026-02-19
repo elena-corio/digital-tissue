@@ -20,12 +20,17 @@ let unmount = null;
 onMounted(async () => {
   const { clerk, initClerk } = useClerk();
   await initClerk();
-  
+
   if (clerk.value && signUpContainer.value) {
     const baseUrl = import.meta.env.BASE_URL;
+    const signInUrl = `${baseUrl}sign-in`;
+    const afterSignUpUrl = `${baseUrl}workspace`;
+    console.log('[Clerk] SignUp.vue BASE_URL:', baseUrl);
+    console.log('[Clerk] SignUp.vue signInUrl:', signInUrl);
+    console.log('[Clerk] SignUp.vue afterSignUpUrl:', afterSignUpUrl);
     unmount = clerk.value.mountSignUp(signUpContainer.value, {
-      signInUrl: `${baseUrl}sign-in`,
-      afterSignUpUrl: `${baseUrl}workspace`
+      signInUrl,
+      afterSignUpUrl
     });
   }
 });
