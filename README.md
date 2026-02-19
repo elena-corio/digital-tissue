@@ -39,6 +39,10 @@ For detailed instructions, see individual README files:
 - [frontend/README.md](frontend/README.md)
 - [backend/README.md](backend/README.md)
 
+## Authentication
+
+Clerk authentication is used for sign-in/sign-up. The backend validates Clerk JWTs for protected endpoints. All environment variables and secrets are managed in `env` and `env.production` files. No email domain filtering is enforced.
+
 ## Data Flow
 
 1. **Backend** (FastAPI):

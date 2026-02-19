@@ -1,91 +1,23 @@
+
 # Clerk Authentication
 
-## Overview
+The frontend uses Clerk JS for sign-in/sign-up. The backend validates Clerk JWTs for protected endpoints.
 
-The frontend uses Clerk JS for sign-in/sign-up.
-The backend validates Clerk JWTs and enforces email-domain authorization on protected endpoints.
+## Environment
 
-## Backend Environment
-
-Set these in `backend/.env`:
-
-```env
-CLERK_DOMAIN=your-app.clerk.accounts.dev
-CLERK_ISSUER=https://your-app.clerk.accounts.dev
-CLERK_FRONTEND_API_URL=http://localhost:5174
-ALLOWED_EMAIL_DOMAIN=students.iaac.net
-CORS_ALLOWED_ORIGINS=http://localhost:5173,http://localhost:5174,https://elena-corio.github.io
-LOCAL_AUTH_OPTIONAL=true
-AUTH_FAILURE_WINDOW_SECONDS=300
-AUTH_FAILURE_MAX_ATTEMPTS=20
-```
-
-Notes:
-- `ALLOWED_EMAIL_DOMAIN` supports multiple values separated by commas.
-- Example: `ALLOWED_EMAIL_DOMAIN=students.iaac.net,iaac.net`
+All secrets and environment variables are managed in `env` and `env.production` files.
 
 ## Auth Enforcement
 
-Implementation: `backend/src/infrastructure/clerk_auth.py`
+Backend implementation: `backend/src/infrastructure/clerk_auth.py`
 
-### Required auth
-
-`verify_clerk_token`:
-- validates Bearer token format
-- verifies JWT signature using Clerk JWKS
-- validates issuer and audience
-- enforces allowed email domains
-
-### Optional auth
-
-`get_optional_user`:
-- returns authenticated user payload only if token is valid and domain is allowed
-- returns `None` for invalid/missing tokens or unauthorized domains
-
-## Domain Authorization
-
-Authorization uses claims from Clerk payload and resolves email in this order:
-1. `email` or `email_address`
-2. `primary_email_address_id` lookup inside `email_addresses`
-3. first valid entry in `email_addresses`
-
-If no allowed domain matches, backend returns `403`.
+- `verify_clerk_token`: Validates Bearer token format and verifies JWT signature using Clerk JWKS.
+- `get_optional_user`: Returns authenticated user payload if token is valid, or `None` if not.
 
 ## Local Development
 
-To bypass auth locally, set:
-
-```env
-SKIP_AUTH=true
-```
-
-When enabled:
-- JWT validation is skipped
-- domain authorization is skipped
-- a mock local payload is returned
-
-Without `SKIP_AUTH`, missing auth headers are still allowed locally by default (`RENDER` not set).
-Set `LOCAL_AUTH_OPTIONAL=false` if you want strict auth behavior during local testing.
-
-## Auth Failure Logging
-
-The backend logs auth failures without logging tokens.
-
-Logged cases include:
-- missing authorization header
-- invalid auth scheme/header format
-- JWT validation failures
-- missing email claim
-- disallowed email domain
-
-Repeated auth failures are rate-limited per client IP and return `429`.
-
-For invalid JWTs, the API returns a generic `401 Invalid token` response while detailed causes stay in server logs.
+To bypass auth locally, set `SKIP_AUTH=true` in your environment file. This skips JWT validation and returns a mock local payload.
 
 ## Protected API Routes
 
-Routes in `backend/src/adapters/api/metrics.py` are protected with `Depends(verify_clerk_token)`:
-- `GET /api/metrics`
-- `GET /api/metrics/history`
-- `GET /api/metrics/{version_id}`
-- `POST /api/metrics/calculate`
+Routes in `backend/src/adapters/api/metrics.py` are protected with `Depends(verify_clerk_token)`.
