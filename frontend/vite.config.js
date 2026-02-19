@@ -12,7 +12,7 @@ export default defineConfig({
   optimizeDeps: {
     include: ['@clerk/clerk-js']
   },
-  base: process.env.NODE_ENV === 'production' ? '/digital-tissue/' : '/',
+  base: '/',
   server: {
     port: 5173,
     open: true
