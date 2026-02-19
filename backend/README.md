@@ -21,17 +21,8 @@ Python FastAPI backend for metric calculation and Speckle model analysis.
    ```
 
 3. Configure authentication (Clerk JWT verification):
-  ```bash
-  # backend/.env
-  CLERK_DOMAIN=your-app.clerk.accounts.dev
-  CLERK_ISSUER=https://your-app.clerk.accounts.dev
-  CLERK_FRONTEND_API_URL=http://localhost:5174  # Update to match your frontend port
-  ALLOWED_EMAIL_DOMAIN=students.iaac.net
-    CORS_ALLOWED_ORIGINS=http://localhost:5173,http://localhost:5174,https://elena-corio.github.io
-    LOCAL_AUTH_OPTIONAL=true
-    AUTH_FAILURE_WINDOW_SECONDS=300
-    AUTH_FAILURE_MAX_ATTEMPTS=20
-  ```
+
+  All secrets and environment variables are managed in `env` and `env.production` files. Clerk authentication is used for sign-in/sign-up, and the backend validates Clerk JWTs for protected endpoints. No email domain filtering is enforced.
 
   ### Local Development (Auth Optional by Default)
 
