@@ -52,7 +52,7 @@ onUnmounted(() => {
   width: 100%;
   max-width: 480px;
   background: white;
-  border-radius: var(--radius-medium);
+  border-radius: var(--radius-md);
   box-shadow: var(--shadow-lg);
   padding: var(--space-xl);
 }

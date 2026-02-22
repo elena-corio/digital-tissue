@@ -1,7 +1,7 @@
 :root {
   /* Border radius tokens */
-  --radius-small: 4px;
-  --radius-medium: 8px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
   --radius-large: 12px;
 }
 

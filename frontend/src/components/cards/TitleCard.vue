@@ -33,7 +33,7 @@ const iconSrc = computed(() => {
 <style scoped>
 .title-card {
   background-color: var(--light-lila-50);
-  border-radius: var(--radius-medium);
+  border-radius: var(--radius-md);
   padding: var(--space-lg);
   transition: background-color 0.3s ease;
   width: 100%;

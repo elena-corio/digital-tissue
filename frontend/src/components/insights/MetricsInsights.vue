@@ -203,6 +203,7 @@ h3 {
   display: flex;
   flex-direction: column;
   gap: var(--space-lg);
+  
 }
 
 .metric-header {
@@ -257,7 +258,7 @@ h3 {
 .detail-box {
   background-color: white;
   padding: var(--space-md);
-  border-radius: var(--radius-medium);
+  border-radius: var(--radius-md);
   border: 1px solid var(--light-grey-100);
 }
 

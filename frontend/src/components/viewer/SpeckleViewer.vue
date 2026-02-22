@@ -150,7 +150,6 @@ defineExpose({
   max-height: 100vh;
   position: relative;
   background-color: var(--color-background-alt);
-  border-radius: var(--radius-md);
   overflow: hidden;
   box-sizing: border-box;
 }

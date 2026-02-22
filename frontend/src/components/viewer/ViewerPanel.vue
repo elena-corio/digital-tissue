@@ -74,6 +74,7 @@ defineExpose({ viewerRef });
   align-items: stretch;
   justify-content: stretch;
   box-shadow: var(--shadow-lg);
+  border-radius: var(--radius-md);
 }
 
 .button-bar-fixed {

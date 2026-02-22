@@ -92,7 +92,7 @@ const valueClass = computed(() => {
   padding: var(--space-sm) var(--space-md);
   background: var(--navy-blue-100);
   color: white;
-  border-radius: var(--radius-small);
+  border-radius: var(--radius-sm);
   box-shadow: var(--shadow-lg);
   white-space: nowrap;
   font-size: var(--font-size-small);

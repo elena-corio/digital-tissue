@@ -69,9 +69,9 @@
 ## Border Radius
 
 ```css
---radius-small: 4px;   /* Buttons, inputs */
---radius-medium: 8px;  /* Cards */
---radius-large: 12px;  /* Modals, panels */
+--radius-sm: 4px;   /* Buttons, inputs */
+--radius-md: 8px;  /* Cards */
+--radius-lg: 12px;  /* Modals, panels */
 ```
 
 ## Shadows
@@ -115,7 +115,7 @@ All cards inherit from `.card` base class in `globals.css`:
 
 ## Spacing & Layout
 - Spacing tokens: --space-sm/md/lg/xl
-- Border radius: --radius-small/medium/large
+- Border radius: --radius-sm/md/large
 - Shadows: --shadow-md/lg/around
 
 ## Principles
