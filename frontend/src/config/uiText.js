@@ -26,7 +26,7 @@ export const uiText = {
         insight: 'Insight'
       },
       site: {
-        title: 'Site',
+        title: 'Site 3D Model Viewer',
         subtitle: 'View and interact with your site model'
       },
       project: {

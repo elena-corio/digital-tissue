@@ -1,11 +1,20 @@
+
 <script setup>
 import { uiText } from '@/config/uiText.js'
+import ViewerPanel from '@/components/viewer/ViewerPanel.vue'
+import { viewerModels } from '@/config/modelConfig.js'
+
+const projectId = viewerModels.site.projectId;
+const modelId = viewerModels.site.siteModelId;
 </script>
 
 <template>
 	<div class="site-container">
 		<div class="site-content">
-			<h2 class="site-subtitle">{{ uiText.pages.workspace.site.subtitle }}</h2>
+            <h1 class="site-title">{{ uiText.pages.workspace.site.title }}</h1>
+			<div class="viewer-wrapper">
+				<ViewerPanel v-model:modelId="modelId" :projectId="projectId" />
+			</div>
 		</div>
 	</div>
 </template>
@@ -24,9 +33,14 @@ import { uiText } from '@/config/uiText.js'
 	width: 100%;
 	text-align: center;
 }
-.site-subtitle {
-	font-size: 2rem;
-	font-weight: 500;
-	color: var(--navy-blue-100);
+.site-title {
+	margin-bottom: 2rem;
+}
+.viewer-wrapper {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 80%;
+	margin: 0 auto;
 }
 </style>

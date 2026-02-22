@@ -1,18 +1,6 @@
 <template>
   <div class="viewer-container aspect">
-    <div class="button-bar-fixed">
-      <ButtonBar>
-        <IconButton icon="ruler.svg" title="Measure" @click="$emit('measure')" />
-        <IconButton icon="scissors.svg" title="Section" @click="$emit('section')" />
-        <IconButton icon="filter.svg" title="Filter" @click="$emit('filter')" />
-      </ButtonBar>
-    </div>
-    <div class="prompt-bar-fixed">
-      <PromptBar
-        :modelId1="modelId"
-        @update="({ modelId1 }) => $emit('update:modelId', modelId1)"
-      />
-    </div>
+
     <SpeckleViewer 
       ref="viewerRef"
       :model-url="modelLink"
