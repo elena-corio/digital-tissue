@@ -17,8 +17,8 @@ export const viewerModels = {
   site: {
     projectId: '3d70848e9c',
     siteModelId: 'ad7100fabd',
-    hb01ModelId: '86650fd3e5',
-    hb02ModelId: 'c8e7a1f0e5',
+    hb01ModelId: 'ae49122ea5',
+    hb02ModelId: '86650fd3e5',
     hb03ModelId: '388ce2bacf',
   }
 };

@@ -26,7 +26,7 @@ import {
 } from '@speckle/viewer';
 
 const props = defineProps({
-  modelUrl: { type: String, required: true },  // URL to the Speckle model
+  modelUrls: { type: Array, required: true },  // URL to the Speckle model
   height: { type: String, default: '600px' },  // Container height
   showStats: { type: Boolean, default: false }, // Show FPS/performance stats
   verbose: { type: Boolean, default: false }    // Console logging
@@ -75,16 +75,19 @@ const initViewer = async () => {
     emit('viewer-ready', viewer); // Tell parent viewer is ready
 
     // Load the model
-    await loadModel(props.modelUrl);
+    //Note: cannot use await inside forEach loop, so we use a regular for loop
+    for (const url of props.modelUrls) {
+      await loadModel(url);
+    }
 
     loading.value = false;
-  } catch (err) {
-    // Handle any errors
-    error.value = `Failed to initialize viewer: ${err.message}`;
-    loading.value = false;
-    emit('error', err);
-    console.error('Speckle Viewer Error:', err);
-  }
+    } catch (err) {
+      // Handle any errors
+      error.value = `Failed to initialize viewer: ${err.message}`;
+      loading.value = false;
+      emit('error', err);
+      console.error('Speckle Viewer Error:', err);
+    }
 };
 
 const loadModel = async (url) => {
@@ -115,9 +118,11 @@ const loadModel = async (url) => {
 };
 
 // Watch for URL changes - reload model if URL prop changes
-watch(() => props.modelUrl, (newUrl) => {
-  if (viewer && newUrl) {
-    loadModel(newUrl);
+watch(() => props.modelUrls, (newUrls) => {
+  if (viewer && newUrls) {
+    for (const url of newUrls) {
+      loadModel(url);
+    }
   }
 });
 

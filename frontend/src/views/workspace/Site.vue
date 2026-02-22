@@ -3,9 +3,10 @@
 import { uiText } from '@/config/uiText.js'
 import ViewerPanel from '@/components/viewer/ViewerPanel.vue'
 import { viewerModels } from '@/config/modelConfig.js'
+import { ref } from 'vue';
 
-const projectId = viewerModels.site.projectId;
-const modelId = viewerModels.site.siteModelId;
+const projectId = ref(viewerModels.site.projectId);
+const modelIds = ref([viewerModels.site.siteModelId, viewerModels.site.hb01ModelId, viewerModels.site.hb02ModelId, viewerModels.site.hb03ModelId]);
 </script>
 
 <template>
@@ -13,7 +14,7 @@ const modelId = viewerModels.site.siteModelId;
 		<div class="site-content">
             <h1 class="site-title">{{ uiText.pages.workspace.site.title }}</h1>
 			<div class="viewer-wrapper">
-				<ViewerPanel v-model:modelId="modelId" :projectId="projectId" />
+				<ViewerPanel v-model:modelIds="modelIds" :projectId="projectId" />
 			</div>
 		</div>
 	</div>

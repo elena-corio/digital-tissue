@@ -2,11 +2,11 @@
   <div class="viewer-page">
     <div class="viewer-grid">
       <ViewerPanel 
-        v-model:modelId="inputModelId1"
+        v-model:modelIds="inputModelId1"
         :projectId="projectId"
       />
       <ViewerPanel 
-        v-model:modelId="inputModelId2"
+        v-model:modelIds="inputModelId2"
         :projectId="projectId"
       />
     </div>
@@ -19,9 +19,9 @@ import { ref } from 'vue';
 import ViewerPanel from '@/components/viewer/ViewerPanel.vue';
 import { viewerModels } from '@/config/modelConfig.js';
 
-const projectId = viewerModels.structure.projectId;
-const inputModelId1 = ref(viewerModels.structure.modelId);
-const inputModelId2 = ref(viewerModels.program.modelId);
+const projectId = ref(viewerModels.structure.projectId);
+const inputModelId1 = ref([viewerModels.structure.modelId]);
+const inputModelId2 = ref([viewerModels.program.modelId]);
 </script>
 
 <style scoped>
