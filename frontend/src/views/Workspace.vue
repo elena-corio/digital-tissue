@@ -2,11 +2,18 @@
   <div class="workspace-container">
     <div class="tabs">
       <router-link 
-        to="/workspace/viewer" 
+        to="/workspace/site" 
         class="tab"
         active-class="tab-active"
       >
-        {{ uiText.pages.workspace.tabs.viewer }}
+        {{ uiText.pages.workspace.tabs.site }}
+      </router-link>
+      <router-link 
+        to="/workspace/project" 
+        class="tab"
+        active-class="tab-active"
+      >
+        {{ uiText.pages.workspace.tabs.project }}
       </router-link>
       <router-link 
         to="/workspace/metrics" 

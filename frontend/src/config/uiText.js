@@ -20,12 +20,17 @@ export const uiText = {
       title: 'Workspace',
       subtitle: 'Active workspace environment',
       tabs: {
-        viewer: 'Viewer',
+        site: 'Site',
+        project: 'Project',
         metrics: 'Metrics',
         insight: 'Insight'
       },
-      viewer: {
-        title: 'Model Viewer',
+      site: {
+        title: 'Site',
+        subtitle: 'View and interact with your site model'
+      },
+      project: {
+        title: 'Project',
         subtitle: 'View and interact with your project models'
       },
       metrics: {

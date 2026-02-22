@@ -32,13 +32,18 @@ const routes = [
     path: '/workspace',
     name: 'workspace',
     component: Workspace,
-    redirect: { name: 'workspace-viewer' },
+    redirect: { name: 'workspace-site' },
     meta: { requiresAuth: true },
     children: [
       {
-        path: 'viewer',
-        name: 'workspace-viewer',
-        component: () => import('@/views/workspace/Viewer.vue')
+        path: 'site',
+        name: 'workspace-site',
+        component: () => import('@/views/workspace/Site.vue')
+      },
+      {
+        path: 'project',
+        name: 'workspace-project',
+        component: () => import('@/views/workspace/Project.vue')
       },
       {
         path: 'metrics',
