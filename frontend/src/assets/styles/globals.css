@@ -52,13 +52,20 @@ h1 {
 
 h2 {
   font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  color: var(--navy-blue-100);
+}
+
+h3 {
+  font-size: var(--font-size-h3);
   font-weight: var(--font-weight-medium);
   line-height: var(--line-height-normal);
   color: var(--navy-blue-50);
 }
 
-h3 {
-  font-size: var(--font-size-h3);
+h4 {
+  font-size: var(--font-size-h4);
   /* Base element styles */
   font-weight: var(--font-weight-semibold);
   line-height: var(--line-height-normal);

@@ -27,19 +27,19 @@ export const uiText = {
       },
       site: {
         title: 'Site 3D Model Viewer',
-        subtitle: 'View and interact with your site model'
+        subtitle: 'Check how your building interacts with its neighbors.'
       },
       project: {
         title: 'Project',
-        subtitle: 'View and interact with your project models'
+        subtitle: 'Uncover the program, structure, and data behind your project.'
       },
       metrics: {
         title: 'Key Performance Indicators',
-        subtitle: 'Track key performance indicators and analytics'
+        subtitle: 'Assess the stability and health of your building’s core systems.'
       },
       insight: {
         title: 'Metrics Insight',
-        subtitle: 'Visualize and analyze metrics with your model'
+        subtitle: 'Understand each metric’s impact on your building’s performance.'
       }
     },
     about: {

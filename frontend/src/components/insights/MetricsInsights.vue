@@ -7,7 +7,7 @@
     <div v-else class="metric-content">
       <!-- Header -->
       <div class="metric-header">
-        <h3 class="metric-name">{{ displayMetric.name }}</h3>
+        <h4 class="metric-name">{{ displayMetric.name }}</h4>
         <div class="metric-summary">
           <div class="summary-item">
             <span class="label">Value:</span>
@@ -23,18 +23,18 @@
       <!-- Formula and Action -->
       <div class="metric-details">
         <div class="detail-box">
-          <h3>Formula</h3>
+          <h4>Formula</h4>
           <p class="formula">{{ displayMetric.formula || 'N/A' }}</p>
         </div>
         <div class="detail-box" :class="actionClass">
-          <h3>{{ actionTitle }}</h3>
+          <h4>{{ actionTitle }}</h4>
           <p class="action">{{ dynamicAction }}</p>
         </div>
       </div>
 
       <!-- Per Level Data -->
       <div v-if="hasLevelData" class="data-section">
-        <h3>Value per Level</h3>
+        <h4>Value per Level</h4>
         <div class="data-list">
           <div v-for="(value, level) in displayMetric.value_per_level" :key="level" class="data-item">
             <span class="data-key">Level {{ level }}:</span>
@@ -45,7 +45,7 @@
 
       <!-- Per Cluster Data -->
       <div v-if="hasClusterData" class="data-section">
-        <h3>Value per Cluster</h3>
+        <h4>Value per Cluster</h4>
         <div class="data-list">
           <div v-for="(value, cluster) in displayMetric.value_per_cluster" :key="cluster" class="data-item">
             <span class="data-key">Cluster {{ cluster }}:</span>
@@ -56,7 +56,7 @@
 
       <!-- Chart Data -->
       <div v-if="hasChartData" class="data-section">
-        <h3>{{ displayMetric.chart_data.label }}</h3>
+        <h4>{{ displayMetric.chart_data.label }}</h4>
         <div class="chart-data">
           <div v-for="(value, range) in displayMetric.chart_data.values" :key="range" class="chart-item">
             <span class="chart-label">{{ range }}</span>
@@ -176,7 +176,7 @@ function formatValue(val, placeholder = 'xx.XX') {
 </script>
 
 <style scoped>
-h3 {
+h4 {
   color: var(--navy-blue-100);
 }
 
@@ -262,7 +262,7 @@ h3 {
   border: 1px solid var(--light-grey-100);
 }
 
-.detail-box h3 {
+.detail-box h4 {
   margin-bottom: var(--space-sm);
 }
 
@@ -277,7 +277,7 @@ h3 {
   border-color: var(--color-success);
 }
 
-.detail-box.action-success h3 {
+.detail-box.action-success h4 {
   color: var(--color-success);
 }
 
@@ -290,7 +290,7 @@ h3 {
   border-color: var(--color-warning);
 }
 
-.detail-box.action-warning h3 {
+.detail-box.action-warning h4 {
   color: var(--color-warning);
 }
 
@@ -303,7 +303,7 @@ h3 {
   border-color: var(--orange-100);
 }
 
-.detail-box.action-error h3 {
+.detail-box.action-error h4 {
   color: var(--orange-100);
 }
 
@@ -318,7 +318,7 @@ h3 {
   border: 1px solid var(--light-grey-100);
 }
 
-.data-section h3 {
+.data-section h4 {
   margin-bottom: var(--space-md);
 }
 

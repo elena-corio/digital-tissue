@@ -2,7 +2,7 @@
   <div class="page-container homepage-center">
     <div class="homepage-content">
       <h1>{{ uiText.pages.homepage.title }}</h1>
-      <h2>{{ uiText.pages.homepage.subtitle }}</h2>
+      <h3>{{ uiText.pages.homepage.subtitle }}</h3>
       <div class="button-group">
         <button
           class="btn btn-primary get-started-btn"

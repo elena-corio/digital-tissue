@@ -18,7 +18,8 @@ function toggleModel(id) {
 <template>
 	<div class="site-container">
 		<div class="site-content">
-            <h1 class="site-title">{{ uiText.pages.workspace.site.title }}</h1>
+            <h2 class="site-title">{{ uiText.pages.workspace.site.title }}</h2>
+            <h3 class="site-subtitle">{{ uiText.pages.workspace.site.subtitle }}</h3>
 			<div class="viewer-wrapper">
 				<ViewerPanel v-model:modelIds="modelIds" :projectId="projectId" />
 			</div>
@@ -53,8 +54,8 @@ function toggleModel(id) {
 	width: 100%;
 	text-align: center;
 }
-.site-title {
-	margin-bottom: 2rem;
+.site-subtitle {
+	margin-bottom: var(--space-md);
 }
 .viewer-wrapper {
 	display: flex;

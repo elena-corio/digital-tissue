@@ -47,8 +47,10 @@ onMounted(loadMetrics)
 
 <template>
   <div class="metrics-container">
+    <div class="metrics-content">
+    <h2 class="grid-title">{{ uiText.pages.workspace.metrics.title }}</h2>
+      <h3 class="grid-subtitle">{{ uiText.pages.workspace.metrics.subtitle }}</h3>
     <div class="grid-content">
-      <h1 class="grid-title">{{ uiText.pages.workspace.metrics.title }}</h1>
       <div class="cards-grid">
         <!-- First row: Title cards -->
         <TitleCard 
@@ -79,16 +81,24 @@ onMounted(loadMetrics)
       </div>
     </div>
   </div>
+  </div>
 </template>
 
 <style scoped>
 .metrics-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: calc(100vh - 280px);
-  width: 100%;
-  max-width: 1280px;
-  margin: 0 auto;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: calc(100vh - 280px);
+	width: 100%;
+	max-width: 1280px;
+	margin: 0 auto;
+}
+.metrics-content {
+	width: 100%;
+	text-align: center;
+}
+.grid-subtitle {
+	margin-bottom: var(--space-lg);
 }
 </style>
