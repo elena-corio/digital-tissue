@@ -30,7 +30,7 @@ export const uiText = {
         subtitle: 'Check how your building interacts with its neighbors.'
       },
       project: {
-        title: 'Project',
+        title: 'Project 3D Model Viewer',
         subtitle: 'Uncover the program, structure, and data behind your project.'
       },
       metrics: {
