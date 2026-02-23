@@ -122,7 +122,7 @@ const valueClass = computed(() => {
 }
 
 .benchmark {
-  font-size: var(--font-size-h4);
+  font-size: var(--font-size-body);
   font-weight: var(--font-weight-medium);
 }
 </style>

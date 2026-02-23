@@ -1,63 +1,88 @@
-<template>
-  <div class="viewer-page">
-    <div class="viewer-grid">
-      <ViewerPanel 
-        v-model:modelIds="inputModelId1"
-        :projectId="projectId"
-      />
-      <ViewerPanel 
-        v-model:modelIds="inputModelId2"
-        :projectId="projectId"
-      />
-    </div>
-  </div>
-</template>
-
 <script setup>
+import { uiText } from '@/config/uiText.js'
+import ViewerPanel from '@/components/viewer/ViewerPanel.vue'
+import { viewerModels } from '@/config/modelConfig.js'
 import { ref } from 'vue';
 
-import ViewerPanel from '@/components/viewer/ViewerPanel.vue';
-import { viewerModels } from '@/config/modelConfig.js';
-
-const projectId = ref(viewerModels.structure.projectId);
-const inputModelId1 = ref([viewerModels.structure.modelId]);
-const inputModelId2 = ref([viewerModels.program.modelId]);
+const projectId = ref(viewerModels.project.projectId);
+const modelIds = ref([viewerModels.project.dataModelId]);
+function toggleModel(id) {
+  if (modelIds.value.includes(id)) {
+    modelIds.value = modelIds.value.filter(mid => mid !== id);
+  } else {
+    modelIds.value = [...modelIds.value, id];
+  }
+}
 </script>
 
+<template>
+	<div class="project-container">
+		<div class="project-content">
+            <h2 class="project-title">{{ uiText.pages.workspace.project.title }}</h2>
+            <h3 class="project-subtitle">{{ uiText.pages.workspace.project.subtitle }}</h3>
+			<div class="viewer-wrapper">
+				<ViewerPanel v-model:modelIds="modelIds" :projectId="projectId" />
+			</div>
+            <div class="toggle-buttons">
+              <button
+                v-for="(id, idx) in [viewerModels.project.dataModelId, viewerModels.project.structureModelId, viewerModels.project.programModelId, ]"
+                :key="id"
+                :class="['btn', 'toggle-btn', { active: modelIds.includes(id) }]"
+                @click="toggleModel(id)"
+              >
+                {{ ['Data', 'Structure', 'Program'][idx] }}
+              </button>
+            </div>
+            <div class="model-info-cards">
+              <!-- ...existing code... -->
+            </div>
+		</div>
+	</div>
+</template>
+
 <style scoped>
-.viewer-page {
-  padding: 0;
-  margin: 0;
-  width: 100vw;
-  height: 100vh;
-  min-height: 0;
-  min-width: 0;
-  box-sizing: border-box;
-  overflow-x: hidden;
-  overflow-y: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
+.project-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: calc(100vh - 280px);
+	width: 100%;
+	max-width: 1280px;
+	margin: 0 auto;
 }
-.viewer-grid {
+.project-content {
+	width: 100%;
+	text-align: center;
+}
+.project-subtitle {
+	margin-bottom: var(--space-md);
+}
+.viewer-wrapper {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 75%;
+	margin: 0 auto;
+}
+.toggle-buttons {
   display: flex;
-  flex-direction: row;
-  gap: 24px;
-  align-items: flex-start;
   justify-content: center;
-  margin-top: 48px;
-  margin-right: 72px;
-  margin-left: 12px;
-  width: 96vw;
+  gap: var(--space-md);
+  margin-top: var(--space-md);
 }
-.viewer-grid > * {
-  aspect-ratio: 16 / 9;
-  width: 100%;
-  min-width: 320px;
-  max-width: 600px;
-  height: auto;
-  display: flex;
-  flex-direction: column;
+.toggle-btn {
+  background-color: var(--light-blue-50);
+  border: none;
+  border-radius: var(--radius-md);
+  color: var(--navy-blue-100);
+  transition: background 0.2s, color 0.2s;
+}
+.toggle-btn.active {
+  background-color: var(--light-blue-100);
+  color: white;
+}
+.toggle-btn:hover {
+  background-color: var(--light-blue-100);
+  color: white;
 }
 </style>

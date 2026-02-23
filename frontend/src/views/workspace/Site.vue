@@ -5,7 +5,7 @@ import { viewerModels } from '@/config/modelConfig.js'
 import { ref } from 'vue';
 
 const projectId = ref(viewerModels.site.projectId);
-const modelIds = ref([viewerModels.site.siteModelId, viewerModels.site.hb01ModelId, viewerModels.site.hb02ModelId, viewerModels.site.hb03ModelId]);
+const modelIds = ref([viewerModels.site.contextModelId, viewerModels.site.hb03ModelId]);
 function toggleModel(id) {
   if (modelIds.value.includes(id)) {
     modelIds.value = modelIds.value.filter(mid => mid !== id);
