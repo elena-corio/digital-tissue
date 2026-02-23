@@ -92,7 +92,7 @@ const valueClass = computed(() => {
   padding: var(--space-sm) var(--space-md);
   background: var(--navy-blue-100);
   color: white;
-  border-radius: var(--radius-small);
+  border-radius: var(--radius-sm);
   box-shadow: var(--shadow-lg);
   white-space: nowrap;
   font-size: var(--font-size-small);
@@ -108,7 +108,7 @@ const valueClass = computed(() => {
 }
 
 .value {
-  font-size: var(--font-size-h2);
+  font-size: var(--font-size-h4);
   font-weight: var(--font-weight-bold);
   color: var(--orange-100); /* Default: below benchmark */
 }
@@ -122,7 +122,7 @@ const valueClass = computed(() => {
 }
 
 .benchmark {
-  font-size: var(--font-size-h3);
+  font-size: var(--font-size-body);
   font-weight: var(--font-weight-medium);
 }
 </style>

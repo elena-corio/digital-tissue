@@ -1,7 +1,7 @@
 <template>
   <div class="page-container">
     <div class="grid-content">
-      <h1 class="grid-title">{{ uiText.pages.about.title }}</h1>
+      <h2 class="grid-title">{{ uiText.pages.about.title }}</h2>
       
       <div class="cards-grid">
         <!-- First row: Title cards -->

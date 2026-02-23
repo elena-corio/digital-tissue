@@ -1,22 +1,10 @@
 <template>
   <div class="viewer-container aspect">
-    <div class="button-bar-fixed">
-      <ButtonBar>
-        <IconButton icon="ruler.svg" title="Measure" @click="$emit('measure')" />
-        <IconButton icon="scissors.svg" title="Section" @click="$emit('section')" />
-        <IconButton icon="filter.svg" title="Filter" @click="$emit('filter')" />
-      </ButtonBar>
-    </div>
-    <div class="prompt-bar-fixed">
-      <PromptBar
-        :modelId1="modelId"
-        @update="({ modelId1 }) => $emit('update:modelId', modelId1)"
-      />
-    </div>
+
     <SpeckleViewer 
       ref="viewerRef"
-      :model-url="modelLink"
-      :key="modelLink"
+      :model-urls="modelLinks"
+      :key="modelLinks"
       :show-stats="true"
       :verbose="true"
       height="auto"
@@ -36,8 +24,8 @@ import ButtonBar from './ButtonBar.vue';
 import IconButton from './IconButton.vue';
 
 const props = defineProps({
-  modelId: {
-    type: String,
+  modelIds: {
+    type: Array,
     required: true
   },
   projectId: {
@@ -46,13 +34,13 @@ const props = defineProps({
   }
 });
 
-const emit = defineEmits(['update:modelId', 'viewer-ready', 'model-loaded', 'error', 'measure', 'section', 'filter']);
+const emit = defineEmits(['update:modelIds', 'viewer-ready', 'model-loaded', 'error', 'measure', 'section', 'filter']);
 
 const viewerRef = ref(null);
 
-const modelLink = computed(() => 
-  `https://app.speckle.systems/projects/${props.projectId}/models/${props.modelId}`
-);
+const modelLinks =computed(() =>
+  (props.modelIds || []).map(id => `https://app.speckle.systems/projects/${props.projectId}/models/${id}`)
+)
 
 const onViewerReady = (viewer) => {
   emit('viewer-ready', viewer);
@@ -86,6 +74,7 @@ defineExpose({ viewerRef });
   align-items: stretch;
   justify-content: stretch;
   box-shadow: var(--shadow-lg);
+  border-radius: var(--radius-md);
 }
 
 .button-bar-fixed {

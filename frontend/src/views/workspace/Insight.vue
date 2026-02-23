@@ -2,7 +2,7 @@
   <div class="insight-page">
     <div class="insight-grid">
       <ViewerPanel 
-        v-model:modelId="inputModelId"
+        v-model:modelIds="inputModelId"
         :projectId="projectId"
       />
       
@@ -39,8 +39,8 @@ import { metricDefinitions, metricPlaceholders } from '@/config/metricsConfig.js
 
 import { viewerModels } from '@/config/modelConfig.js';
 
-const projectId = viewerModels.data.projectId;
-const inputModelId = ref(viewerModels.data.modelId);
+const projectId = viewerModels.project.projectId;
+const inputModelId = ref([viewerModels.project.dataModelId]);
 
 function buildDefaultMetrics() {
   return Object.fromEntries(
